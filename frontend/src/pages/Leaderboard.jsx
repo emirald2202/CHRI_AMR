@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Award, Medal, Trophy, User, Store } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
+import { useTranslation } from 'react-i18next';
 
 const mockUsers = [
   { id: '1', name: 'Rahul Sharma', points: 450, disposals: 15 },
@@ -26,6 +27,7 @@ const getMedal = (index) => {
 
 const Leaderboard = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [tab, setTab] = useState('users');
 
   return (
@@ -38,8 +40,8 @@ const Leaderboard = () => {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
             
             <Trophy className="w-16 h-16 text-white mx-auto mb-4 opacity-90 drop-shadow-md" />
-            <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">AMR Defenders Leaderboard</h2>
-            <p className="text-green-100 max-w-2xl mx-auto text-sm font-medium">See who is making the biggest impact in the fight against antimicrobial resistance through safe medicine disposal.</p>
+            <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">{t('lbTitle')}</h2>
+            <p className="text-green-100 max-w-2xl mx-auto text-sm font-medium">{t('lbDesc')}</p>
           </div>
 
           <div className="p-8">
@@ -49,13 +51,13 @@ const Leaderboard = () => {
                   onClick={() => setTab('users')}
                   className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'users' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  <User className="w-4 h-4" /> Top Users
+                  <User className="w-4 h-4" /> {t('topUsers')}
                 </button>
                 <button 
                   onClick={() => setTab('pharmacies')}
                   className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'pharmacies' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  <Store className="w-4 h-4" /> Top Pharmacies
+                  <Store className="w-4 h-4" /> {t('topPharmacies')}
                 </button>
               </div>
             </div>
@@ -65,10 +67,10 @@ const Leaderboard = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
-                      <th className="p-4 font-bold text-center w-24">Rank</th>
-                      <th className="p-4 font-bold">Hero Name</th>
-                      <th className="p-4 font-bold text-center">Safe Disposals</th>
-                      <th className="p-4 font-bold text-right">Total Points</th>
+                      <th className="p-4 font-bold text-center w-24">{t('rank')}</th>
+                      <th className="p-4 font-bold">{t('heroName')}</th>
+                      <th className="p-4 font-bold text-center">{t('safeDisposals')}</th>
+                      <th className="p-4 font-bold text-right">{t('totalPoints')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -79,10 +81,10 @@ const Leaderboard = () => {
                           <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 text-xs font-bold">
                             {u.name.charAt(0)}
                           </div>
-                          {u.name} {user?.name === u.name && <span className="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full ml-2 shadow-sm">You</span>}
+                          {u.name} {user?.name === u.name && <span className="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full ml-2 shadow-sm">{t('you')}</span>}
                         </td>
                         <td className="p-4 text-center font-semibold text-gray-600">{u.disposals}</td>
-                        <td className="p-4 text-right font-black text-green-600 text-lg">{u.points} <span className="text-xs text-gray-400 font-semibold tracking-wide uppercase">pts</span></td>
+                        <td className="p-4 text-right font-black text-green-600 text-lg">{u.points} <span className="text-xs text-gray-400 font-semibold tracking-wide uppercase">{t('pts')}</span></td>
                       </tr>
                     ))}
                   </tbody>
@@ -93,11 +95,11 @@ const Leaderboard = () => {
                  <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
-                      <th className="p-4 font-bold text-center w-24">Rank</th>
-                      <th className="p-4 font-bold">Pharmacy Name</th>
-                      <th className="p-4 font-bold text-center">Medicines Collected</th>
-                      <th className="p-4 font-bold text-center">Rating</th>
-                      <th className="p-4 font-bold text-right">Participation Score</th>
+                      <th className="p-4 font-bold text-center w-24">{t('rank')}</th>
+                      <th className="p-4 font-bold">{t('pharmacyNameLb')}</th>
+                      <th className="p-4 font-bold text-center">{t('medsCollected')}</th>
+                      <th className="p-4 font-bold text-center">{t('rating')}</th>
+                      <th className="p-4 font-bold text-right">{t('partScore')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">

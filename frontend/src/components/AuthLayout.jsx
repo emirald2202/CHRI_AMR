@@ -1,9 +1,16 @@
 import React from 'react';
 import { ShieldCheck, MapPin, Award, TrendingUp, Users, Activity, Droplets, Store } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 
 const AuthLayout = ({ children }) => {
   return (
-    <div className="min-h-screen flex bg-gray-50 font-sans">
+    <div className="min-h-screen flex bg-gray-50 font-sans relative">
+      
+      {/* Universal Language Selector for Auth Pages */}
+      <div className="absolute top-6 right-6 z-[1001]">
+         <LanguageSelector variant="light" />
+      </div>
+
       {/* Left Info Panel */}
       <div 
         className="hidden lg:flex lg:w-1/2 bg-[#f0fdf4] p-12 flex-col justify-between border-r border-green-100 relative overflow-hidden" 
