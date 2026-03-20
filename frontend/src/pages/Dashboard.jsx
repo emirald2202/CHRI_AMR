@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 
 const Dashboard = () => {
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return localStorage.getItem("hideTutorial_v2") !== "true";
+  });
+
+  const dismissTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem("hideTutorial_v2", "true");
+  };
+
   return (
     <DashboardLayout>
+      {/* Full Width Tutorial Box */}
+      {showTutorial && (
+        <div className="lg:col-span-12 mb-2 animate-in fade-in duration-300">
+          <div className="bg-white rounded-2xl shadow-lg border-l-4 border-l-green-500 p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+            <div>
+              <h3 className="text-lg font-semibold text-green-600 mb-2 flex items-center gap-2">
+                👋 Did you know?
+              </h3>
+              <p className="text-gray-600 text-[0.85rem] leading-relaxed max-w-4xl font-medium">
+                We show pharmacies registered on our platform below. But if you can't find one near you, don't worry!<br/><br/>
+                Click the <span className="text-green-600 font-bold">Find Pharmacies</span> button in the menu to discover ANY pharmacy within 10km of your location using live search.
+              </p>
+            </div>
+            <button 
+              onClick={dismissTutorial}
+              className="shrink-0 text-green-600 font-bold border border-green-600 rounded-lg px-5 py-2 hover:bg-green-50 transition-colors shadow-sm"
+            >
+              Got it ✓
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Left Column (70%) */}
       <div className="lg:col-span-8 flex flex-col gap-6">
         

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, ChevronDown, LogOut, Settings, Clock, Award, Globe } from 'lucide-react';
+import { ShieldCheck, ChevronDown, LogOut, Settings, Clock, Award, Globe, Search } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -36,9 +37,12 @@ const Navbar = () => {
             <Link to="/leaderboard" className="text-gray-500 hover:text-green-600 hover:bg-green-50 px-4 py-2 rounded-lg font-medium transition-all">
               Leaderboard
             </Link>
-            <Link to="/impact" className="text-gray-500 hover:text-green-600 hover:bg-green-50 px-4 py-2 rounded-lg font-medium transition-all">
-              Impact
-            </Link>
+            <button 
+              onClick={() => setShowSearch(!showSearch)}
+              className="text-green-600 border border-green-600 hover:bg-green-50 px-4 py-2 rounded-lg font-bold transition-all flex items-center gap-2"
+            >
+              <Search className="w-4 h-4" /> Find Pharmacies
+            </button>
           </div>
 
           {/* Right Section */}
@@ -97,6 +101,25 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Sliding Search Bar */}
+      {showSearch && (
+        <div className="border-t border-gray-100 bg-white shadow-[inset_0_-4px_6px_-6px_rgba(0,0,0,0.1)] pb-6 pt-4 px-4 animate-in slide-in-from-top-2 duration-200">
+          <div className="max-w-2xl mx-auto text-center">
+             <div className="flex gap-3 mb-2">
+                <input 
+                  type="text" 
+                  placeholder="Search for pharmacies near you..." 
+                  className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 shadow-sm transition-all font-medium text-gray-700"
+                />
+                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-all flex items-center gap-2">
+                  <Search className="w-5 h-5 pointer-events-none" /> Search
+                </button>
+             </div>
+             <p className="text-[0.7rem] text-gray-500 font-semibold text-left ml-2">📍 Searching within 10km of your location</p>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
