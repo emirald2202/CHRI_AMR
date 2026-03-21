@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/Authcontext';
 import axios from '../api/axios';
 import { Calendar, Package, Clock, CheckCircle2 } from 'lucide-react';
 import ScheduleModal from './ScheduleModal';
+import Chatbot from './Chatbot';
 
 const UserDashboard = () => {
   const { t } = useTranslation();
@@ -135,6 +136,7 @@ const UserDashboard = () => {
         </div>
 
       </div>
+      <Chatbot />
     </DashboardLayout>
   );
 };
