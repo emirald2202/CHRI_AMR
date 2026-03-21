@@ -4,19 +4,29 @@ import { Award, Medal, Trophy, User, Store } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
 import { useTranslation } from 'react-i18next';
 
-const mockUsers = [
-  { id: '1', name: 'Rahul Sharma', points: 450, disposals: 15 },
-  { id: '2', name: 'Priya Patel', points: 380, disposals: 12 },
-  { id: 'curr', name: 'Demo User', points: 150, disposals: 5 },
-  { id: '4', name: 'Amit Kumar', points: 120, disposals: 4 },
-  { id: '5', name: 'Neha Singh', points: 90, disposals: 3 },
-];
+const generatedUsers = Array.from({ length: 50 }).map((_, i) => {
+  const points = Math.floor(Math.random() * 350) + 10;
+  return {
+    id: `demo-${i + 1}`,
+    name: `Demo User ${i + 1}`,
+    points: points,
+    disposals: Math.floor(points / 25) + 1
+  };
+});
 
-const mockPharmacies = [
-  { id: 'p1', name: 'GreenMed Pharmacy', collections: 120, rating: 4.8, score: 95 },
-  { id: 'p2', name: 'CityHealth Pharmacy', collections: 85, rating: 4.5, score: 88 },
-  { id: 'p3', name: 'EcoCare Pharmacy', collections: 60, rating: 4.2, score: 75 },
-];
+const mockUsers = [...generatedUsers].sort((a, b) => b.points - a.points);
+
+const generatedPharmacies = Array.from({ length: 50 }).map((_, i) => {
+  return {
+    id: `pharma-${i + 1}`,
+    name: `Demo Pharmacy ${i + 1}`,
+    collections: Math.floor(Math.random() * 300) + 10,
+    rating: (Math.random() * (5.0 - 3.5) + 3.5).toFixed(1),
+    score: Math.floor(Math.random() * 50) + 50
+  };
+});
+
+const mockPharmacies = [...generatedPharmacies].sort((a, b) => b.collections - a.collections);
 
 const getMedal = (index) => {
   if (index === 0) return <Award className="w-6 h-6 text-yellow-500 fill-yellow-100 mx-auto" />;
