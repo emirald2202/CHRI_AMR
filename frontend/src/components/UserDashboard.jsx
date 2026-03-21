@@ -59,6 +59,22 @@ const UserDashboard = () => {
       {/* Left Column (70%) */}
       <div className="lg:col-span-8 flex flex-col gap-6">
 
+        {/* Google Maps Integration */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h3 className="text-gray-800 font-bold text-lg">{t('googleMapsIntegration')}</h3>
+              <p className="text-sm text-gray-500">Find nearby pharmacies on Google Maps</p>
+            </div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-8 border flex items-center justify-center min-h-[200px]">
+            <div className="text-center text-gray-500">
+              <p className="text-lg font-medium mb-2">Google Maps Integration</p>
+              <p className="text-sm">Coming Soon</p>
+            </div>
+          </div>
+        </div>
+
         {/* Dynamic Disposal Status Tracker */}
         <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 flex flex-col min-h-[22rem]">
           <div className="flex justify-between items-center mb-6">
@@ -116,22 +132,6 @@ const UserDashboard = () => {
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => { fetchRequests(); setIsModalOpen(false); }}
         />
-
-        {/* Google Maps Integration */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h3 className="text-gray-800 font-bold text-lg">{t('googleMapsIntegration')}</h3>
-              <p className="text-sm text-gray-500">Find nearby pharmacies on Google Maps</p>
-            </div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-8 border flex items-center justify-center min-h-[200px]">
-            <div className="text-center text-gray-500">
-              <p className="text-lg font-medium mb-2">Google Maps Integration</p>
-              <p className="text-sm">Coming Soon</p>
-            </div>
-          </div>
-        </div>
 
       </div>
 
