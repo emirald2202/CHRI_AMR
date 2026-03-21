@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, ChevronDown, LogOut, Settings, Clock, Award, Globe, Search } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
@@ -106,19 +106,30 @@ const Navbar = () => {
 
       {/* Sliding Search Bar */}
       {showSearch && (
-        <div className="border-t border-gray-100 bg-white shadow-[inset_0_-4px_6px_-6px_rgba(0,0,0,0.1)] pb-6 pt-4 px-4 animate-in slide-in-from-top-2 duration-200">
-          <div className="max-w-2xl mx-auto text-center">
-             <div className="flex gap-3 mb-2">
-                <input 
-                  type="text" 
-                  placeholder={t('searchPlaceholder')} 
-                  className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 shadow-sm transition-all font-medium text-gray-700"
-                />
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-all flex items-center gap-2">
-                  <Search className="w-5 h-5 pointer-events-none" /> {t('searchBtn')}
-                </button>
-             </div>
-             <p className="text-[0.7rem] text-gray-500 font-semibold text-left ml-2">📍 {t('searchingLoc')}</p>
+        <div className="border-t border-gray-100 bg-white shadow-[inset_0_-4px_6px_-6px_rgba(0,0,0,0.1)] pb-4 pt-3 px-4 animate-in slide-in-from-top-2 duration-200">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-2">
+              <div>
+                <h3 className="text-gray-800 font-semibold text-base">{t('findPharmacies')}</h3>
+                <p className="text-xs text-gray-500">Find nearby pharmacies on Google Maps</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3 border">
+              <iframe
+                src="https://maps.google.com/maps?width=100%25&amp;height=400&amp;hl=en&amp;q=pharmacy&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Find Nearby Pharmacies on Google Maps"
+                className="rounded-lg"
+              ></iframe>
+              <p className="text-xs text-gray-500 mt-1 text-center">
+                Search for "pharmacy" or "medical store" in the map
+              </p>
+            </div>
           </div>
         </div>
       )}
