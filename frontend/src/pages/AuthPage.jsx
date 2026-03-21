@@ -145,10 +145,9 @@ const AuthPage = () => {
             setOtpStep(true);
             alert("OTP sent to your email!");
           } else {
-            await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp });
-            alert("OTP Verified Successfully! Please login with your password to continue.");
-            setOtpStep(false);
-            setMethod('password');
+            const res = await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp, isLogin: true });
+            loginUser(res.data.user, res.data.token);
+            navigate('/dashboard');
           }
         }
       } else {

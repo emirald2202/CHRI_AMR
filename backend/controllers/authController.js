@@ -72,11 +72,20 @@ exports.sendOtp = async (req, res) => {
 
 exports.verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { email, otp, isLogin } = req.body;
     const record = await Otp.findOne({ email, otp });
     if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
     
     await Otp.findOneAndDelete({ email });
+
+    if (isLogin) {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: 'User not found in system. Please sign up first.' });
+      
+      const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+      return res.json({ message: 'OTP verified successfully', token, user: { id: user._id, name: user.name, role: user.role, email: user.email } });
+    }
+
     res.json({ message: 'OTP verified successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
