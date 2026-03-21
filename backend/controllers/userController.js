@@ -12,3 +12,14 @@ exports.getMe = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+exports.getPharmacies = async (req, res) => {
+  try {
+    const pharmacies = await User.find({ role: 'pharmacy' })
+      .select('name pharmacyName address phone email coordinates availabilityStatus averageRating')
+      .sort('-createdAt');
+    res.json(pharmacies);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};

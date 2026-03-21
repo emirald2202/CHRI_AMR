@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Store, Mail, Lock, Smartphone, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Authcontext';
 import AuthLayout from '../components/AuthLayout';
 import axios from '../api/axios';
 import { useTranslation } from 'react-i18next';
+import indianCities from '../data/indianCities.json';
 
 const AuthPage = () => {
   const { t } = useTranslation();
@@ -14,11 +15,100 @@ const AuthPage = () => {
 
   // Form State
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', password: '', pharmacyName: '', otp: ''
+    name: '', email: '', phone: '', password: '', city: '', area: '', pharmacyName: '', otp: ''
   });
   const [otpStep, setOtpStep] = useState(false); // True when waiting for user to enter OTP
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  
+  // Autocomplete State
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
+  const [showAreaDropdown, setShowAreaDropdown] = useState(false);
+  const [apiCitySuggestions, setApiCitySuggestions] = useState([]);
+  const [apiAreaSuggestions, setApiAreaSuggestions] = useState([]);
+  const [isSearchingCity, setIsSearchingCity] = useState(false);
+  const [isSearchingArea, setIsSearchingArea] = useState(false);
+
+  // 1. Instantly filter the JSON list based on what the user types
+  const localCitySuggestions = React.useMemo(() => {
+    if (!formData.city || formData.city.length < 1 || !showCityDropdown) return [];
+    const query = formData.city.toLowerCase();
+    return indianCities.filter(c => c.city.toLowerCase().includes(query)).map(c => ({
+       name: c.city, display_name: `${c.state}, India`
+    }));
+  }, [formData.city, showCityDropdown]);
+
+  const localAreaSuggestions = React.useMemo(() => {
+    if (!formData.area || formData.area.length < 1 || !showAreaDropdown) return [];
+    const selectedCity = indianCities.find(c => c.city.toLowerCase() === formData.city.toLowerCase());
+    if (!selectedCity || !selectedCity.localities) return [];
+    
+    const query = formData.area.toLowerCase();
+    return selectedCity.localities.filter(loc => loc.toLowerCase().includes(query)).map(loc => ({
+       name: loc, display_name: formData.city
+    }));
+  }, [formData.area, formData.city, showAreaDropdown]);
+
+  // 2. Hybrid Fallback: Query Nominatim API ONLY if local results are insufficient (< 3)
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (formData.city && formData.city.length > 1 && showCityDropdown && localCitySuggestions.length < 3) {
+        setIsSearchingCity(true);
+        try {
+          const res = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(formData.city)}&format=json&addressdetails=1&countrycodes=in&featuretype=settlement&limit=5`);
+          const mapped = res.data.map(s => ({
+             name: s.name || s.display_name.split(',')[0], 
+             display_name: s.display_name
+          }));
+          setApiCitySuggestions(mapped);
+        } catch (error) {
+          console.error("Nominatim city error", error);
+        } finally {
+          setIsSearchingCity(false);
+        }
+      } else {
+        setApiCitySuggestions([]);
+      }
+    }, 400);
+    return () => clearTimeout(delayDebounceFn);
+  }, [formData.city, showCityDropdown, localCitySuggestions.length]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (formData.area && formData.area.length > 1 && showAreaDropdown && localAreaSuggestions.length < 3) {
+        setIsSearchingArea(true);
+        try {
+          const res = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(formData.area + ', ' + formData.city)}&format=json&addressdetails=1&countrycodes=in&limit=5`);
+          const mapped = res.data.map(s => ({
+             name: s.name || s.display_name.split(',')[0], 
+             display_name: s.display_name
+          }));
+          setApiAreaSuggestions(mapped);
+        } catch (error) {
+          console.error("Nominatim area error", error);
+        } finally {
+          setIsSearchingArea(false);
+        }
+      } else {
+        setApiAreaSuggestions([]);
+      }
+    }, 400);
+    return () => clearTimeout(delayDebounceFn);
+  }, [formData.area, showAreaDropdown, formData.city, localAreaSuggestions.length]);
+
+  // 3. Merge Local + API results dynamically and uniquely
+  const citySuggestions = React.useMemo(() => {
+    const combined = [...localCitySuggestions, ...apiCitySuggestions];
+    const unique = Array.from(new Map(combined.map(item => [item.name.toLowerCase(), item])).values());
+    return unique.slice(0, 8);
+  }, [localCitySuggestions, apiCitySuggestions]);
+
+  const areaSuggestions = React.useMemo(() => {
+    const combined = [...localAreaSuggestions, ...apiAreaSuggestions];
+    const unique = Array.from(new Map(combined.map(item => [item.name.toLowerCase(), item])).values());
+    return unique.filter(item => item.name.toLowerCase() !== formData.city.toLowerCase()).slice(0, 8);
+  }, [localAreaSuggestions, apiAreaSuggestions, formData.city]);
+
   
   const navigate = useNavigate();
   const { login: loginUser } = useAuth();
@@ -78,6 +168,7 @@ const AuthPage = () => {
             phone: formData.phone,
             password: formData.password,
             role: role,
+            location: `${formData.area}, ${formData.city}`,
             ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName })
           });
           
@@ -212,6 +303,68 @@ const AuthPage = () => {
                     <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder={t('enterPhone')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
+                {role === 'user' && (
+                  <div className="space-y-4">
+                    <div className="animate-in slide-in-from-top-2 duration-300 relative">
+                      <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">City</label>
+                      <div className="relative">
+                        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 flex items-center justify-center">📍</div>
+                        <input type="text" name="city" value={formData.city} 
+                          onChange={(e) => { handleInputChange(e); setShowCityDropdown(true); }}
+                          onFocus={() => setShowCityDropdown(true)}
+                          onBlur={() => setTimeout(() => setShowCityDropdown(false), 200)}
+                          required placeholder="e.g. Mumbai, Delhi" className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                        {isSearchingCity && <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />}
+                      </div>
+                      
+                      {showCityDropdown && citySuggestions.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                          {citySuggestions.map((sugg, i) => (
+                            <div key={i} className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700"
+                               onMouseDown={(e) => {
+                                 e.preventDefault();
+                                 setFormData({...formData, city: sugg.name, area: ''}); // Auto-clear area on city change
+                                 setShowCityDropdown(false);
+                               }}>
+                              <span className="font-semibold">{sugg.name}</span>
+                              <div className="text-[0.7rem] text-gray-500 mt-0.5 truncate">{sugg.display_name}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {formData.city.trim().length > 0 && (
+                      <div className="animate-in slide-in-from-top-2 fade-in duration-300 relative">
+                        <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">Specific Area / Locality</label>
+                        <div className="relative">
+                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 flex items-center justify-center">🗺️</div>
+                          <input type="text" name="area" value={formData.area} 
+                            onChange={(e) => { handleInputChange(e); setShowAreaDropdown(true); }}
+                            onFocus={() => setShowAreaDropdown(true)}
+                            onBlur={() => setTimeout(() => setShowAreaDropdown(false), 200)}
+                            required placeholder="e.g. Bandra West, Andheri East" className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                          {isSearchingArea && <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />}
+                        </div>
+
+                        {showAreaDropdown && areaSuggestions.length > 0 && (
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                            {areaSuggestions.map((sugg, i) => (
+                                <div key={i} className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700"
+                                   onMouseDown={(e) => {
+                                     e.preventDefault();
+                                     setFormData({...formData, area: sugg.name});
+                                     setShowAreaDropdown(false);
+                                   }}>
+                                  <span className="font-semibold">{sugg.name}</span>
+                                  <div className="text-[0.7rem] text-gray-500 mt-0.5 truncate">{sugg.display_name}</div>
+                                </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             )}
 

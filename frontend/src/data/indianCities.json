@@ -1,0 +1,242 @@
+[
+  {
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "localities": ["Andheri East", "Andheri West", "Bandra East", "Bandra West", "Borivali", "Chembur", "Colaba", "Dadar", "Dharavi", "Goregaon", "Juhu", "Kalyan", "Kandivali", "Kurla", "Malad", "Mulund", "Navi Mumbai", "Powai", "Santa Cruz", "Thane", "Vile Parle", "Worli"]
+  },
+  {
+    "city": "Delhi",
+    "state": "Delhi",
+    "localities": ["Chanakyapuri", "Chattarpur", "Connaught Place", "Defence Colony", "Dwarka", "Greater Kailash", "Green Park", "Hauz Khas", "Janakpuri", "Karol Bagh", "Lajpat Nagar", "Mayur Vihar", "Okhla", "Paharganj", "Pitampura", "Rohini", "Saket", "South Extension", "Vasant Kunj"]
+  },
+  {
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "localities": ["BTM Layout", "Banashankari", "Basavanagudi", "Bellandur", "Domlur", "Electronic City", "HSR Layout", "Hebbal", "Indiranagar", "Jayanagar", "Koramangala", "KR Puram", "Malleswaram", "Marathahalli", "Rajajinagar", "Whitefield", "Yelahanka"]
+  },
+  {
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "localities": ["Ameerpet", "Banjara Hills", "Begumpet", "Charminar", "Dilsukhnagar", "Gachibowli", "HITECH City", "Jubilee Hills", "Kondapur", "Kukatpally", "Madhapur", "Mehdipatnam", "Miyapur", "Secunderabad", "Tarnaka", "Tolichowki", "Uppal"]
+  },
+  {
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "localities": ["Adyar", "Anna Nagar", "Besant Nagar", "Egmore", "Guindy", "Kodambakkam", "Mylapore", "Nungambakkam", "OMR", "Porur", "T. Nagar", "Tambaram", "Thiruvanmiyur", "Velachery"]
+  },
+  {
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "localities": ["Alipore", "Ballygunge", "Bidhannagar (Salt Lake)", "Dum Dum", "Esplanade", "Garia", "Gariahat", "Howrah", "Jadavpur", "Kalighat", "New Town", "Park Street", "Rajarhat", "Tollygunge"]
+  },
+  {
+    "city": "Pune",
+    "state": "Maharashtra",
+    "localities": ["Aundh", "Baner", "Bavdhan", "Camp", "Deccan Gymkhana", "Hadapsar", "Hinjewadi", "Kalyani Nagar", "Kharadi", "Kothrud", "Magarpatta", "Pimpri-Chinchwad", "Shivajinagar", "Viman Nagar", "Wakad"]
+  },
+  {
+    "city": "Ahmedabad",
+    "state": "Gujarat",
+    "localities": ["Ashram Road", "Bapunagar", "Bopal", "C.G. Road", "Chandkheda", "Ellisbridge", "Maninagar", "Navrangpura", "Nikol", "Paldi", "Prahlad Nagar", "SG Highway", "Satellite", "Thaltej", "Vastrapur"]
+  },
+  {
+    "city": "Jaipur",
+    "state": "Rajasthan",
+    "localities": ["Adarsh Nagar", "Bani Park", "Bapu Nagar", "C-Scheme", "Jagatpura", "Jhotwara", "Malviya Nagar", "Mansarovar", "Raja Park", "Sodala", "Tonk Road", "Vaishali Nagar", "Vidhyadhar Nagar"]
+  },
+  {
+    "city": "Surat",
+    "state": "Gujarat",
+    "localities": ["Adajan", "Athwa", "Bhatar", "Dindoli", "Katargam", "Majura Gate", "Nanpura", "Pal", "Piplod", "Udhna", "Varachha", "Vesu"]
+  },
+  {
+    "city": "Lucknow",
+    "state": "Uttar Pradesh",
+    "localities": ["Alambagh", "Aliganj", "Aminabad", "Charbagh", "Chowk", "Gomti Nagar", "Hazratganj", "Indira Nagar", "Jankipuram", "Mahanagar", "Rajajipuram"]
+  },
+  {
+    "city": "Kanpur",
+    "state": "Uttar Pradesh",
+    "localities": ["Arya Nagar", "Ashok Nagar", "Barra", "Civil Lines", "Govind Nagar", "Kakadeo", "Kalyanpur", "Kidwai Nagar", "S स्वरूप Nagar", "Swaroop Nagar", "Tilak Nagar"]
+  },
+  {
+    "city": "Nagpur",
+    "state": "Maharashtra",
+    "localities": ["Burdi", "Civil Lines", "Dharampeth", "Dhantoli", "Gittikhadan", "Itwari", "Mahal", "Manewada", "Pratap Nagar", "Ramdaspeth", "Sadadar", "Sitabuldi", "Wardhaman Nagar"]
+  },
+  {
+    "city": "Indore",
+    "state": "Madhya Pradesh",
+    "localities": ["Annapurna", "Bhawarkuan", "Geeta Bhawan", "LIG Colony", "Nanda Nagar", "Palasia", "Rajendra Nagar", "Rajwada", "Sudama Nagar", "Vijay Nagar"]
+  },
+  {
+    "city": "Bhopal",
+    "state": "Madhya Pradesh",
+    "localities": ["Arera Colony", "Ayodhya Bypass", "Bairagarh", "Gulmohar", "Habibganj", "Indrapuri", "Kolar Road", "MP Nagar", "Piplani", "TT Nagar"]
+  },
+  {
+    "city": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "localities": ["Akkayyapalem", "Daba Gardens", "Dwarka Nagar", "Gajuwaka", "Madhurawada", "MVP Colony", "Pendurthi", "Seethammadhara", "Siripuram"]
+  },
+  {
+    "city": "Patna",
+    "state": "Bihar",
+    "localities": ["Anisabad", "Boring Road", "Danapur", "Frazer Road", "Kadamkuan", "Kankarbagh", "Patliputra Colony", "Phulwari Sharif", "Rajendra Nagar"]
+  },
+  {
+    "city": "Vadodara",
+    "state": "Gujarat",
+    "localities": ["Akota", "Alkapuri", "Bhayli", "Fatehgunj", "Gotri", "Karelibaug", "Makarpura", "Manjalpur", "Nizampura", "Sayajigunj", "Sama", "Waghodia"]
+  },
+  {
+    "city": "Ludhiana",
+    "state": "Punjab",
+    "localities": ["Agar Nagar", "BRS Nagar", "Civil Lines", "Dugri", "Field Ganj", "Model Town", "Sarabha Nagar"]
+  },
+  {
+    "city": "Agra",
+    "state": "Uttar Pradesh",
+    "localities": ["Bodla", "Civil Lines", "Dayal Bagh", "Kamla Nagar", "Khandari", "Sanjay Place", "Shahganj", "Tajganj"]
+  },
+  {
+    "city": "Nashik",
+    "state": "Maharashtra",
+    "localities": ["Ashoka Marg", "CIDCO", "College Road", "Deolali Camp", "Gangapur Road", "Indira Nagar", "Makhmalabad", "Panchavati", "Pathardi Phata", "Satpur"]
+  },
+  {
+    "city": "Faridabad",
+    "state": "Haryana",
+    "localities": ["Ballabgarh", "Green Field Colony", "NIT", "Neharpar", "Sector 14", "Sector 15", "Sector 21", "Surajkund"]
+  },
+  {
+    "city": "Meerut",
+    "state": "Uttar Pradesh",
+    "localities": ["Abulane", "Baghpat Road", "Cantonment", "Ganga Nagar", "Kanker Khera", "Pallavpuram", "Partapur", "Shastri Nagar", "Thapar Nagar"]
+  },
+  {
+    "city": "Rajkot",
+    "state": "Gujarat",
+    "localities": ["Amin Marg", "Gondal Road", "Kalawad Road", "Nana Mava", "Raiya Road", "Sadhu Vasvani Road", "University Road", "Yagnik Road"]
+  },
+  {
+    "city": "Varanasi",
+    "state": "Uttar Pradesh",
+    "localities": ["Bhelupur", "Cantt", "Dashashwamedh", "Lanka", "Mahmoorganj", "Manduadih", "Sarnath", "Sigra"]
+  },
+  {
+    "city": "Srinagar",
+    "state": "Jammu & Kashmir",
+    "localities": ["Batmaloo", "Bemina", "Dalek", "Hyderpora", "Jawahar Nagar", "Lal Chowk", "Nishat", "Rajbagh", "Sonzal"]
+  },
+  {
+    "city": "Aurangabad",
+    "state": "Maharashtra",
+    "localities": ["CIDCO", "Garkheda", "Nirala Bazar", "Osmanpura", "Shahgunj", "Silk Mill Colony", "Ulkanagari"]
+  },
+  {
+    "city": "Dhanbad",
+    "state": "Jharkhand",
+    "localities": ["Bank More", "Bhuli", "Dhaiya", "Hirapur", "Jharia", "Kusunda", "Saraidhela", "Sindri"]
+  },
+  {
+    "city": "Amritsar",
+    "state": "Punjab",
+    "localities": ["Chheharta", "Civil Lines", "Golden Avenue", "Majitha Road", "Model Town", "Putligarh", "Ranjit Avenue"]
+  },
+  {
+    "city": "Navi Mumbai",
+    "state": "Maharashtra",
+    "localities": ["Airoli", "Belapur", "Ghansoli", "Kharghar", "Kopar Khairane", "Nerul", "Panvel", "Sanpada", "Seawoods", "Vashi"]
+  },
+  {
+    "city": "Allahabad",
+    "state": "Uttar Pradesh",
+    "localities": ["Aloka", "Bairhana", "Civil Lines", "Dhoomanganj", "George Town", "Jhunsi", "Katra", "Naini", "Phaphamau"]
+  },
+  {
+    "city": "Ranchi",
+    "state": "Jharkhand",
+    "localities": ["Ashok Nagar", "Bariatu", "Doranda", "Harmu", "Hinoo", "Kanke", "Lalpur", "Morabadi"]
+  },
+  {
+    "city": "Howrah",
+    "state": "West Bengal",
+    "localities": ["Bally", "Belur", "Botanical Garden", "Domjur", "Liluah", "Mandirtala", "Salkia", "Shibpur"]
+  },
+  {
+    "city": "Coimbatore",
+    "state": "Tamil Nadu",
+    "localities": ["Avinashi Road", "Gandhipuram", "Peelamedu", "Pollachi", "R.S. Puram", "Ramnagar", "Saibaba Colony", "Saravanampatti", "Vadavalli"]
+  },
+  {
+    "city": "Jabalpur",
+    "state": "Madhya Pradesh",
+    "localities": ["Adhartal", "Cantt", "Civil Lines", "Garha", "Gorakhpur", "Napier Town", "Ranjhi", "Wright Town"]
+  },
+  {
+    "city": "Gwalior",
+    "state": "Madhya Pradesh",
+    "localities": ["City Centre", "DD Nagar", "Lashkar", "Morar", "Phool Bagh", "Pinto Park", "Tansen Nagar", "Thatipur"]
+  },
+  {
+    "city": "Vijayawada",
+    "state": "Andhra Pradesh",
+    "localities": ["Autonagar", "Bhavanipuram", "Currency Nagar", "Gollapudi", "Labbipet", "Machavaram", "Patamata", "Suryaraopeta"]
+  },
+  {
+    "city": "Jodhpur",
+    "state": "Rajasthan",
+    "localities": ["BJS Colony", "Basni", "CHB", "Chopasni Housing Board", "Mandore", "Paota", "Ratanada", "Sardarpura", "Shastri Nagar"]
+  },
+  {
+    "city": "Madurai",
+    "state": "Tamil Nadu",
+    "localities": ["Anna Nagar", "Arapalayam", "Bypass Road", "Goripalayam", "K.K. Nagar", "Simmakkal", "SS Colony", "Tallakulam"]
+  },
+  {
+    "city": "Raipur",
+    "state": "Chhattisgarh",
+    "localities": ["Civil Lines", "DDU Nagar", "Pandri", "Rajendra Nagar", "Samta Colony", "Shankar Nagar", "Tatibandh", "Telibandha", "Tikrapara"]
+  },
+  {
+    "city": "Kota",
+    "state": "Rajasthan",
+    "localities": ["Borkhera", "Dadabari", "Gumanpura", "Jawahar Nagar", "Kunhari", "Mahaveer Nagar", "Talwandi", "Vigyan Nagar"]
+  },
+  {
+    "city": "Guwahati",
+    "state": "Assam",
+    "localities": ["Beltola", "Bhangagarh", "Chandmari", "Dispur", "Ganeshguri", "Maligaon", "Paltan Bazaar", "Pan Bazaar", "Silpukhuri", "Six Mile", "Ulubari"]
+  },
+  {
+    "city": "Chandigarh",
+    "state": "Chandigarh",
+    "localities": ["Sector 8", "Sector 9", "Sector 15", "Sector 17", "Sector 22", "Sector 34", "Sector 43", "Mani Majra", "Zirakpur (Peri)"]
+  },
+  {
+    "city": "Noida",
+    "state": "Uttar Pradesh",
+    "localities": ["Sector 15", "Sector 18", "Sector 50", "Sector 62", "Sector 93", "Sector 137", "Noida Extension", "Greater Noida West"]
+  },
+  {
+    "city": "Gurugram",
+    "state": "Haryana",
+    "localities": ["Cyber City", "DLF Phases (1-5)", "Golf Course Road", "MG Road", "Sohna Road", "Sector 14", "Sector 56", "Udyog Vihar"]
+  },
+  {
+    "city": "Thane",
+    "state": "Maharashtra",
+    "localities": ["Ghodbunder Road", "Kavesar", "Kopri", "Majiwada", "Naupada", "Pokhran Road", "Vartak Nagar", "Wagle Estate"]
+  },
+  {
+    "city": "Dehradun",
+    "state": "Uttarakhand",
+    "localities": ["Clement Town", "Dalanwala", "Dharampur", "Garhi Cantt", "Jakhan", "Nehru Colony", "Prem Nagar", "Rajpur Road", "Vasant Vihar"]
+  },
+  {
+    "city": "Bhubaneswar",
+    "state": "Odisha",
+    "localities": ["Bapuji Nagar", "Chandrasekharpur", "Jaydev Vihar", "Khandagiri", "Nayapalli", "Patia", "Saheed Nagar"]
+  }
+]
