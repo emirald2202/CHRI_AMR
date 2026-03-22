@@ -224,7 +224,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
           </button>
         </div>
 
-        <div className="p-8">
+        <div className="p-5 sm:p-8">
           {step === 1 && (
             <div className="space-y-6">
 
@@ -553,12 +553,12 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-5 gap-4">
-                <div className="col-span-3">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+                <div className="sm:col-span-3">
                   <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Nearby Landmark <span className="opacity-60">(Optional)</span></label>
                   <input type="text" placeholder="e.g. Near Apollo Hospital" value={addressData.landmark} onChange={(e) => setAddressData({...addressData, landmark: e.target.value})} className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
                 </div>
-                <div className="col-span-2">
+                <div className="sm:col-span-2">
                   <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Pincode</label>
                   <input required type="text" maxLength={6} placeholder="400050" value={addressData.pincode} onChange={(e) => setAddressData({...addressData, pincode: e.target.value})} className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm tracking-widest text-center" />
                 </div>

@@ -1,203 +1,204 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { Droplets, ShieldAlert, Leaf } from 'lucide-react';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-const environmentalData = {
-  Antibiotic: {
-    pnec: 0.0001, // mg/L (Extremely strict safety limit: 0.1 µg/L)
-    amrFactor: 0.8, // 80% baseline risk
-    ecoToxicity: 60,
-    desc: "Even tiny traces (0.1 µg/L) of antibiotics in wastewater can trigger bacteria to rapidly mutate and gain AMR immunity defenses."
-  },
-  Painkiller: {
-    pnec: 0.005, // mg/L for Diclofenac/Ibuprofen
-    amrFactor: 0.05,
-    ecoToxicity: 85,
-    desc: "NSAIDs (like Diclofenac) are fatally toxic to aquatic life and birds, causing renal failure in fish and wiping out local populations."
-  },
-  Hormone: {
-    pnec: 0.00001, // mg/L - Extreme toxicity
-    amrFactor: 0.01,
-    ecoToxicity: 98,
-    desc: "Hormones from birth control can feminize entire male fish populations at staggering dilutions of just 10 nanograms per liter."
-  },
-  Antifungal: {
-    pnec: 0.001, 
-    amrFactor: 0.6,
-    ecoToxicity: 75,
-    desc: "Creates hyper-resistant fungal spores deep in soil and riverbed ecosystems."
-  }
-};
+import { ShieldAlert, MapPin, AlertCircle, Database, Leaf, Link as LinkIcon, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Impact = () => {
-  const [medicineType, setMedicineType] = useState('Antibiotic');
-  const [quantity, setQuantity] = useState(1);
-  const [mgPerPill, setMgPerPill] = useState(500); // Average 500mg
-  const [calculated, setCalculated] = useState(false);
-  const [results, setResults] = useState(null);
-
-  const handleSimulate = () => {
-    const data = environmentalData[medicineType];
-    const totalMassMg = quantity * mgPerPill; 
-    
-    // Formula: Liters of water contaminated beyond safe safety thresholds (PNEC)
-    const litersContaminated = Math.round(totalMassMg / data.pnec);
-    
-    // Logarithmic curve for AMR risk to represent biological saturation
-    const resistanceRisk = Math.min(Math.round(data.amrFactor * 100 * (1 - Math.exp(-quantity/4))), 99);
-    
-    const ecoScore = Math.min(Math.round(data.ecoToxicity + (quantity * 1.5)), 100);
-    
-    setResults({
-      waterContaminated: litersContaminated.toLocaleString(),
-      rawWater: litersContaminated,
-      resistanceRisk: resistanceRisk < 5 ? 5 : resistanceRisk, 
-      ecoScore,
-      description: data.desc
-    });
-    setCalculated(true);
-  };
-
-  const chartData = {
-    labels: ['Water Contamination Risk', 'Eco Toxicity Score', 'Resistance Spread Risk'],
-    datasets: [
-      {
-        label: 'Risk Level (%)',
-        data: calculated ? [
-            Math.min(results.rawWater / 500000, 100), // Scale assuming 50M Liters is 100% max cap for chart visual
-            results.ecoScore, 
-            results.resistanceRisk
-        ] : [0, 0, 0],
-        backgroundColor: ['#3b82f6', '#10b981', '#ef4444'],
-        borderRadius: 8,
-        borderWidth: 0,
-      },
-    ],
-  };
-
+  const { t } = useTranslation();
   return (
     <DashboardLayout>
-      <div className="lg:col-span-12 flex flex-col gap-6">
+      <div className="lg:col-span-12 flex flex-col gap-6 animate-in slide-in-from-bottom-4 duration-500 fade-in">
         
-        {/* Header */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col md:flex-row gap-8 items-center justify-between">
-            <div>
-              <h2 className="text-[1.6rem] font-extrabold text-gray-800 mb-1.5 tracking-tight">Environmental Risk Calculator</h2>
-              <p className="text-[0.85rem] font-medium text-gray-500">Discover the hidden ecological damage of throwing common medicines in the trash or flushing them down the sink.</p>
+        {/* Hero Header */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center justify-between relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-red-500/5 rounded-full blur-3xl"></div>
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 font-extrabold text-[0.65rem] uppercase tracking-widest px-3 py-1.5 rounded-lg border border-red-100 mb-5">
+                <AlertTriangle className="w-4 h-4" /> {t('impact.priorityWarning')}
+              </div>
+              <h2 className="text-[2rem] font-black text-gray-800 mb-3 tracking-tight leading-tight md:max-w-3xl">
+                {t('impact.headingMain')} <span className="text-red-600">{t('impact.maha')}</span>
+              </h2>
+              <p className="text-[1.05rem] font-medium text-gray-500 leading-relaxed md:max-w-3xl">
+                {t('impact.heroDesc')}
+              </p>
             </div>
-            <div className="bg-green-50 text-green-700 font-bold px-4 py-2.5 rounded-xl text-sm whitespace-nowrap shadow-sm border border-green-100">
-              Be an AMR Defender 🌱
+            <div className="hidden lg:flex w-24 h-24 bg-red-50 rounded-full items-center justify-center shrink-0 border border-red-100">
+               <ShieldAlert className="w-10 h-10 text-red-600" />
             </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left: Input Form */}
-          <div className="lg:col-span-5 bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h3 className="text-lg font-bold text-gray-800 mb-6">What if you threw this away?</h3>
-            
-            <div className="space-y-5">
-              <div>
-                <label className="block text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest mb-2">Medicine Type</label>
-                <select 
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-colors font-semibold text-gray-700 text-sm shadow-sm"
-                  value={medicineType}
-                  onChange={(e) => setMedicineType(e.target.value)}
-                >
-                  <option value="Antibiotic">Antibiotic (e.g. Amoxicillin)</option>
-                  <option value="Painkiller">Painkiller (e.g. Ibuprofen)</option>
-                  <option value="Hormone">Hormones (e.g. Birth Control)</option>
-                  <option value="Antifungal">Antifungal (e.g. Fluconazole)</option>
-                </select>
+        {/* The Crisis */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10">
+           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+              <MapPin className="w-6 h-6 text-[#f15700]" />
+              <h3 className="text-xl font-bold text-gray-800">{t('impact.crisisHeading')}</h3>
+           </div>
+           
+           <div className="bg-[#f15700]/5 border border-[#f15700]/20 rounded-2xl p-6 mb-6">
+              <h4 className="font-black text-[#f15700] text-lg">{t('impact.crisisHighlight')}</h4>
+           </div>
+
+           <ul className="space-y-4 text-[0.95rem] text-gray-600 font-medium">
+              <li className="flex items-start gap-4">
+                 <div className="mt-1 w-2 h-2 rounded-full bg-gray-400 shrink-0"></div>
+                 <div>
+                    {t('impact.crisisBullet1')}
+                    <div className="text-[0.7rem] font-bold text-gray-400 mt-1 uppercase tracking-wider block">{t('impact.sourceNcdc')}</div>
+                 </div>
+              </li>
+              <li className="flex items-start gap-4">
+                 <div className="mt-1 w-2 h-2 rounded-full bg-gray-400 shrink-0"></div>
+                 <div>
+                    {t('impact.crisisBullet2')}
+                    <div className="text-[0.7rem] font-bold text-gray-400 mt-1 uppercase tracking-wider block">{t('impact.sourceIcmrAmrsn')}</div>
+                 </div>
+              </li>
+           </ul>
+        </div>
+        
+        {/* Hospital Data */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10">
+           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+              <Database className="w-6 h-6 text-blue-600" />
+              <h3 className="text-xl font-bold text-gray-800">{t('impact.dataHeading')}</h3>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+                 <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.klebTitle')}</div>
+                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.klebDesc')}</p>
+                 <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceIcmr2021')}</span>
               </div>
-
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <label className="block text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest mb-2">Quantity (Pills)</label>
-                  <input 
-                    type="number" 
-                    min="1"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-colors font-semibold text-gray-700 text-sm shadow-sm"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest mb-2">Strength (mg per pill)</label>
-                  <input 
-                    type="number" 
-                    min="1"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3.5 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-colors font-semibold text-gray-700 text-sm shadow-sm"
-                    value={mgPerPill}
-                    onChange={(e) => setMgPerPill(Number(e.target.value))}
-                  />
-                </div>
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+                 <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.ecoliTitle')}</div>
+                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.ecoliDesc')}</p>
+                 <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceIcmr2021')}</span>
               </div>
-
-              <button  
-                onClick={handleSimulate}
-                className="w-full mt-4 bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-xl transition-all shadow-[0_8px_20px_-6px_rgba(0,0,0,0.4)]"
-              >
-                Simulate Impact
-              </button>
-            </div>
-          </div>
-
-          {/* Right: Results Chart */}
-          <div className="lg:col-span-7 bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-green-500 to-red-500"></div>
-            
-            <h3 className="text-lg font-bold text-gray-800 mb-6">Contamination Risk Graph</h3>
-            
-            <div className="flex-1 flex items-center justify-center min-h-[250px] w-full">
-               {calculated ? (
-                 <Bar 
-                    data={chartData} 
-                    options={{ 
-                        responsive: true, 
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true, max: 100 } }
-                    }} 
-                 />
-               ) : (
-                  <div className="text-center text-gray-400 flex flex-col items-center">
-                    <ShieldAlert className="w-14 h-14 mb-3 opacity-20" />
-                    <p className="text-sm font-semibold">Use the calculator to reveal the risk graph.</p>
-                  </div>
-               )}
-            </div>
-          </div>
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+                 <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.vectorTitle')}</div>
+                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.vectorDesc')}</p>
+                 <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceLancet')}</span>
+              </div>
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+                 <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.advRes')}</div>
+                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.advResDesc')}</p>
+                 <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceBioSpectrum')}</span>
+              </div>
+           </div>
         </div>
 
-        {/* Stats Cards */}
-        {calculated && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-bottom-4 duration-500 fade-in">
-            <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6 flex flex-col items-center text-center shadow-sm">
-              <div className="bg-blue-100 p-3 rounded-2xl mb-3 text-blue-600 border border-blue-200"><Droplets className="w-6 h-6" /></div>
-              <div className="font-black text-2xl text-blue-900 mb-1">{results.waterContaminated} L</div>
-              <div className="text-[0.8rem] font-bold text-blue-700 uppercase tracking-wide">Water Contaminated</div>
-              <div className="text-xs font-medium text-blue-500 mt-2">Driven above safe PNEC thresholds.</div>
-            </div>
+        {/* Vulnerability factors */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           {/* Vulnerability */}
+           <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col">
+              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                 <AlertCircle className="w-6 h-6 text-amber-500" />
+                 <h3 className="text-xl font-bold text-gray-800">{t('impact.whyVul')}</h3>
+              </div>
+              <ul className="space-y-5 text-[0.95rem] text-gray-600 font-medium flex-1">
+                 <li className="flex gap-4">
+                    <span className="font-bold text-amber-500">•</span>
+                    <span>{t('impact.vul1')}</span>
+                 </li>
+                 <li className="flex gap-4">
+                    <span className="font-bold text-amber-500">•</span>
+                    <div>
+                       <p className="mb-1">{t('impact.vul2')}</p>
+                       <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-wider">{t('impact.sourceJac')}</span>
+                    </div>
+                 </li>
+                 <li className="flex gap-4">
+                    <span className="font-bold text-amber-500">•</span>
+                    <div>
+                       <p className="mb-1">{t('impact.vul3')}</p>
+                       <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-wider">{t('impact.sourceScienceDirect')}</span>
+                    </div>
+                 </li>
+              </ul>
+           </div>
+           
+           {/* Disposal */}
+           <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col">
+              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                 <Leaf className="w-6 h-6 text-green-600" />
+                 <h3 className="text-xl font-bold text-gray-800">{t('impact.dispProb')}</h3>
+              </div>
+              <div className="bg-green-50/50 rounded-2xl p-5 mb-5 border border-green-100">
+                 <p className="text-sm text-green-800 font-semibold leading-relaxed">
+                    {t('impact.dispDesc')}
+                 </p>
+              </div>
+              <ul className="space-y-4 text-[0.95rem] text-gray-600 font-medium flex-1">
+                 <li className="flex gap-4">
+                    <span className="font-bold text-green-600">1.</span>
+                    <div>
+                       <p className="mb-1">{t('impact.disp1')}</p>
+                       <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-wider">{t('impact.sourceFrontiers')}</span>
+                    </div>
+                 </li>
+                 <li className="flex gap-4">
+                    <span className="font-bold text-green-600">2.</span>
+                    <div>
+                       <p className="mb-1">{t('impact.disp2')}</p>
+                       <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-wider">{t('impact.sourceIcmr2022')}</span>
+                    </div>
+                 </li>
+              </ul>
+           </div>
+        </div>
 
-            <div className="bg-red-50 border border-red-100 rounded-3xl p-6 flex flex-col items-center text-center shadow-sm">
-              <div className="bg-red-100 p-3 rounded-2xl mb-3 text-red-600 border border-red-200"><ShieldAlert className="w-6 h-6" /></div>
-              <div className="font-black text-2xl text-red-900 mb-1">{results.resistanceRisk}%</div>
-              <div className="text-[0.8rem] font-bold text-red-700 uppercase tracking-wide">AMR Spread Risk</div>
-              <div className="text-xs font-medium text-red-500 mt-2">Risk of creating resistant "superbugs".</div>
-            </div>
+        {/* Conclusion / CTA */}
+        <div className="bg-[#059669] rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] p-8 md:p-12 text-center text-white flex flex-col items-center">
+           <h3 className="text-3xl font-black mb-4">{t('impact.whatMeans')}</h3>
+           <p className="text-green-100 text-lg md:text-xl font-medium max-w-2xl leading-relaxed mb-6">
+              {t('impact.means1')}
+           </p>
+           <div className="bg-white/10 border border-white/20 p-6 rounded-2xl max-w-3xl">
+              <p className="font-bold text-sm md:text-base leading-relaxed">
+                 {t('impact.means2')}
+              </p>
+           </div>
+        </div>
 
-            <div className="bg-green-50 border border-green-100 rounded-3xl p-6 flex flex-col items-center text-center shadow-sm">
-              <div className="bg-green-100 p-3 rounded-2xl mb-3 text-green-600 border border-green-200"><Leaf className="w-6 h-6" /></div>
-              <div className="font-black text-2xl text-green-900 mb-1">{results.ecoScore}</div>
-              <div className="text-[0.8rem] font-bold text-green-700 uppercase tracking-wide">Toxicity Score</div>
-              <div className="text-xs font-medium text-green-500 mt-2">{results.description}</div>
-            </div>
-          </div>
-        )}
+        {/* References */}
+        <div className="mt-8 mb-4 px-4 md:px-8">
+           <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2 mb-4"><LinkIcon className="w-4 h-4"/> Certified Sources & Indices</h4>
+           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-500 font-medium">
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">NCDC India</strong>
+                 NARS-Net Annual Report 2022
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">ICMR AMRSN</strong>
+                 Surveillance Network Registry
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">ICMR Annual Report</strong>
+                 AMR Annual Report 2021
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">The Lancet Regional Health</strong>
+                 Southeast Asia (May 2024)
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">Oxford Academic</strong>
+                 Journal of Antimicrobial Chemotherapy
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">PMC</strong>
+                 Clinical Infectious Diseases (2019)
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">Frontiers in Antibiotics</strong>
+                 January 2026 Publication
+              </div>
+              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 block mb-0.5">BioSpectrum India</strong>
+                 ICMR SBI-CREP-01 Study Focus
+              </div>
+           </div>
+        </div>
 
       </div>
     </DashboardLayout>

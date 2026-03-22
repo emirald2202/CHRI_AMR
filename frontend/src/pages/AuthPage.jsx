@@ -154,12 +154,12 @@ const AuthPage = () => {
     <AuthLayout>
       <div className="bg-white w-full max-w-[420px] p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100">
         <div className="text-center mb-6">
-          <h2 className="text-[1.35rem] font-bold text-gray-800 mb-1.5">
-            {mode === 'login' ? t('welcomeBack') : t('createAccount')}
-          </h2>
-          <p className="text-[0.8rem] text-gray-500">
-            {mode === 'login' ? t('signInSubtitle') : t('signUpSubtitle')}
-          </p>
+          <h2 className="text-3xl font-extrabold text-gray-800 mb-2">
+           {mode === 'login' ? t('auth.login.heading', {defaultValue: 'Welcome Back'}) : t('auth.signup.heading', {defaultValue: 'Create Account'})}
+        </h2>
+        <p className="text-gray-500 text-sm mb-8 font-medium">
+           {mode === 'login' ? t('auth.login.tagline', {defaultValue: 'Sign in to continue your mission'}) : t('auth.login.tagline', {defaultValue: 'Join the movement against AMR'})}
+        </p>
         </div>
 
         {errorMsg && (
@@ -172,7 +172,7 @@ const AuthPage = () => {
           
           {/* Role Toggle */}
           <div className="space-y-2">
-            <label className="text-[0.75rem] text-gray-500 font-medium ml-1">{t('iamA')}</label>
+            <label className="text-[0.75rem] text-gray-500 font-medium ml-1">{t('auth.login.iamA', {defaultValue: 'I am a'})}</label>
             <div className="flex gap-3">
               <button
                 type="button"
@@ -183,7 +183,7 @@ const AuthPage = () => {
                     : 'border-gray-200 text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <User className="w-[14px] h-[14px]" /> {t('user')}
+                <User className="w-[14px] h-[14px]" /> {t('auth.login.userTab')}
               </button>
               <button
                 type="button"
@@ -194,7 +194,7 @@ const AuthPage = () => {
                     : 'border-gray-200 text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Store className="w-[14px] h-[14px]" /> {t('pharmacy')}
+                <Store className="w-[14px] h-[14px]" /> {t('auth.login.pharmacyTab')}
               </button>
             </div>
           </div>
@@ -208,7 +208,7 @@ const AuthPage = () => {
                 mode === 'login' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/60' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {t('loginTab')}
+              {t('auth.signup.login')}
             </button>
             <button
               type="button"
@@ -217,7 +217,7 @@ const AuthPage = () => {
                 mode === 'signup' ? 'bg-[#eefcf2] text-green-700 shadow-sm border border-green-100' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {t('signupTab')}
+              {t('auth.login.signUp')}
             </button>
           </div>
 
@@ -233,7 +233,7 @@ const AuthPage = () => {
                     : 'border-gray-200 text-gray-500 hover:bg-gray-50'
                 }`}
               >
-                <Lock className="w-[14px] h-[14px]" /> {t('password')}
+                <Lock className="w-[14px] h-[14px]" /> {t('auth.login.password')}
               </button>
               <button
                 type="button"
@@ -244,7 +244,7 @@ const AuthPage = () => {
                     : 'border-green-100 bg-green-50/50 text-green-700 hover:bg-green-50'
                 }`}
               >
-                <Smartphone className="w-[14px] h-[14px]" /> {t('otp')}
+                <Smartphone className="w-[14px] h-[14px]" /> {t('auth.login.otpLogin', {defaultValue: 'OTP'})}
               </button>
             </div>
           )}
@@ -255,17 +255,17 @@ const AuthPage = () => {
             {mode === 'signup' && !otpStep && (
               <>
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('fullName')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.name')}</label>
                   <div className="relative">
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder={t('enterName')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder={t('auth.signup.enterName', {defaultValue: 'Enter your name'})} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('phone')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.phone')}</label>
                   <div className="relative">
                     <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder={t('enterPhone')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder={t('auth.signup.enterPhone', {defaultValue: 'Enter your phone number'})} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
                 {role === 'user' && (
@@ -305,10 +305,10 @@ const AuthPage = () => {
 
             {(!otpStep || mode === 'login') && (
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('email')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.login.email')}</label>
                   <div className="relative">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder={t('enterEmail')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder={t('auth.login.enterEmail', {defaultValue: 'Enter your email'})} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
             )}
@@ -316,19 +316,19 @@ const AuthPage = () => {
             {((method === 'password' && mode === 'login') || (mode === 'signup' && !otpStep)) && (
               <div>
                 <div className="flex justify-between items-center mb-1.5 ml-1 mr-1">
-                  <label className="text-[0.75rem] font-semibold text-gray-700">{t('password')}</label>
-                  {mode === 'login' && <a href="#" className="text-[0.7rem] font-semibold text-green-600 hover:text-green-700 transition-colors">{t('forgotPassword')}</a>}
+                  <label className="text-[0.75rem] font-semibold text-gray-700">{t('auth.login.password')}</label>
+                  {mode === 'login' && <a href="#" className="text-[0.7rem] font-semibold text-green-600 hover:text-green-700 transition-colors">{t('auth.login.forgotPassword')}</a>}
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input type="password" name="password" value={formData.password} onChange={handleInputChange} required placeholder={t('enterPassword')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                  <input type="password" name="password" value={formData.password} onChange={handleInputChange} required placeholder={t('auth.login.enterPassword', {defaultValue: 'Enter your password'})} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                 </div>
               </div>
             )}
             
             {otpStep && (
               <div>
-                  <label className="text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('otp')}</label>
+                  <label className="text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.login.otpLogin', {defaultValue: 'OTP'})}</label>
                 <div className="relative">
                   <input type="text" name="otp" value={formData.otp} onChange={handleInputChange} required placeholder="123456" className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm tracking-widest font-mono text-center" />
                 </div>
@@ -338,10 +338,10 @@ const AuthPage = () => {
             {mode === 'signup' && role === 'pharmacy' && !otpStep && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('pharmacyName')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.pharmacyName')}</label>
                   <div className="relative">
                     <Store className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} required placeholder={t('enterPharmacy')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} required placeholder={t('auth.signup.enterPharmacy', {defaultValue: 'Enter pharmacy name'})} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
                 <div className="bg-green-50/50 p-4 rounded-xl border border-green-100 flex flex-col gap-3 shadow-inner">
@@ -367,7 +367,7 @@ const AuthPage = () => {
 
           <button type="submit" disabled={loading} className="w-full flex justify-center items-center bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] disabled:opacity-70 disabled:cursor-not-allowed">
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
-              otpStep ? t('verifyOtp') : (mode === 'login' ? (method === 'otp' ? t('sendOtp') : t('signInBtn')) : t('signUpBtn'))
+              otpStep ? t('auth.signup.verify') : (mode === 'login' ? (method === 'otp' ? t('auth.forgotPassword.sendOTP') : t('auth.login.loginButton')) : t('auth.signup.createAccount'))
             )}
           </button>
         </form>

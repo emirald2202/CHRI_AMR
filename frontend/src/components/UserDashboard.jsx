@@ -24,7 +24,9 @@ const UserDashboard = () => {
     try {
       if (!user) return;
       const res = await axios.get('/disposals/user');
-      setRequests(res.data);
+      // Only keep requests that are actively 'pending' or 'accepted'
+      const activeRequests = res.data.filter(r => r.status !== 'completed');
+      setRequests(activeRequests);
       if (syncUser) syncUser(); // Refresh the user's global Points counter
     } catch (err) {
       console.error('Error fetching disposal requests', err);
@@ -92,18 +94,18 @@ const UserDashboard = () => {
           <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
             <div>
               <h3 className="text-lg font-semibold text-green-600 mb-2 flex items-center gap-2">
-                {t('didYouKnow')}
+                {t('landing.pharmacyTutorial.title')}
               </h3>
               <p className="text-gray-600 text-[0.85rem] leading-relaxed max-w-4xl font-medium">
-                 {t('tutorialBody')}<br /><br />
-                 {t('tutorialClick')} <span className="text-green-600 font-bold">{t('tutorialButton')}</span> {t('tutorialEnd')}
+                 {t('landing.pharmacyTutorial.description')}<br /><br />
+                 {t('landing.pharmacyTutorial.tutorialClick', {defaultValue: 'Click the'})} <span className="text-green-600 font-bold">{t('landing.pharmacyTutorial.tutorialButton', {defaultValue: 'Find Pharmacies'})}</span> {t('landing.pharmacyTutorial.hint')}
               </p>
             </div>
             <button
               onClick={dismissTutorial}
               className="shrink-0 text-green-600 font-bold border border-green-200 bg-green-50 rounded-lg px-5 py-2 hover:bg-green-100 transition-colors shadow-sm"
             >
-              {t('gotIt')}
+              {t('landing.pharmacyTutorial.gotIt')}
             </button>
           </div>
         </div>
@@ -113,16 +115,16 @@ const UserDashboard = () => {
       <div className="lg:col-span-8 flex flex-col gap-6">
 
         {/* OpenStreetMap Integration */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 flex flex-col">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 md:p-8 flex flex-col">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 md:mb-6 gap-2">
             <div>
-              <h3 className="text-gray-800 font-bold text-lg">Nearby Collection Hubs</h3>
-              <p className="text-sm text-gray-500">Live geographic network of verified disposal pharmacies (OpenStreetMap)</p>
+              <h3 className="text-gray-800 font-bold text-lg">{t('dashboard.nearbyHubs')}</h3>
+              <p className="text-sm text-gray-500">{t('dashboard.mapDescription')}</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {/* Map Container */}
-            <div className="md:col-span-2 bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 h-[380px] relative z-10 shadow-inner">
+            <div className="md:col-span-2 bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 h-[260px] sm:h-[320px] md:h-[380px] relative z-10 shadow-inner">
                {user && (
                   <PharmacyMap 
                      pharmacies={pharmacies} 
@@ -136,7 +138,7 @@ const UserDashboard = () => {
                )}
             </div>
             {/* Action List */}
-            <div className="h-[380px] overflow-y-auto space-y-3 pr-2 border border-gray-100 p-3 rounded-2xl bg-gray-50/50 shadow-inner custom-scrollbar">
+            <div className="h-[280px] md:h-[380px] overflow-y-auto space-y-3 pr-2 border border-gray-100 p-3 rounded-2xl bg-gray-50/50 shadow-inner custom-scrollbar">
                {pharmacies.length > 0 ? pharmacies.map(p => (
                   <div 
                      key={p._id} 
@@ -149,14 +151,14 @@ const UserDashboard = () => {
                         e.stopPropagation();
                         setSelectedMapPharmacy(p);
                         setIsModalOpen(true);
-                     }} className="w-full bg-green-50 text-green-700 font-extrabold py-2.5 rounded-lg text-xs hover:bg-[#059669] hover:text-white transition-colors flex items-center justify-center gap-1.5 border border-green-100 group-hover:border-[#059669]">
-                        <Navigation className="w-3.5 h-3.5" /> Book Here
+                     }} className="w-full text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                        <Navigation className="w-3.5 h-3.5" /> {t('dashboard.bookHere')}
                      </button>
                   </div>
                )) : (
                   <div className="text-center py-8 px-4 text-gray-500 text-[0.85rem] font-bold">
-                     No verified pharmacies currently available in {
-                       user?.location ? user.location.split(',').pop().trim() : 'your area'
+                     {t('dashboard.findPharmacies.noResults')} {
+                       user?.location ? user.location.split(',').pop().trim() : t('dashboard.yourArea', {defaultValue: 'your area'})
                      }.
                   </div>
                )}
@@ -165,30 +167,27 @@ const UserDashboard = () => {
         </div>
 
         {/* Dynamic Disposal Status Tracker */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 flex flex-col min-h-[22rem]">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 md:p-8 flex flex-col min-h-[22rem]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 md:mb-6 gap-4">
             <div>
-              <h3 className="text-gray-800 font-bold text-lg">{t('trackerTitle')}</h3>
-              <p className="text-sm text-gray-500">{t('trackerSub')}</p>
+              <h3 className="text-gray-800 font-bold text-lg">{t('dashboard.disposalTracker')}</h3>
+              <p className="text-sm text-gray-500">{t('dashboard.trackerDescription')}</p>
             </div>
-            <button onClick={() => setIsModalOpen(true)} className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-5 rounded-xl shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] transition-all flex items-center gap-2">
-              <Calendar className="w-4 h-4" /> Schedule Drop-off
-            </button>
           </div>
 
           <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
             {requests.length === 0 ? (
               <div className="flex-1 flex items-center justify-center flex-col text-gray-400">
                 <Package className="w-12 h-12 mb-3 opacity-30" />
-                <p>No active requests found.</p>
+                <p>No active or pending requests found.</p>
               </div>
             ) : (
               requests.map(req => (
                 <div key={req._id} className="border border-gray-100 bg-gray-50 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow">
-                  <div className="flex-1 w-full">
-                    <div className="flex items-center justify-between">
-                       <h4 className="font-bold text-gray-800 text-[1.1rem]">Disposal Package</h4>
-                       <button onClick={() => setExpandedReqId(expandedReqId === req._id ? null : req._id)} className="text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
+                  <div className="flex-1 w-full relative">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                       <h4 className="font-bold text-gray-800 text-[1.05rem] md:text-[1.1rem]">Disposal Package</h4>
+                       <button onClick={() => setExpandedReqId(expandedReqId === req._id ? null : req._id)} className="w-fit text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full transition-colors flex items-center justify-center gap-1.5">
                           <Package className="w-3.5 h-3.5" />
                           {expandedReqId === req._id ? 'Close Details' : `View Package (${req.userMedicines?.length || 0})`}
                        </button>
@@ -227,8 +226,8 @@ const UserDashboard = () => {
                   </div>
 
                   {/* Status Badge */}
-                  <div className="flex flex-col items-end gap-2">
-                    <span className={`px-4 py-1.5 text-[0.75rem] font-bold rounded-lg uppercase tracking-wide
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-200">
+                    <span className={`px-4 py-1.5 md:py-2 text-[0.7rem] md:text-[0.75rem] font-bold rounded-lg uppercase tracking-wide
                         ${req.status === 'completed' ? 'bg-green-100 text-green-700 border border-green-200 shadow-sm' :
                         req.status === 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200 shadow-sm' :
                           'bg-blue-100 text-blue-700 border border-blue-200 shadow-sm'}`}
@@ -260,11 +259,34 @@ const UserDashboard = () => {
       {/* Right Column (30%) */}
       <div className="lg:col-span-4 flex flex-col gap-6">
 
-        {/* Placeholder: Risk Calculator */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 h-80 flex flex-col items-center justify-center text-center">
-          <h3 className="text-gray-800 font-bold mb-2 text-lg">{t('riskTitle')}</h3>
-          <p className="text-sm text-gray-500">{t('riskSub')}</p>
+        {/* AMR Education Link Widget */}
+        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 md:p-8 flex flex-col items-start justify-between relative overflow-hidden group min-h-[16rem]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full blur-3xl group-hover:bg-green-100 transition-all duration-700"></div>
+          
+          <div className="relative z-10 w-full">
+             <div className="bg-red-50 text-red-600 font-extrabold text-[0.65rem] uppercase tracking-widest px-3 py-1.5 rounded-lg border border-red-100 w-max mb-4">
+               {t('dashboard.amrCard.badge')}
+             </div>
+             <h3 className="text-green-700 font-black mb-3 text-2xl leading-tight text-balance">
+                 <span dangerouslySetInnerHTML={{ __html: t('dashboard.amrCard.amrHeader', {defaultValue: "What is AMR <br/><span class='text-green-600 text-[1.05rem] opacity-90'>& Why is Maharashtra at Risk?</span>"}) }}></span>
+             </h3>
+             <p className="text-sm text-gray-600 font-medium leading-relaxed">
+                {t('dashboard.amrCard.description')}
+             </p>
+          </div>
+          
+          <a href="/impact" className="relative z-10 mt-6 w-full text-center bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 font-bold text-sm py-3.5 rounded-xl transition-all duration-300">
+             {t('dashboard.amrCard.readReport')}
+          </a>
         </div>
+
+        {/* Primary Call to Action */}
+        <button onClick={() => setIsModalOpen(true)} className="bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group">
+          <div className="flex items-center gap-2 text-xl tracking-tight">
+             <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
+          </div>
+          <p className="text-green-100 text-xs font-semibold max-w-[80%] text-center opacity-90">{t('dashboard.scheduleDescription')}</p>
+        </button>
 
       </div>
       <Chatbot />

@@ -4,8 +4,10 @@ import { useAuth } from '../contexts/Authcontext';
 import axios from '../api/axios';
 import { Package, Clock, CheckCircle2, TrendingUp, Inbox, ShieldCheck, Loader2 } from 'lucide-react';
 import PharmacyAuditModal from './PharmacyAuditModal';
+import { useTranslation } from 'react-i18next';
 
 const PharmacyDashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,7 +59,7 @@ const PharmacyDashboard = () => {
               <Inbox className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">New Requests</p>
+              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">{t('pharmacyDashboard.newReq', {defaultValue: 'New Requests'})}</p>
               <h3 className="text-3xl font-black text-gray-800">{metrics.pending}</h3>
             </div>
           </div>
@@ -69,7 +71,7 @@ const PharmacyDashboard = () => {
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">In Progress</p>
+              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">{t('pharmacyDashboard.inProg', {defaultValue: 'In Progress'})}</p>
               <h3 className="text-3xl font-black text-gray-800">{metrics.accepted}</h3>
             </div>
           </div>
@@ -81,7 +83,7 @@ const PharmacyDashboard = () => {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">Completed Disposals</p>
+              <p className="text-[0.8rem] font-bold text-gray-400 uppercase tracking-wide">{t('pharmacyDashboard.compDisp', {defaultValue: 'Completed'})}</p>
               <h3 className="text-3xl font-black text-gray-800">{metrics.completed}</h3>
             </div>
           </div>
@@ -93,7 +95,7 @@ const PharmacyDashboard = () => {
               <TrendingUp className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-[0.8rem] font-bold text-green-100 uppercase tracking-wide">Meds Recovered</p>
+              <p className="text-[0.8rem] font-bold text-green-100 uppercase tracking-wide">{t('pharmacyDashboard.medsRe', {defaultValue: 'Medicine Units Recovered'})}</p>
               <h3 className="text-3xl font-black">{metrics.totalMeds} <span className="text-xl font-medium text-green-200">units</span></h3>
             </div>
           </div>
@@ -106,29 +108,29 @@ const PharmacyDashboard = () => {
           
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
-              <h2 className="text-2xl font-black text-gray-800">Management Inbox</h2>
-              <p className="text-sm text-gray-500 font-medium">Handle incoming citizen drop-offs & pick-ups.</p>
+              <h2 className="text-xl md:text-2xl font-black text-gray-800">{t('pharmacyDashboard.mgmtInbox', {defaultValue: 'Management Inbox'})}</h2>
+              <p className="text-sm text-gray-500 font-medium">{t('pharmacyDashboard.mgmtSub', {defaultValue: 'Process and verify incoming disposal packages'})}</p>
             </div>
             
             {/* Custom Tab Switcher */}
-            <div className="flex bg-gray-100 p-1.5 rounded-xl self-start">
+            <div className="flex w-full overflow-x-auto custom-scrollbar md:w-auto bg-gray-100 p-1.5 rounded-xl self-start">
               <button 
                 onClick={() => setActiveTab('pending')}
-                className={`px-5 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'pending' ? 'bg-white shadow-sm text-amber-600' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 md:flex-none whitespace-nowrap px-4 md:px-5 py-2 text-xs md:text-sm font-bold rounded-lg transition-all ${activeTab === 'pending' ? 'bg-white shadow-sm text-amber-600' : 'text-gray-500 hover:text-gray-700'}`}
               >
-                Pending ({metrics.pending})
+                {t('pharmacyDashboard.pendTab', {defaultValue: 'Pending'})} ({metrics.pending})
               </button>
               <button 
                 onClick={() => setActiveTab('accepted')}
-                className={`px-5 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'accepted' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 md:flex-none whitespace-nowrap px-4 md:px-5 py-2 text-xs md:text-sm font-bold rounded-lg transition-all ${activeTab === 'accepted' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
               >
-                In Progress ({metrics.accepted})
+                {t('pharmacyDashboard.accTab', {defaultValue: 'Accepted'})} ({metrics.accepted})
               </button>
               <button 
                 onClick={() => setActiveTab('completed')}
-                className={`px-5 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'completed' ? 'bg-white shadow-sm text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 md:flex-none whitespace-nowrap px-4 md:px-5 py-2 text-xs md:text-sm font-bold rounded-lg transition-all ${activeTab === 'completed' ? 'bg-white shadow-sm text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
               >
-                Completed
+                {t('pharmacyDashboard.compTab', {defaultValue: 'Completed'})}
               </button>
             </div>
           </div>
@@ -141,7 +143,7 @@ const PharmacyDashboard = () => {
             ) : filteredRequests.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                 <Inbox className="w-16 h-16 mb-4 opacity-20" />
-                <p className="font-medium text-lg text-gray-400">No {activeTab} requests found.</p>
+                <p className="font-medium text-lg text-gray-400">{t('pharmacyDashboard.noReqFound', {defaultValue: 'No requests found in this category'})}</p>
               </div>
             ) : (
               filteredRequests.map(req => (
@@ -150,14 +152,14 @@ const PharmacyDashboard = () => {
                   {/* Left: Package Details (Double-Blind) */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-bold text-gray-800 text-[1.1rem]">Disposal Package</h4>
+                      <h4 className="font-bold text-gray-800 text-[1.1rem]">{t('history.verifiedPkg', {defaultValue: 'Disposal Package'})}</h4>
                       <span className="text-[0.7rem] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wider">
-                         {req.userMedicines?.length || 0} Claimed Item(s)
+                         {req.userMedicines?.length || 0} {t('pharmacyDashboard.claimedItems', {defaultValue: 'claimed items'})}
                       </span>
                     </div>
                     
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-2 text-[0.85rem] text-gray-600 font-medium">
-                      <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-amber-500" /> {req.disposalType === 'pickup' ? 'Citizen Requested Pick-up' : 'Citizen Self Drop-off'}</span>
+                      <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-amber-500" /> {req.disposalType === 'pickup' ? t('pharmacyDashboard.citizenReq', {defaultValue: 'Citizen Pickup Request'}) : t('pharmacyDashboard.citizenDrop', {defaultValue: 'Citizen Drop-off'})}</span>
                       {req.userId && (
                          <span className="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md"><UserIcon className="w-3.5 h-3.5" /> {req.userId.name}</span>
                       )}
@@ -179,12 +181,12 @@ const PharmacyDashboard = () => {
 
                     {activeTab === 'pending' && (
                       <button onClick={() => updateStatus(req._id, 'accepted')} className="w-full text-[0.85rem] font-bold bg-blue-600 text-white px-5 py-2.5 rounded-xl hover:bg-blue-700 shadow-md transition-colors">
-                        Accept Request
+                        {t('pharmacyDashboard.acceptReqBtn', {defaultValue: 'Accept Request'})}
                       </button>
                     )}
                     {activeTab === 'accepted' && (
                       <button onClick={() => setActiveAuditRequest(req)} className="w-full text-[0.85rem] font-bold bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] transition-colors flex items-center justify-center gap-2">
-                        <CheckCircle2 className="w-4 h-4" /> Collect & Resolve
+                        <CheckCircle2 className="w-4 h-4" /> {t('pharmacyDashboard.collectResBtn', {defaultValue: 'Collect & Resolve'})}
                       </button>
                     )}
                   </div>
