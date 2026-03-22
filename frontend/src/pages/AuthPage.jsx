@@ -13,9 +13,9 @@ const AuthPage = () => {
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
   const [method, setMethod] = useState('password'); // 'password' | 'otp'
 
-  // Form State
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', password: '', city: '', area: '', pharmacyName: '', otp: ''
+    name: '', email: '', phone: '', password: '', city: '', pharmacyName: '', otp: '',
+    flatNo: '', street: '', landmark: '', pincode: '', state: ''
   });
   const [otpStep, setOtpStep] = useState(false); // True when waiting for user to enter OTP
   const [loading, setLoading] = useState(false);
@@ -23,11 +23,8 @@ const AuthPage = () => {
   
   // Autocomplete State
   const [showCityDropdown, setShowCityDropdown] = useState(false);
-  const [showAreaDropdown, setShowAreaDropdown] = useState(false);
   const [apiCitySuggestions, setApiCitySuggestions] = useState([]);
-  const [apiAreaSuggestions, setApiAreaSuggestions] = useState([]);
   const [isSearchingCity, setIsSearchingCity] = useState(false);
-  const [isSearchingArea, setIsSearchingArea] = useState(false);
 
   // 1. Instantly filter the JSON list based on what the user types
   const localCitySuggestions = React.useMemo(() => {
@@ -37,17 +34,6 @@ const AuthPage = () => {
        name: c.city, display_name: `${c.state}, India`
     }));
   }, [formData.city, showCityDropdown]);
-
-  const localAreaSuggestions = React.useMemo(() => {
-    if (!formData.area || formData.area.length < 1 || !showAreaDropdown) return [];
-    const selectedCity = indianCities.find(c => c.city.toLowerCase() === formData.city.toLowerCase());
-    if (!selectedCity || !selectedCity.localities) return [];
-    
-    const query = formData.area.toLowerCase();
-    return selectedCity.localities.filter(loc => loc.toLowerCase().includes(query)).map(loc => ({
-       name: loc, display_name: formData.city
-    }));
-  }, [formData.area, formData.city, showAreaDropdown]);
 
   // 2. Hybrid Fallback: Query Nominatim API ONLY if local results are insufficient (< 3)
   useEffect(() => {
@@ -73,41 +59,12 @@ const AuthPage = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [formData.city, showCityDropdown, localCitySuggestions.length]);
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      if (formData.area && formData.area.length > 1 && showAreaDropdown && localAreaSuggestions.length < 3) {
-        setIsSearchingArea(true);
-        try {
-          const res = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(formData.area + ', ' + formData.city)}&format=json&addressdetails=1&countrycodes=in&limit=5`);
-          const mapped = res.data.map(s => ({
-             name: s.name || s.display_name.split(',')[0], 
-             display_name: s.display_name
-          }));
-          setApiAreaSuggestions(mapped);
-        } catch (error) {
-          console.error("Nominatim area error", error);
-        } finally {
-          setIsSearchingArea(false);
-        }
-      } else {
-        setApiAreaSuggestions([]);
-      }
-    }, 400);
-    return () => clearTimeout(delayDebounceFn);
-  }, [formData.area, showAreaDropdown, formData.city, localAreaSuggestions.length]);
-
   // 3. Merge Local + API results dynamically and uniquely
   const citySuggestions = React.useMemo(() => {
     const combined = [...localCitySuggestions, ...apiCitySuggestions];
     const unique = Array.from(new Map(combined.map(item => [item.name.toLowerCase(), item])).values());
     return unique.slice(0, 8);
   }, [localCitySuggestions, apiCitySuggestions]);
-
-  const areaSuggestions = React.useMemo(() => {
-    const combined = [...localAreaSuggestions, ...apiAreaSuggestions];
-    const unique = Array.from(new Map(combined.map(item => [item.name.toLowerCase(), item])).values());
-    return unique.filter(item => item.name.toLowerCase() !== formData.city.toLowerCase()).slice(0, 8);
-  }, [localAreaSuggestions, apiAreaSuggestions, formData.city]);
 
   
   const navigate = useNavigate();
@@ -161,14 +118,23 @@ const AuthPage = () => {
           // Step 2: Verify OTP and Register user
           await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp });
           
+          const structuredAddress = {
+            flatNo: formData.flatNo,
+            street: formData.street,
+            landmark: formData.landmark,
+            pincode: formData.pincode,
+            city: formData.city,
+            state: formData.state
+          };
+          
           await axios.post('/auth/register', {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
             password: formData.password,
             role: role,
-            location: `${formData.area}, ${formData.city}`,
-            ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName })
+            location: formData.city,
+            ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
           });
           
           // Auto login after successful signup
@@ -322,7 +288,7 @@ const AuthPage = () => {
                             <div key={i} className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700"
                                onMouseDown={(e) => {
                                  e.preventDefault();
-                                 setFormData({...formData, city: sugg.name, area: ''}); // Auto-clear area on city change
+                                 setFormData({...formData, city: sugg.name});
                                  setShowCityDropdown(false);
                                }}>
                               <span className="font-semibold">{sugg.name}</span>
@@ -332,36 +298,6 @@ const AuthPage = () => {
                         </div>
                       )}
                     </div>
-                    {formData.city.trim().length > 0 && (
-                      <div className="animate-in slide-in-from-top-2 fade-in duration-300 relative">
-                        <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">Specific Area / Locality</label>
-                        <div className="relative">
-                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 flex items-center justify-center">🗺️</div>
-                          <input type="text" name="area" value={formData.area} 
-                            onChange={(e) => { handleInputChange(e); setShowAreaDropdown(true); }}
-                            onFocus={() => setShowAreaDropdown(true)}
-                            onBlur={() => setTimeout(() => setShowAreaDropdown(false), 200)}
-                            required placeholder="e.g. Bandra West, Andheri East" className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
-                          {isSearchingArea && <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />}
-                        </div>
-
-                        {showAreaDropdown && areaSuggestions.length > 0 && (
-                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                            {areaSuggestions.map((sugg, i) => (
-                                <div key={i} className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700"
-                                   onMouseDown={(e) => {
-                                     e.preventDefault();
-                                     setFormData({...formData, area: sugg.name});
-                                     setShowAreaDropdown(false);
-                                   }}>
-                                  <span className="font-semibold">{sugg.name}</span>
-                                  <div className="text-[0.7rem] text-gray-500 mt-0.5 truncate">{sugg.display_name}</div>
-                                </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
                 )}
               </>
@@ -400,11 +336,30 @@ const AuthPage = () => {
             )}
 
             {mode === 'signup' && role === 'pharmacy' && !otpStep && (
-              <div>
-                <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('pharmacyName')}</label>
-                <div className="relative">
-                  <Store className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} required placeholder={t('enterPharmacy')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+              <div className="space-y-4 animate-in fade-in duration-300">
+                <div>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('pharmacyName')}</label>
+                  <div className="relative">
+                    <Store className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} required placeholder={t('enterPharmacy')} className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                  </div>
+                </div>
+                <div className="bg-green-50/50 p-4 rounded-xl border border-green-100 flex flex-col gap-3 shadow-inner">
+                  <h4 className="text-[0.8rem] font-bold text-gray-700 flex items-center gap-1.5 mb-1"><span className="text-xl">🏢</span> Complete Pharmacy Address</h4>
+                  <div>
+                    <input type="text" name="flatNo" value={formData.flatNo} onChange={handleInputChange} required placeholder="Shop No. / Building Name / Complex" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                  </div>
+                  <div>
+                    <input type="text" name="street" value={formData.street} onChange={handleInputChange} required placeholder="Street / Road / Sector / Floor" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                  </div>
+                  <div className="flex gap-3">
+                    <input type="text" name="landmark" value={formData.landmark} onChange={handleInputChange} placeholder="Landmark (Optional)" className="flex-1 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                    <input type="text" name="pincode" value={formData.pincode} onChange={handleInputChange} required placeholder="Pincode" maxLength="6" className="w-[100px] px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 text-center tracking-widest" />
+                  </div>
+                  <div className="flex gap-3">
+                    <input type="text" name="city" value={formData.city} onChange={handleInputChange} required placeholder="City / District" className="flex-1 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                    <input type="text" name="state" value={formData.state} onChange={handleInputChange} required placeholder="State" className="flex-1 w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                  </div>
                 </div>
               </div>
             )}

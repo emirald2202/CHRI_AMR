@@ -3,12 +3,14 @@ import DashboardLayout from './DashboardLayout';
 import { useAuth } from '../contexts/Authcontext';
 import axios from '../api/axios';
 import { Package, Clock, CheckCircle2, TrendingUp, Inbox, ShieldCheck, Loader2 } from 'lucide-react';
+import PharmacyAuditModal from './PharmacyAuditModal';
 
 const PharmacyDashboard = () => {
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending'); // 'pending', 'accepted', 'completed'
+  const [activeAuditRequest, setActiveAuditRequest] = useState(null);
 
   const fetchRequests = async () => {
     try {
@@ -40,7 +42,7 @@ const PharmacyDashboard = () => {
     pending: requests.filter(r => r.status === 'pending').length,
     accepted: requests.filter(r => r.status === 'accepted').length,
     completed: requests.filter(r => r.status === 'completed').length,
-    totalMeds: requests.filter(r => r.status === 'completed').reduce((sum, r) => sum + (Number(r.quantity) || 0), 0)
+    totalMeds: requests.filter(r => r.status === 'completed').reduce((sum, r) => sum + (r.verifiedMedicines?.length || 0), 0)
   };
 
   const filteredRequests = requests.filter(r => r.status === activeTab);
@@ -145,15 +147,16 @@ const PharmacyDashboard = () => {
               filteredRequests.map(req => (
                 <div key={req._id} className="border border-gray-100 bg-gray-50 rounded-2xl p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-white hover:shadow-lg transition-all hover:border-green-100 group">
                   
-                  {/* Left: Drug Details */}
+                  {/* Left: Package Details (Double-Blind) */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-bold text-gray-800 text-[1.1rem]">{req.medicineName}</h4>
-                      <span className="text-[0.7rem] font-bold text-gray-500 bg-gray-200/50 px-2 py-0.5 rounded-md uppercase tracking-wider">{req.doseWeight || 'N/A'}</span>
+                      <h4 className="font-bold text-gray-800 text-[1.1rem]">Disposal Package</h4>
+                      <span className="text-[0.7rem] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                         {req.userMedicines?.length || 0} Claimed Item(s)
+                      </span>
                     </div>
                     
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-2 text-[0.85rem] text-gray-600 font-medium">
-                      <span className="flex items-center gap-1.5"><Package className="w-4 h-4 text-gray-400" /> {req.quantity} Units</span>
                       <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-amber-500" /> {req.disposalType === 'pickup' ? 'Citizen Requested Pick-up' : 'Citizen Self Drop-off'}</span>
                       {req.userId && (
                          <span className="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md"><UserIcon className="w-3.5 h-3.5" /> {req.userId.name}</span>
@@ -162,7 +165,6 @@ const PharmacyDashboard = () => {
                     {req.disposalType === 'pickup' && req.pickupAddress && (
                         <p className="text-[0.8rem] text-gray-600 mt-4 flex items-start gap-2 p-3 bg-white rounded-xl whitespace-pre-line leading-relaxed border border-gray-200/60 shadow-sm"><span className="text-lg">🗺️</span> <span className="font-medium">{req.pickupAddress}</span></p>
                     )}
-                    {req.reason && <p className="text-[0.8rem] text-gray-500 italic mt-3">Reason: "{req.reason}"</p>}
                   </div>
 
                   {/* Right: Actions */}
@@ -181,7 +183,7 @@ const PharmacyDashboard = () => {
                       </button>
                     )}
                     {activeTab === 'accepted' && (
-                      <button onClick={() => updateStatus(req._id, 'completed')} className="w-full text-[0.85rem] font-bold bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] transition-colors flex items-center justify-center gap-2">
+                      <button onClick={() => setActiveAuditRequest(req)} className="w-full text-[0.85rem] font-bold bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] transition-colors flex items-center justify-center gap-2">
                         <CheckCircle2 className="w-4 h-4" /> Collect & Resolve
                       </button>
                     )}
@@ -192,6 +194,18 @@ const PharmacyDashboard = () => {
           </div>
         </div>
       </div>
+
+      {activeAuditRequest && (
+         <PharmacyAuditModal
+            isOpen={true}
+            request={activeAuditRequest}
+            onClose={() => setActiveAuditRequest(null)}
+            onSuccess={() => {
+               setActiveAuditRequest(null);
+               fetchRequests();
+            }}
+         />
+      )}
     </DashboardLayout>
   );
 };
