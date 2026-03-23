@@ -2,18 +2,42 @@ const User = require('../models/User');
 const Otp = require('../models/Otp');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const https = require('https');
 
-// Brevo SMTP — works with any recipient, no domain needed (300 emails/day free)
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS
-  }
-});
+// Brevo REST API over HTTPS (port 443) — bypasses ALL SMTP blocks on cloud servers
+const sendEmail = (to, subject, text) => {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      sender: { name: 'AMRit', email: process.env.BREVO_SENDER_EMAIL },
+      to: [{ email: to }],
+      subject,
+      textContent: text
+    });
+
+    const req = https.request({
+      hostname: 'api.brevo.com',
+      path: '/v3/smtp/email',
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) resolve(data);
+        else reject(new Error(`Brevo error ${res.statusCode}: ${data}`));
+      });
+    });
+
+    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Email timed out')); });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+};
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -61,12 +85,11 @@ exports.sendOtp = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await transporter.sendMail({
-      from: `AMRit <${process.env.BREVO_USER}>`,
-      to: email,
-      subject: 'Your OTP Code - AMRit',
-      text: `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`
-    });
+    await sendEmail(
+      email,
+      'Your OTP Code - AMRit',
+      `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`
+    );
 
     res.json({ message: 'OTP sent to email' });
   } catch (error) {
@@ -106,12 +129,11 @@ exports.forgotPassword = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await transporter.sendMail({
-      from: `AMRit <${process.env.BREVO_USER}>`,
-      to: email,
-      subject: 'Password Reset OTP - AMRit',
-      text: `Your AMRit OTP to reset your password is: ${otp}. It is valid for 5 minutes.`
-    });
+    await sendEmail(
+      email,
+      'Password Reset OTP - AMRit',
+      `Your AMRit OTP to reset your password is: ${otp}. It is valid for 5 minutes.`
+    );
 
     res.json({ message: 'Password reset OTP sent to email' });
   } catch (error) {
