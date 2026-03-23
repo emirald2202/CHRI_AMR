@@ -257,21 +257,16 @@ const AuthPage = () => {
           }
         }
       } else {
-        if (!otpStep) {
-          await axios.post('/auth/send-otp', { email: formData.email });
-          setOtpStep(true);
-        } else {
-          await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp });
-          const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
-          await axios.post('/auth/register', {
-            name: formData.name, email: formData.email, phone: formData.phone,
-            password: formData.password, role, location: formData.city,
-            ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
-          });
-          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
-          loginUser(res.data.user, res.data.token);
-          navigate('/dashboard');
-        }
+        // Direct signup — no OTP required
+        const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
+        await axios.post('/auth/register', {
+          name: formData.name, email: formData.email, phone: formData.phone,
+          password: formData.password, role, location: formData.city,
+          ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
+        });
+        const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
+        loginUser(res.data.user, res.data.token);
+        navigate('/dashboard');
       }
     } catch (err) {
       setErrorMsg(err.response?.data?.message || err.message || 'An error occurred');
