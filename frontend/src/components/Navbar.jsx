@@ -28,9 +28,9 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-24 md:h-28">
           {/* Logo */}
           <div className="flex items-center h-full">
-            <Link to="/dashboard" className="flex items-center gap-3 md:gap-4 text-green-700 font-extrabold text-4xl md:text-5xl cursor-pointer tracking-tight">
-              <img src="/favicon.svg" alt="AMRit Logo" className="w-14 h-14 md:w-20 md:h-20 object-contain" />
-              <span className="hidden lg:block leading-none mt-1">AMRit</span>
+            <Link to="/dashboard" className="flex items-center gap-3 text-green-700 font-extrabold text-4xl md:text-5xl cursor-pointer tracking-tight">
+              <img src="/favicon.svg" alt="AMRit Logo" className="w-10 h-10 md:w-12 md:h-12 object-contain" />
+              <span className="hidden lg:block leading-none">AMRit</span>
             </Link>
           </div>
 
