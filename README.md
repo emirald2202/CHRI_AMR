@@ -4,7 +4,7 @@
   <p><strong>Maharashtra's Smart Medical Disposal Network</strong></p>
   <p>Protecting the environment and preventing Antimicrobial Resistance (AMR) through safe, verified, and rewarding medicine disposal.</p>
   
-  [![Website](https://img.shields.io/badge/Website-chri--amr.vercel.app-10b981?style=for-the-badge)](https://chri-amr.vercel.app/dashboard)
+  [![Website](https://img.shields.io/badge/Website-chri--amr.vercel.app-10b981?style=for-the-badge)](https://chri-amr.vercel.app/login)
   [![Demo Video](https://img.shields.io/badge/Demo_Video-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](#-demo-video)
   [![Made with React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
   [![Powered by Gemini](https://img.shields.io/badge/AI-Google_Gemini-orange?logo=google)](https://ai.google.dev/)
