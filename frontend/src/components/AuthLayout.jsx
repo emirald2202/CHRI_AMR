@@ -40,7 +40,7 @@ const AuthLayout = ({ children }) => {
           </div>
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-emerald-900/300 text-white px-3 py-1 rounded-full text-xs font-semibold mb-5 shadow-sm shadow-green-200">
+          <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-emerald-900/30 text-green-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs font-semibold mb-5 shadow-sm shadow-green-200 border border-green-100 dark:border-slate-700">
             <ShieldCheck className="w-4 h-4" />
             {t('fightingAmr')}
           </div>
