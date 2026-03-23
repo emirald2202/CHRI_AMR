@@ -244,7 +244,7 @@ const AuthPage = () => {
     try {
       if (mode === 'login') {
         if (method === 'password') {
-          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
+          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password, role });
           loginUser(res.data.user, res.data.token);
           navigate('/dashboard');
         } else {
@@ -252,7 +252,7 @@ const AuthPage = () => {
             await axios.post('/auth/send-otp', { email: formData.email });
             setOtpStep(true);
           } else {
-            const res = await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp, isLogin: true });
+            const res = await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp, isLogin: true, role });
             loginUser(res.data.user, res.data.token);
             navigate('/dashboard');
           }
