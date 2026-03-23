@@ -206,20 +206,20 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-end sm:items-center sm:p-4 transition-opacity">
-      <div className="bg-white w-full sm:max-w-[550px] rounded-t-3xl sm:rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
+      <div className="bg-white dark:bg-slate-800 w-full sm:max-w-[550px] rounded-t-3xl sm:rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
         
-        <div className="sticky top-0 bg-white z-20 px-8 py-5 border-b border-gray-100 flex items-center justify-between">
+        <div className="sticky top-0 bg-white dark:bg-slate-800 z-20 px-8 py-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {step > 1 && (
                <button type="button" onClick={() => setStep(step - 1)} className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
                   <ArrowLeft className="w-5 h-5 text-gray-600" />
                </button>
             )}
-            <h2 className="text-xl font-extrabold text-gray-800">
+            <h2 className="text-xl font-extrabold text-gray-800 dark:text-slate-200">
               {step === 1 ? 'Build Package' : step === 2 ? 'Review Package' : 'Pickup Address'}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 bg-gray-50 hover:bg-gray-200 rounded-full transition-colors text-gray-500">
+          <button onClick={onClose} className="p-2 bg-gray-50 dark:bg-slate-900 hover:bg-gray-200 rounded-full transition-colors text-gray-500">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -230,12 +230,12 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
               {/* Disposal Type Selection */}
               <div className="grid grid-cols-2 gap-3">
-                <button type="button" onClick={() => setRequestData({...requestData, disposalType: 'dropoff'})} className={`p-4 rounded-xl border-2 text-left transition-all relative overflow-hidden ${requestData.disposalType === 'dropoff' ? 'border-green-500 bg-green-50 shadow-sm' : 'border-gray-100 bg-white hover:border-gray-200'}`}>
-                   {requestData.disposalType === 'dropoff' && <div className="absolute top-0 right-0 w-8 h-8 bg-green-500 rounded-bl-2xl flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-white" /></div>}
+                <button type="button" onClick={() => setRequestData({...requestData, disposalType: 'dropoff'})} className={`p-4 rounded-xl border-2 text-left transition-all relative overflow-hidden ${requestData.disposalType === 'dropoff' ? 'border-green-500 bg-green-50 dark:bg-emerald-900/30 shadow-sm' : 'border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-gray-200 dark:border-gray-700'}`}>
+                   {requestData.disposalType === 'dropoff' && <div className="absolute top-0 right-0 w-8 h-8 bg-green-50 dark:bg-emerald-900/300 rounded-bl-2xl flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-white" /></div>}
                    <div className="flex items-center gap-2 text-green-700 font-extrabold text-sm mb-1"><MapPin className="w-4 h-4" /> Drop-off</div>
                    <p className="text-[0.65rem] text-gray-500 font-bold uppercase tracking-wider">Recommended</p>
                 </button>
-                <button type="button" onClick={() => setRequestData({...requestData, disposalType: 'pickup'})} className={`p-4 rounded-xl border-2 text-left transition-all relative overflow-hidden ${requestData.disposalType === 'pickup' ? 'border-orange-500 bg-orange-50 shadow-sm' : 'border-gray-100 bg-white hover:border-gray-200'}`}>
+                <button type="button" onClick={() => setRequestData({...requestData, disposalType: 'pickup'})} className={`p-4 rounded-xl border-2 text-left transition-all relative overflow-hidden ${requestData.disposalType === 'pickup' ? 'border-orange-500 bg-orange-50 shadow-sm' : 'border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-gray-200 dark:border-gray-700'}`}>
                    {requestData.disposalType === 'pickup' && <div className="absolute top-0 right-0 w-8 h-8 bg-orange-500 rounded-bl-2xl flex items-center justify-center"><CheckCircle2 className="w-4 h-4 text-white" /></div>}
                    <div className="flex items-center gap-2 text-orange-700 font-extrabold text-sm mb-1"><Navigation className="w-4 h-4" /> Pick-up</div>
                    <p className="text-[0.65rem] text-gray-500 font-bold uppercase tracking-wider">Free Service</p>
@@ -260,7 +260,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                       setShowPharmacySuggestions(true);
                     }} 
                     onFocus={() => { if (pharmacies.length > 0) setShowPharmacySuggestions(true); }}
-                    className="w-full pl-12 pr-10 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all font-semibold"
+                    className="w-full pl-12 pr-10 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all font-semibold"
                   />
                   {requestData.pharmacyId && (
                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
@@ -271,7 +271,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
                 {/* Pharmacy Autocomplete Dropdown */}
                 {showPharmacySuggestions && (
-                  <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden max-h-48 overflow-y-auto">
                     {pharmacies.filter(p => {
                        const term = pharmacySearchTerm.toLowerCase();
                        const nameStr = (p.pharmacyName || p.name || '').toLowerCase();
@@ -291,15 +291,15 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                           setPharmacySearchTerm(`${p.pharmacyName || p.name} (${p.address ? (p.address.city || '') : ''})`);
                           setShowPharmacySuggestions(false);
                         }} 
-                        className="w-full text-left px-5 py-3 hover:bg-green-50 border-b border-gray-50 transition-colors flex flex-col last:border-0"
+                        className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0"
                       >
-                        <span className="font-bold text-gray-800 text-sm">{p.pharmacyName || p.name}</span>
+                        <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{p.pharmacyName || p.name}</span>
                         <span className="text-xs text-gray-500 font-medium truncate w-full">{p.address ? `${p.address.street || ''}, ${p.address.city || ''}` : p.location || 'No address provided'}</span>
                       </button>
                     )) : (
                       <div className="px-5 py-4 text-center">
                         <p className="text-[0.8rem] text-gray-600 font-medium font-bold px-4 py-2 bg-orange-50 text-orange-600 rounded-lg">No matching pharmacies found</p>
-                        <button type="button" onClick={() => setShowPharmacySuggestions(false)} className="mt-3 text-xs font-bold text-gray-500 hover:text-gray-700 underline">Close Search</button>
+                        <button type="button" onClick={() => setShowPharmacySuggestions(false)} className="mt-3 text-xs font-bold text-gray-500 hover:text-gray-700 dark:text-gray-300 underline">Close Search</button>
                       </div>
                     )}
                   </div>
@@ -307,7 +307,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
               </div>
 
               {/* Medicine Details Group */}
-              <div className="bg-gray-50/50 border border-gray-100 p-6 rounded-2xl relative">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 p-6 rounded-2xl relative">
                 <div className="flex items-center justify-between mb-3">
                    <label className="block text-[0.8rem] font-bold text-gray-600 uppercase tracking-wider">Add Medicine To Package</label>
                    {cart.length > 0 && (
@@ -318,13 +318,13 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 </div>
 
                 {showCartPreview && cart.length > 0 && (
-                    <div className="mb-4 bg-white border border-green-200 rounded-xl p-3 shadow-inner">
-                       <h5 className="font-bold text-gray-700 text-[0.7rem] uppercase mb-2">Items Currently in Package</h5>
+                    <div className="mb-4 bg-white dark:bg-slate-800 border border-green-200 rounded-xl p-3 shadow-inner">
+                       <h5 className="font-bold text-gray-700 dark:text-gray-300 text-[0.7rem] uppercase mb-2">Items Currently in Package</h5>
                        <div className="max-h-32 overflow-y-auto space-y-2 pr-1">
                          {cart.map((item, idx) => (
-                            <div key={idx} className="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                            <div key={idx} className="flex justify-between items-center bg-gray-50 dark:bg-slate-900 p-2.5 rounded-lg border border-gray-100 dark:border-slate-700">
                                <div>
-                                 <p className="text-[0.8rem] font-bold text-gray-800">{item.medicineName}</p>
+                                 <p className="text-[0.8rem] font-bold text-gray-800 dark:text-slate-200">{item.medicineName}</p>
                                  <p className="text-[0.65rem] text-gray-500 font-medium">Qty: {item.remainingQty}/{item.totalQty}</p>
                                </div>
                                <button type="button" onClick={() => setCart(cart.filter((_, i) => i !== idx))} className="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded-md transition-colors">
@@ -348,23 +348,23 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                         if (autofilled) setAutofilled(false);
                       }} 
                       onFocus={() => {if (suggestions.length > 0) setShowSuggestions(true)}}
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all font-semibold" 
+                      className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all font-semibold" 
                     />
                   </div>
 
                   {/* Autocomplete Dropdown */}
                   {showSuggestions && !autofilled && (
-                    <div className="absolute w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
+                    <div className="absolute w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
                       {suggestions.length > 0 ? suggestions.map((med, i) => (
-                        <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 border-b border-gray-50 transition-colors flex flex-col last:border-0">
-                          <span className="font-bold text-gray-800 text-sm">{med.brandName}</span>
+                        <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0">
+                          <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{med.brandName}</span>
                           <span className="text-xs text-gray-500 font-medium truncate w-full">{med.genericName} • {med.doseWeight || med.dose}</span>
                         </button>
                       )) : (
                         medicineData.medicineName.length >= 3 && !isSearching && (
                           <div className="px-5 py-4 text-center">
                             <p className="text-[0.8rem] text-gray-600 font-medium mb-2">Medicine not found in database. Please fill details manually.</p>
-                            <button type="button" onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50 py-1.5 px-3 rounded text-center w-full">Fill Manually</button>
+                            <button type="button" onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50 dark:bg-emerald-900/30 py-1.5 px-3 rounded text-center w-full">Fill Manually</button>
                           </div>
                         )
                       )}
@@ -374,8 +374,8 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
                 {/* Autofilled Badges */}
                 {autofilled && (
-                  <div className="mt-4 p-4 bg-white border border-green-100 rounded-xl shadow-sm relative overflow-hidden">
-                     <div className="absolute -right-2 -top-2 w-12 h-12 bg-green-50 rounded-full blur-xl"></div>
+                  <div className="mt-4 p-4 bg-white dark:bg-slate-800 border border-green-100 rounded-xl shadow-sm relative overflow-hidden">
+                     <div className="absolute -right-2 -top-2 w-12 h-12 bg-green-50 dark:bg-emerald-900/30 rounded-full blur-xl"></div>
                      <div className="flex items-center gap-2 mb-3">
                        <CheckCircle2 className="w-5 h-5 text-green-500" />
                        <h4 className="font-bold text-green-800 text-sm">{medicineData.medicineName}</h4>
@@ -383,7 +383,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                      <div className="grid grid-cols-2 gap-y-3 gap-x-2">
                        <div className="flex flex-col gap-1">
                           <span className="text-[0.65rem] uppercase font-bold text-gray-400 tracking-wider">Type</span>
-                          <span className="bg-green-50 text-green-700 text-xs font-semibold rounded px-2.5 py-1 w-max border border-green-100/50">{medicineData.medicineType} [auto]</span>
+                          <span className="bg-green-50 dark:bg-emerald-900/30 text-green-700 text-xs font-semibold rounded px-2.5 py-1 w-max border border-green-100/50">{medicineData.medicineType} [auto]</span>
                        </div>
                        {medicineData.isAntibiotic && (
                          <div className="flex flex-col gap-1">
@@ -399,21 +399,21 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {manualOverride && (
                     <>
-                      <input required type="text" placeholder="Type (e.g. Tablet)" value={medicineData.medicineType} onChange={(e) => setMedicineData({...medicineData, medicineType: e.target.value})} className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm outline-none" />
-                      <input required type="text" placeholder="Manufacturer (e.g. GSK)" value={medicineData.manufacturer} onChange={(e) => setMedicineData({...medicineData, manufacturer: e.target.value})} className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm outline-none" />
-                      <div className="col-span-2 flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg mb-1">
+                      <input required type="text" placeholder="Type (e.g. Tablet)" value={medicineData.medicineType} onChange={(e) => setMedicineData({...medicineData, medicineType: e.target.value})} className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm outline-none" />
+                      <input required type="text" placeholder="Manufacturer (e.g. GSK)" value={medicineData.manufacturer} onChange={(e) => setMedicineData({...medicineData, manufacturer: e.target.value})} className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm outline-none" />
+                      <div className="col-span-2 flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-lg mb-1">
                          <div className="flex items-center gap-2">
                            <ShieldAlert className={`w-4 h-4 ${medicineData.isAntibiotic ? 'text-red-500' : 'text-gray-400'}`} />
-                           <label htmlFor="antiType" className="text-sm font-bold text-gray-700">Is this an Antibiotic?</label>
+                           <label htmlFor="antiType" className="text-sm font-bold text-gray-700 dark:text-gray-300">Is this an Antibiotic?</label>
                          </div>
                          <input type="checkbox" id="antiType" checked={medicineData.isAntibiotic} onChange={(e) => setMedicineData({...medicineData, isAntibiotic: e.target.checked})} className="w-5 h-5 text-red-600 rounded border-gray-300 focus:ring-red-500" />
                       </div>
                     </>
                   )}
-                  <input required type="text" placeholder="Verify Dose (e.g. 500mg)" value={medicineData.doseWeight} onChange={(e) => setMedicineData({...medicineData, doseWeight: e.target.value})} className={`w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm outline-none ${!manualOverride ? 'col-span-2' : 'col-span-2'}`} />
+                  <input required type="text" placeholder="Verify Dose (e.g. 500mg)" value={medicineData.doseWeight} onChange={(e) => setMedicineData({...medicineData, doseWeight: e.target.value})} className={`w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm outline-none ${!manualOverride ? 'col-span-2' : 'col-span-2'}`} />
                   <div className="col-span-2 relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">₹</span>
-                    <input type="number" required min="0" placeholder="Full Pack MRP (Total pack cost)" value={medicineData.fullMRP} onChange={(e) => setMedicineData({...medicineData, fullMRP: e.target.value})} className="w-full pl-8 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm outline-none" />
+                    <input type="number" required min="0" placeholder="Full Pack MRP (Total pack cost)" value={medicineData.fullMRP} onChange={(e) => setMedicineData({...medicineData, fullMRP: e.target.value})} className="w-full pl-8 pr-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm outline-none" />
                   </div>
                 </div>
 
@@ -424,9 +424,9 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                   
                   <div className="flex items-center gap-4">
                      <div className="flex items-center gap-2 flex-1">
-                        <input required type="number" min="0" placeholder="0" value={medicineData.remainingQty} onChange={(e) => setMedicineData({...medicineData, remainingQty: e.target.value})} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-center font-bold text-gray-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 shadow-sm" />
+                        <input required type="number" min="0" placeholder="0" value={medicineData.remainingQty} onChange={(e) => setMedicineData({...medicineData, remainingQty: e.target.value})} className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-center font-bold text-gray-700 dark:text-gray-300 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 shadow-sm" />
                         <span className="text-gray-400 font-light text-2xl">/</span>
-                        <input required disabled={autofilled} type="number" min="1" placeholder="0" value={medicineData.totalQty} onChange={(e) => setMedicineData({...medicineData, totalQty: e.target.value})} className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-center font-bold outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 shadow-sm ${autofilled ? 'bg-gray-50 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700'}`} />
+                        <input required disabled={autofilled} type="number" min="1" placeholder="0" value={medicineData.totalQty} onChange={(e) => setMedicineData({...medicineData, totalQty: e.target.value})} className={`w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl text-center font-bold outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 shadow-sm ${autofilled ? 'bg-gray-50 dark:bg-slate-900 text-gray-400 cursor-not-allowed' : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300'}`} />
                      </div>
                      <div className="w-16 text-xs font-bold text-gray-500 text-right uppercase tracking-wider mt-1">
                         Units
@@ -435,16 +435,16 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
                   {/* Progress Indicator */}
                   {medicineData.remainingQty && medicineData.totalQty && (
-                    <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                    <div className="mt-4 bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
                        <div className="flex justify-between items-center mb-1.5 px-0.5">
                          <span className="text-[0.7rem] font-bold text-gray-600">Fill Status</span>
                          <span className="text-[0.7rem] font-bold text-green-600">{Math.round(remainingPercent)}% remaining</span>
                        </div>
                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                         <div className="h-full bg-green-500 transition-all duration-500 ease-out" style={{ width: `${Math.round(remainingPercent)}%` }}></div>
+                         <div className="h-full bg-green-50 dark:bg-emerald-900/300 transition-all duration-500 ease-out" style={{ width: `${Math.round(remainingPercent)}%` }}></div>
                        </div>
                        {medicineData.fullMRP && (
-                         <div className="text-[0.75rem] text-gray-500 mt-3 font-medium bg-gray-50 p-2 rounded-lg inline-block border border-gray-100">
+                         <div className="text-[0.75rem] text-gray-500 mt-3 font-medium bg-gray-50 dark:bg-slate-900 p-2 rounded-lg inline-block border border-gray-100 dark:border-slate-700">
                            Estimated value of remaining medicines: <strong className="text-green-700">₹{remainingMRP}</strong>
                          </div>
                        )}
@@ -456,14 +456,14 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                   <label className="block text-[0.75rem] font-bold text-gray-600 mb-2 uppercase tracking-wide">Reason for Disposal *</label>
                   <div className="relative">
                     <AlertCircle className="absolute left-3.5 top-3 text-gray-400 w-4 h-4" />
-                    <textarea required placeholder="e.g. Expired, Course completed..." rows="2" value={medicineData.reason} onChange={(e) => setMedicineData({...medicineData, reason: e.target.value})} className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all resize-none shadow-sm"></textarea>
+                    <textarea required placeholder="e.g. Expired, Course completed..." rows="2" value={medicineData.reason} onChange={(e) => setMedicineData({...medicineData, reason: e.target.value})} className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all resize-none shadow-sm"></textarea>
                   </div>
                 </div>
 
               </div>
               
               <div className="pt-2 flex gap-3">
-                <button type="button" onClick={handleAddToCart} className="w-1/2 flex items-center justify-center gap-2 bg-green-50 text-green-700 border border-green-200 font-bold py-4 rounded-xl hover:bg-green-100 transition-all">
+                <button type="button" onClick={handleAddToCart} className="w-1/2 flex items-center justify-center gap-2 bg-green-50 dark:bg-emerald-900/30 text-green-700 border border-green-200 font-bold py-4 rounded-xl hover:bg-green-100 transition-all">
                   <PackagePlus className="w-5 h-5"/> Add Ext. Item
                 </button>
                 <button type="button" onClick={handleReviewProceed} className="w-1/2 flex items-center justify-center bg-[#059669] text-white font-bold py-4 rounded-xl hover:bg-[#047857] transition-all shadow-md">
@@ -476,28 +476,28 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
           {step === 2 && (
              <div className="space-y-4">
-               <div className="bg-green-50/50 border border-green-100 p-5 rounded-xl flex items-center justify-between mb-2">
+               <div className="bg-green-50 dark:bg-emerald-900/30/50 border border-green-100 p-5 rounded-xl flex items-center justify-between mb-2">
                  <div>
                    <h4 className="font-extrabold text-green-900 text-lg">Package Summary</h4>
                    <p className="text-[0.8rem] text-green-700/80 mt-1 font-semibold">Please review the contents of your sealed disposal package.</p>
                  </div>
-                 <div className="bg-white px-4 py-2 rounded-xl border border-green-200 shadow-sm font-black text-green-800 text-base">
+                 <div className="bg-white dark:bg-slate-800 px-4 py-2 rounded-xl border border-green-200 shadow-sm font-black text-green-800 text-base">
                    {cart.length} Items
                  </div>
                </div>
 
                <div className="max-h-[45vh] overflow-y-auto space-y-3 pr-2">
                  {cart.map((item, idx) => (
-                   <div key={idx} className="p-4 border border-gray-100 rounded-xl bg-white shadow-sm flex items-start justify-between group">
+                   <div key={idx} className="p-4 border border-gray-100 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 shadow-sm flex items-start justify-between group">
                       <div>
                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-gray-800 text-base">{item.medicineName}</h4>
+                            <h4 className="font-bold text-gray-800 dark:text-slate-200 text-base">{item.medicineName}</h4>
                             {item.isAntibiotic && <span className="bg-red-50 text-red-600 text-[0.65rem] px-2 py-0.5 rounded font-bold uppercase border border-red-100 flex items-center gap-1"><ShieldAlert className="w-3 h-3"/> Warn</span>}
                          </div>
                          <p className="text-[0.75rem] text-gray-500 font-medium">{item.genericName || 'Manual Entry'} • {item.doseWeight}</p>
                          <div className="flex flex-wrap gap-2 mt-3">
-                            <span className="text-[0.7rem] bg-gray-50 px-2.5 py-1 rounded-md text-gray-600 font-bold border border-gray-100">Qty: {item.remainingQty} / {item.totalQty}</span>
-                            {item.remainingMRP > 0 && <span className="text-[0.7rem] bg-green-50 px-2.5 py-1 rounded-md text-green-700 font-bold border border-green-100">₹{item.remainingMRP} Est.</span>}
+                            <span className="text-[0.7rem] bg-gray-50 dark:bg-slate-900 px-2.5 py-1 rounded-md text-gray-600 font-bold border border-gray-100 dark:border-slate-700">Qty: {item.remainingQty} / {item.totalQty}</span>
+                            {item.remainingMRP > 0 && <span className="text-[0.7rem] bg-green-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-md text-green-700 font-bold border border-green-100">₹{item.remainingMRP} Est.</span>}
                          </div>
                       </div>
                       <button onClick={() => setCart(cart.filter((_, i) => i !== idx))} className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors">
@@ -506,7 +506,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                    </div>
                  ))}
                  {cart.length === 0 && (
-                    <div className="text-center py-10 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="text-center py-10 bg-gray-50 dark:bg-slate-900 rounded-xl border border-gray-100 dark:border-slate-700">
                       <ShoppingBag className="w-10 h-10 text-gray-300 mx-auto mb-3" />
                       <p className="text-gray-500 font-bold text-sm">Package is empty.</p>
                       <button onClick={() => setStep(1)} className="mt-3 text-sm text-green-600 font-bold underline">Go back and add medicines</button>
@@ -541,7 +541,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Flat / House no / Floor / Building</label>
                 <div className="relative">
                   <Building className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input required type="text" value={addressData.flat} onChange={(e) => setAddressData({...addressData, flat: e.target.value})} className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
+                  <input required type="text" value={addressData.flat} onChange={(e) => setAddressData({...addressData, flat: e.target.value})} className="w-full pl-10 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
                 </div>
               </div>
 
@@ -549,18 +549,18 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Area / Sector / Locality</label>
                 <div className="relative">
                   <Map className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input required type="text" value={addressData.area} onChange={(e) => setAddressData({...addressData, area: e.target.value})} className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
+                  <input required type="text" value={addressData.area} onChange={(e) => setAddressData({...addressData, area: e.target.value})} className="w-full pl-10 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
                 <div className="sm:col-span-3">
                   <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Nearby Landmark <span className="opacity-60">(Optional)</span></label>
-                  <input type="text" placeholder="e.g. Near Apollo Hospital" value={addressData.landmark} onChange={(e) => setAddressData({...addressData, landmark: e.target.value})} className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
+                  <input type="text" placeholder="e.g. Near Apollo Hospital" value={addressData.landmark} onChange={(e) => setAddressData({...addressData, landmark: e.target.value})} className="w-full px-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm" />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-[0.75rem] font-bold text-gray-500 mb-1.5 ml-1 uppercase tracking-wide">Pincode</label>
-                  <input required type="text" maxLength={6} placeholder="400050" value={addressData.pincode} onChange={(e) => setAddressData({...addressData, pincode: e.target.value})} className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm tracking-widest text-center" />
+                  <input required type="text" maxLength={6} placeholder="400050" value={addressData.pincode} onChange={(e) => setAddressData({...addressData, pincode: e.target.value})} className="w-full px-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all shadow-sm tracking-widest text-center" />
                 </div>
               </div>
 

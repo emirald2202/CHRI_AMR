@@ -61,7 +61,7 @@ const PharmacyMap = ({ pharmacies, onPharmacyClick, userCity, focusRegion }) => 
              <Marker key={p._id} position={[p.coordinates.lat, p.coordinates.lng]}>
                <Popup>
                  <div className="font-sans min-w-[150px]">
-                    <h3 className="font-extrabold text-sm text-gray-800 m-0">{p.pharmacyName || p.name}</h3>
+                    <h3 className="font-extrabold text-sm text-gray-800 dark:text-slate-200 m-0">{p.pharmacyName || p.name}</h3>
                     <p className="text-[0.65rem] text-gray-500 mb-2 mt-0.5 leading-tight">{p.address ? `${p.address.street}, ${p.address.city}` : 'No address specified'}</p>
                     <button 
                        onClick={(e) => {

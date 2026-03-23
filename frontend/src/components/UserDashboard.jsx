@@ -91,7 +91,7 @@ const UserDashboard = () => {
       {/* Full Width Tutorial Box */}
       {showTutorial && (
         <div className="lg:col-span-12 mb-2 animate-in fade-in duration-300">
-          <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 dark:border-slate-700 p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
             <div>
               <h3 className="text-lg font-semibold text-green-600 mb-2 flex items-center gap-2">
                 {t('landing.pharmacyTutorial.title')}
@@ -103,7 +103,7 @@ const UserDashboard = () => {
             </div>
             <button
               onClick={dismissTutorial}
-              className="shrink-0 text-green-600 font-bold border border-green-200 bg-green-50 rounded-lg px-5 py-2 hover:bg-green-100 transition-colors shadow-sm"
+              className="shrink-0 text-green-600 font-bold border border-green-200 bg-green-50 dark:bg-emerald-900/30 rounded-lg px-5 py-2 hover:bg-green-100 transition-colors shadow-sm"
             >
               {t('landing.pharmacyTutorial.gotIt')}
             </button>
@@ -115,16 +115,16 @@ const UserDashboard = () => {
       <div className="lg:col-span-8 flex flex-col gap-6">
 
         {/* OpenStreetMap Integration */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 md:p-8 flex flex-col">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-5 sm:p-6 md:p-8 flex flex-col">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 md:mb-6 gap-2">
             <div>
-              <h3 className="text-gray-800 font-bold text-lg">{t('dashboard.nearbyHubs')}</h3>
+              <h3 className="text-gray-800 dark:text-slate-200 font-bold text-lg">{t('dashboard.nearbyHubs')}</h3>
               <p className="text-sm text-gray-500">{t('dashboard.mapDescription')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {/* Map Container */}
-            <div className="md:col-span-2 bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 h-[260px] sm:h-[320px] md:h-[380px] relative z-10 shadow-inner">
+            <div className="md:col-span-2 bg-gray-50 dark:bg-slate-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 h-[260px] sm:h-[320px] md:h-[380px] relative z-10 shadow-inner">
                {user && (
                   <PharmacyMap 
                      pharmacies={pharmacies} 
@@ -138,20 +138,20 @@ const UserDashboard = () => {
                )}
             </div>
             {/* Action List */}
-            <div className="h-[280px] md:h-[380px] overflow-y-auto space-y-3 pr-2 border border-gray-100 p-3 rounded-2xl bg-gray-50/50 shadow-inner custom-scrollbar">
+            <div className="h-[280px] md:h-[380px] overflow-y-auto space-y-3 pr-2 border border-gray-100 dark:border-slate-700 p-3 rounded-2xl bg-gray-50 dark:bg-slate-900 shadow-inner custom-scrollbar">
                {pharmacies.length > 0 ? pharmacies.map(p => (
                   <div 
                      key={p._id} 
                      onClick={() => setMapFocusRegion([p.coordinates.lat, p.coordinates.lng])}
-                     className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-green-300 hover:shadow-md transition-all group cursor-pointer"
+                     className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:border-green-300 hover:shadow-md transition-all group cursor-pointer"
                   >
-                     <h4 className="font-extrabold text-gray-800 text-sm group-hover:text-green-700 transition-colors">{p.pharmacyName || p.name}</h4>
+                     <h4 className="font-extrabold text-gray-800 dark:text-slate-200 text-sm group-hover:text-green-700 transition-colors">{p.pharmacyName || p.name}</h4>
                      <p className="text-[0.65rem] text-gray-500 mt-1 mb-3 leading-tight truncate">{p.address ? `${p.address.street || ''}, ${p.address.city || ''}` : p.location}</p>
                      <button onClick={(e) => {
                         e.stopPropagation();
                         setSelectedMapPharmacy(p);
                         setIsModalOpen(true);
-                     }} className="w-full text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                     }} className="w-full text-xs font-bold text-green-700 bg-green-50 dark:bg-emerald-900/30 hover:bg-green-100 border border-green-200 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
                         <Navigation className="w-3.5 h-3.5" /> {t('dashboard.bookHere')}
                      </button>
                   </div>
@@ -175,10 +175,10 @@ const UserDashboard = () => {
         </button>
 
         {/* Dynamic Disposal Status Tracker */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 md:p-8 flex flex-col min-h-[22rem]">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-5 sm:p-6 md:p-8 flex flex-col min-h-[22rem]">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 md:mb-6 gap-4">
             <div>
-              <h3 className="text-gray-800 font-bold text-lg">{t('dashboard.disposalTracker')}</h3>
+              <h3 className="text-gray-800 dark:text-slate-200 font-bold text-lg">{t('dashboard.disposalTracker')}</h3>
               <p className="text-sm text-gray-500">{t('dashboard.trackerDescription')}</p>
             </div>
           </div>
@@ -191,11 +191,11 @@ const UserDashboard = () => {
               </div>
             ) : (
               requests.map(req => (
-                <div key={req._id} className="border border-gray-100 bg-gray-50 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow">
+                <div key={req._id} className="border border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow">
                   <div className="flex-1 w-full relative">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                       <h4 className="font-bold text-gray-800 text-[1.05rem] md:text-[1.1rem]">Disposal Package</h4>
-                       <button onClick={() => setExpandedReqId(expandedReqId === req._id ? null : req._id)} className="w-fit text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full transition-colors flex items-center justify-center gap-1.5">
+                       <h4 className="font-bold text-gray-800 dark:text-slate-200 text-[1.05rem] md:text-[1.1rem]">Disposal Package</h4>
+                       <button onClick={() => setExpandedReqId(expandedReqId === req._id ? null : req._id)} className="w-fit text-xs font-bold text-green-700 bg-green-50 dark:bg-emerald-900/30 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-full transition-colors flex items-center justify-center gap-1.5">
                           <Package className="w-3.5 h-3.5" />
                           {expandedReqId === req._id ? 'Close Details' : `View Package (${req.userMedicines?.length || 0})`}
                        </button>
@@ -209,21 +209,21 @@ const UserDashboard = () => {
                         </span>
                       )}
                     </div>
-                    {req.disposalType === 'pickup' && req.pickupAddress && <p className="text-[0.8rem] text-gray-500 mt-3 flex items-start gap-1 p-2.5 bg-white rounded-lg whitespace-pre-line leading-relaxed border border-gray-200 shadow-sm">📍 {req.pickupAddress}</p>}
+                    {req.disposalType === 'pickup' && req.pickupAddress && <p className="text-[0.8rem] text-gray-500 mt-3 flex items-start gap-1 p-2.5 bg-white dark:bg-slate-800 rounded-lg whitespace-pre-line leading-relaxed border border-gray-200 dark:border-gray-700 shadow-sm">📍 {req.pickupAddress}</p>}
 
                     {/* Expandable Package Details */}
                     {expandedReqId === req._id && (
-                       <div className="mt-4 bg-white border border-gray-200 rounded-xl p-4 shadow-sm animate-in fade-in zoom-in-95 duration-200 w-full">
-                          <h5 className="font-bold text-gray-800 text-xs uppercase mb-3 border-b border-gray-100 pb-2">Sealed Request Contents</h5>
+                       <div className="mt-4 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm animate-in fade-in zoom-in-95 duration-200 w-full">
+                          <h5 className="font-bold text-gray-800 dark:text-slate-200 text-xs uppercase mb-3 border-b border-gray-100 dark:border-slate-700 pb-2">Sealed Request Contents</h5>
                           <div className="space-y-2">
                              {(req.userMedicines || []).map((med, idx) => (
-                                <div key={idx} className="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                                <div key={idx} className="flex justify-between items-center bg-gray-50 dark:bg-slate-900 p-2.5 rounded-lg border border-gray-100 dark:border-slate-700">
                                    <div>
-                                     <p className="text-[0.85rem] font-bold text-gray-800">{med.medicineName || 'Unknown Medicine'}</p>
+                                     <p className="text-[0.85rem] font-bold text-gray-800 dark:text-slate-200">{med.medicineName || 'Unknown Medicine'}</p>
                                      <p className="text-[0.7rem] text-gray-500 font-medium">{med.genericName || 'Manual Entry'} • {med.doseWeight || med.medicineType}</p>
                                    </div>
                                    <div className="text-right">
-                                     <span className="text-[0.7rem] font-bold text-gray-600 bg-gray-200/50 px-2 py-1 rounded-md border border-gray-200">Qty: {med.remainingQty}/{med.totalQty}</span>
+                                     <span className="text-[0.7rem] font-bold text-gray-600 bg-gray-200/50 px-2 py-1 rounded-md border border-gray-200 dark:border-gray-700">Qty: {med.remainingQty}/{med.totalQty}</span>
                                      {med.isAntibiotic && <span className="block text-[0.65rem] text-[#f15700] font-bold uppercase mt-1">Antibiotic</span>}
                                    </div>
                                 </div>
@@ -234,7 +234,7 @@ const UserDashboard = () => {
                   </div>
 
                   {/* Status Badge */}
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-200">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-200 dark:border-gray-700">
                     <span className={`px-4 py-1.5 md:py-2 text-[0.7rem] md:text-[0.75rem] font-bold rounded-lg uppercase tracking-wide
                         ${req.status === 'completed' ? 'bg-green-100 text-green-700 border border-green-200 shadow-sm' :
                         req.status === 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200 shadow-sm' :
@@ -268,8 +268,8 @@ const UserDashboard = () => {
       <div className="lg:col-span-4 flex flex-col gap-6">
 
         {/* AMR Education Link Widget */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 md:p-8 flex flex-col items-start justify-between relative overflow-hidden group min-h-[16rem]">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full blur-3xl group-hover:bg-green-100 transition-all duration-700"></div>
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-6 md:p-8 flex flex-col items-start justify-between relative overflow-hidden group min-h-[16rem]">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 dark:bg-emerald-900/30 rounded-full blur-3xl group-hover:bg-green-100 transition-all duration-700"></div>
           
           <div className="relative z-10 w-full">
              <div className="bg-red-50 text-red-600 font-extrabold text-[0.65rem] uppercase tracking-widest px-3 py-1.5 rounded-lg border border-red-100 w-max mb-4">
@@ -283,7 +283,7 @@ const UserDashboard = () => {
              </p>
           </div>
           
-          <a href="/impact" className="relative z-10 mt-6 w-full text-center bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 font-bold text-sm py-3.5 rounded-xl transition-all duration-300">
+          <a href="/impact" className="relative z-10 mt-6 w-full text-center bg-green-50 dark:bg-emerald-900/30 hover:bg-green-100 text-green-700 border border-green-200 font-bold text-sm py-3.5 rounded-xl transition-all duration-300">
              {t('dashboard.amrCard.readReport')}
           </a>
         </div>

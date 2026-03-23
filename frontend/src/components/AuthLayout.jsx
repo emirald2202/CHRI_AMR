@@ -7,7 +7,7 @@ const AuthLayout = ({ children }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen flex bg-gray-50 font-sans relative">
+    <div className="min-h-screen flex bg-gray-50 dark:bg-slate-900 font-sans relative">
 
       {/* Language Selector */}
       <div className="absolute top-6 right-6 z-[1001]">
@@ -31,7 +31,7 @@ const AuthLayout = ({ children }) => {
           </div>
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold mb-5 shadow-sm shadow-green-200">
+          <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-emerald-900/300 text-white px-3 py-1 rounded-full text-xs font-semibold mb-5 shadow-sm shadow-green-200">
             <ShieldCheck className="w-4 h-4" />
             {t('fightingAmr')}
           </div>
@@ -55,12 +55,12 @@ const AuthLayout = ({ children }) => {
           <div className="space-y-3 mb-6">
 
             {/* Impact bullets */}
-            <div className="bg-white/80 p-4 rounded-2xl border border-green-50 flex gap-4 items-start">
+            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-green-50 flex gap-4 items-start">
               <div className="text-green-500 mt-0.5 shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-800 text-sm mb-2">{t('whySafe')}</h3>
+                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm mb-2">{t('whySafe')}</h3>
                 <ul className="text-[0.78rem] text-gray-600 space-y-1.5">
                   <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe1')}</li>
                   <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe2')}</li>
@@ -71,23 +71,23 @@ const AuthLayout = ({ children }) => {
             </div>
 
             {/* Step 1 */}
-            <div className="bg-white/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
-              <div className="bg-green-50 p-2.5 rounded-full text-green-500 shrink-0">
+            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
+              <div className="bg-green-50 dark:bg-emerald-900/30 p-2.5 rounded-full text-green-500 shrink-0">
                 <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-800 text-sm">{t('findPharmaciesLoc')}</h3>
+                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('findPharmaciesLoc')}</h3>
                 <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('findPharmLocations')}</p>
               </div>
             </div>
 
             {/* Step 2 — Rewards with badge */}
-            <div className="bg-white/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center relative overflow-hidden">
+            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center relative overflow-hidden">
               <div className="bg-amber-50 p-2.5 rounded-full text-amber-500 shrink-0">
                 <Award className="w-4 h-4" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-gray-800 text-sm">{t('earnRewards')}</h3>
+                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('earnRewards')}</h3>
                 <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('earnDesc')}</p>
               </div>
               {/* Badge */}
@@ -97,12 +97,12 @@ const AuthLayout = ({ children }) => {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
-              <div className="bg-green-50 p-2.5 rounded-full text-green-500 shrink-0">
+            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
+              <div className="bg-green-50 dark:bg-emerald-900/30 p-2.5 rounded-full text-green-500 shrink-0">
                 <Gift className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-800 text-sm">{t('trackImpact')}</h3>
+                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('trackImpact')}</h3>
                 <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('trackDesc')}</p>
               </div>
             </div>
@@ -124,31 +124,31 @@ const AuthLayout = ({ children }) => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4 mt-8 relative z-10 max-w-xl">
-          <div className="bg-white/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
+          <div className="bg-white dark:bg-slate-800/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
             <ShieldCheck className="text-green-500 w-5 h-5 mb-2" />
-            <div className="font-black text-gray-800 text-lg">12,000+</div>
+            <div className="font-black text-gray-800 dark:text-slate-200 text-lg">12,000+</div>
             <div className="text-[0.65rem] text-gray-500 uppercase tracking-wide font-semibold mt-1">{t('stats1S')}</div>
           </div>
-          <div className="bg-white/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
+          <div className="bg-white dark:bg-slate-800/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
             <Store className="text-green-500 w-5 h-5 mb-2" />
-            <div className="font-black text-gray-800 text-lg">300+</div>
+            <div className="font-black text-gray-800 dark:text-slate-200 text-lg">300+</div>
             <div className="text-[0.65rem] text-gray-500 uppercase tracking-wide font-semibold mt-1">{t('stats2S')}</div>
           </div>
-          <div className="bg-white/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
+          <div className="bg-white dark:bg-slate-800/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
             <Droplets className="text-green-500 w-5 h-5 mb-2" />
-            <div className="font-black text-gray-800 text-lg">50,000+</div>
+            <div className="font-black text-gray-800 dark:text-slate-200 text-lg">50,000+</div>
             <div className="text-[0.65rem] text-gray-500 uppercase tracking-wide font-semibold mt-1">{t('stats3S')}</div>
           </div>
-          <div className="bg-white/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
+          <div className="bg-white dark:bg-slate-800/90 p-4 rounded-xl border border-green-50 flex flex-col items-center justify-center text-center">
             <Users className="text-green-500 w-5 h-5 mb-2" />
-            <div className="font-black text-gray-800 text-lg">8,500+</div>
+            <div className="font-black text-gray-800 dark:text-slate-200 text-lg">8,500+</div>
             <div className="text-[0.65rem] text-gray-500 uppercase tracking-wide font-semibold mt-1">{t('stats4S')}</div>
           </div>
         </div>
       </div>
 
       {/* ── Right Form Panel ── */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-slate-900">
         {children}
       </div>
     </div>

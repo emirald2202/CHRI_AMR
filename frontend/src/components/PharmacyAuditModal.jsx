@@ -184,9 +184,9 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-end sm:items-center sm:p-4">
-      <div className="bg-white w-full sm:max-w-[600px] rounded-t-3xl sm:rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden border-[6px] border-blue-500">
+      <div className="bg-white dark:bg-slate-800 w-full sm:max-w-[600px] rounded-t-3xl sm:rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden border-[6px] border-blue-500">
         
-        <div className="sticky top-0 bg-white z-20 px-8 py-5 border-b border-gray-100 flex items-center justify-between">
+        <div className="sticky top-0 bg-white dark:bg-slate-800 z-20 px-8 py-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {step > 1 && (
                <button type="button" onClick={() => setStep(step - 1)} className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
@@ -200,7 +200,7 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                </h2>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 bg-gray-50 hover:bg-gray-200 rounded-full transition-colors text-gray-500">
+          <button onClick={onClose} className="p-2 bg-gray-50 dark:bg-slate-900 hover:bg-gray-200 rounded-full transition-colors text-gray-500">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -215,7 +215,7 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
               </div>
 
               {/* Medicine Details Group */}
-              <div className="bg-gray-50/50 border border-gray-200 p-6 rounded-2xl relative shadow-inner">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 p-6 rounded-2xl relative shadow-inner">
                 <div className="flex items-center justify-between mb-3">
                    <label className="block text-[0.8rem] font-bold text-gray-600 uppercase tracking-wider">Catalogue Item</label>
                    {cart.length > 0 && (
@@ -226,13 +226,13 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                 </div>
 
                 {showCartPreview && cart.length > 0 && (
-                    <div className="mb-4 bg-white border border-blue-200 rounded-xl p-3 shadow-inner">
-                       <h5 className="font-bold text-gray-700 text-[0.7rem] uppercase mb-2">Physically Logged Items</h5>
+                    <div className="mb-4 bg-white dark:bg-slate-800 border border-blue-200 rounded-xl p-3 shadow-inner">
+                       <h5 className="font-bold text-gray-700 dark:text-gray-300 text-[0.7rem] uppercase mb-2">Physically Logged Items</h5>
                        <div className="max-h-32 overflow-y-auto space-y-2 pr-1">
                          {cart.map((item, idx) => (
-                            <div key={idx} className="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                            <div key={idx} className="flex justify-between items-center bg-gray-50 dark:bg-slate-900 p-2.5 rounded-lg border border-gray-100 dark:border-slate-700">
                                <div>
-                                 <p className="text-[0.8rem] font-bold text-gray-800">{item.medicineName}</p>
+                                 <p className="text-[0.8rem] font-bold text-gray-800 dark:text-slate-200">{item.medicineName}</p>
                                  <p className="text-[0.65rem] text-gray-500 font-medium">Qty: {item.remainingQty}/{item.totalQty}</p>
                                </div>
                                <button type="button" onClick={() => setCart(cart.filter((_, i) => i !== idx))} className="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded-md transition-colors">
@@ -256,15 +256,15 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                         if (autofilled) setAutofilled(false);
                       }} 
                       onFocus={() => {if (suggestions.length > 0) setShowSuggestions(true)}}
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-semibold" 
+                      className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-semibold" 
                     />
                   </div>
 
                   {showSuggestions && !autofilled && (
-                    <div className="absolute w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
+                    <div className="absolute w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
                       {suggestions.length > 0 ? suggestions.map((med, i) => (
                         <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-blue-50 border-b border-gray-50 transition-colors flex flex-col last:border-0">
-                          <span className="font-bold text-gray-800 text-sm">{med.brandName}</span>
+                          <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{med.brandName}</span>
                           <span className="text-xs text-gray-500 font-medium truncate w-full">{med.genericName} • {med.doseWeight || med.dose}</span>
                         </button>
                       )) : (
@@ -288,7 +288,7 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                      <div className="grid grid-cols-2 gap-y-3 gap-x-2">
                        <div className="flex flex-col gap-1">
                           <span className="text-[0.65rem] uppercase font-bold text-gray-400 tracking-wider">Type</span>
-                          <span className="bg-white text-blue-800 text-xs font-semibold rounded px-2.5 py-1 w-max border border-blue-100">{medicineData.medicineType}</span>
+                          <span className="bg-white dark:bg-slate-800 text-blue-800 text-xs font-semibold rounded px-2.5 py-1 w-max border border-blue-100">{medicineData.medicineType}</span>
                        </div>
                        {medicineData.isAntibiotic && (
                          <div className="flex flex-col gap-1">
@@ -303,21 +303,21 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {manualOverride && (
                     <>
-                      <input required type="text" placeholder="Type (e.g. Tablet)" value={medicineData.medicineType} onChange={(e) => setMedicineData({...medicineData, medicineType: e.target.value})} className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none" />
-                      <input required type="text" placeholder="Manufacturer (e.g. GSK)" value={medicineData.manufacturer} onChange={(e) => setMedicineData({...medicineData, manufacturer: e.target.value})} className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none" />
-                      <div className="col-span-2 flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg mb-1">
+                      <input required type="text" placeholder="Type (e.g. Tablet)" value={medicineData.medicineType} onChange={(e) => setMedicineData({...medicineData, medicineType: e.target.value})} className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 rounded-lg text-sm outline-none" />
+                      <input required type="text" placeholder="Manufacturer (e.g. GSK)" value={medicineData.manufacturer} onChange={(e) => setMedicineData({...medicineData, manufacturer: e.target.value})} className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 rounded-lg text-sm outline-none" />
+                      <div className="col-span-2 flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-gray-300 rounded-lg mb-1">
                          <div className="flex items-center gap-2">
                            <ShieldAlert className={`w-4 h-4 ${medicineData.isAntibiotic ? 'text-red-500' : 'text-gray-400'}`} />
-                           <label htmlFor="antiType" className="text-sm font-bold text-gray-700">Antibiotic Specimen?</label>
+                           <label htmlFor="antiType" className="text-sm font-bold text-gray-700 dark:text-gray-300">Antibiotic Specimen?</label>
                          </div>
                          <input type="checkbox" id="antiType" checked={medicineData.isAntibiotic} onChange={(e) => setMedicineData({...medicineData, isAntibiotic: e.target.checked})} className="w-5 h-5 text-red-600 rounded border-gray-300 focus:ring-red-500" />
                       </div>
                     </>
                   )}
-                  <input required type="text" placeholder="Verify Dose (e.g. 500mg)" value={medicineData.doseWeight} onChange={(e) => setMedicineData({...medicineData, doseWeight: e.target.value})} className={`w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none ${!manualOverride ? 'col-span-2' : 'col-span-2'}`} />
+                  <input required type="text" placeholder="Verify Dose (e.g. 500mg)" value={medicineData.doseWeight} onChange={(e) => setMedicineData({...medicineData, doseWeight: e.target.value})} className={`w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 rounded-lg text-sm outline-none ${!manualOverride ? 'col-span-2' : 'col-span-2'}`} />
                   <div className="col-span-2 relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">₹</span>
-                    <input type="number" required min="0" placeholder="Full Pack MRP on Label" value={medicineData.fullMRP} onChange={(e) => setMedicineData({...medicineData, fullMRP: e.target.value})} className="w-full pl-8 pr-3 py-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none" />
+                    <input type="number" required min="0" placeholder="Full Pack MRP on Label" value={medicineData.fullMRP} onChange={(e) => setMedicineData({...medicineData, fullMRP: e.target.value})} className="w-full pl-8 pr-3 py-2.5 bg-white dark:bg-slate-800 border border-gray-300 rounded-lg text-sm outline-none" />
                   </div>
                 </div>
 
@@ -325,16 +325,16 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                   <label className="block text-[0.75rem] font-bold text-gray-600 mb-2 uppercase tracking-wide">Physically Logged Quantity *</label>
                   <div className="flex items-center gap-4">
                      <div className="flex items-center gap-2 flex-1">
-                        <input required type="number" min="0" placeholder="Remaining" value={medicineData.remainingQty} onChange={(e) => setMedicineData({...medicineData, remainingQty: e.target.value})} className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-center font-bold text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm" />
+                        <input required type="number" min="0" placeholder="Remaining" value={medicineData.remainingQty} onChange={(e) => setMedicineData({...medicineData, remainingQty: e.target.value})} className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-300 rounded-xl text-center font-bold text-gray-700 dark:text-gray-300 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm" />
                         <span className="text-gray-400 font-light text-2xl">/</span>
-                        <input required disabled={autofilled} type="number" min="1" placeholder="Total" value={medicineData.totalQty} onChange={(e) => setMedicineData({...medicineData, totalQty: e.target.value})} className={`w-full px-4 py-3 border border-gray-300 rounded-xl text-center font-bold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm ${autofilled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700'}`} />
+                        <input required disabled={autofilled} type="number" min="1" placeholder="Total" value={medicineData.totalQty} onChange={(e) => setMedicineData({...medicineData, totalQty: e.target.value})} className={`w-full px-4 py-3 border border-gray-300 rounded-xl text-center font-bold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-sm ${autofilled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300'}`} />
                      </div>
                      <div className="w-16 text-xs font-bold text-gray-500 text-right uppercase tracking-wider mt-1">
                         Units
                      </div>
                   </div>
                   {medicineData.remainingQty && medicineData.totalQty && medicineData.fullMRP && (
-                    <div className="text-[0.75rem] text-gray-500 mt-4 font-medium bg-white p-2 rounded-lg inline-block border border-gray-200">
+                    <div className="text-[0.75rem] text-gray-500 mt-4 font-medium bg-white dark:bg-slate-800 p-2 rounded-lg inline-block border border-gray-200 dark:border-gray-700">
                       Calculated recovery value: <strong className="text-blue-700">₹{remainingMRP}</strong>
                     </div>
                   )}
@@ -361,22 +361,22 @@ const PharmacyAuditModal = ({ isOpen, onClose, onSuccess, request }) => {
                    <h4 className="font-extrabold text-blue-900 text-lg">Final Verification</h4>
                    <p className="text-[0.8rem] text-blue-700/80 mt-1 font-semibold">Ready to overwrite system ledger with physical audit.</p>
                  </div>
-                 <div className="bg-white px-4 py-2 rounded-xl border border-blue-200 shadow-sm font-black text-blue-800 text-base">
+                 <div className="bg-white dark:bg-slate-800 px-4 py-2 rounded-xl border border-blue-200 shadow-sm font-black text-blue-800 text-base">
                    {cart.length} Meds Logged
                  </div>
                </div>
 
                <div className="max-h-[45vh] overflow-y-auto space-y-3 pr-2">
                  {cart.map((item, idx) => (
-                   <div key={idx} className="p-4 border border-gray-200 rounded-xl bg-white shadow-sm flex items-start justify-between group">
+                   <div key={idx} className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-slate-800 shadow-sm flex items-start justify-between group">
                       <div>
                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-gray-800 text-base">{item.medicineName}</h4>
+                            <h4 className="font-bold text-gray-800 dark:text-slate-200 text-base">{item.medicineName}</h4>
                             {item.isAntibiotic && <span className="bg-red-50 text-red-600 text-[0.65rem] px-2 py-0.5 rounded font-bold uppercase border border-red-100 flex items-center gap-1"><ShieldAlert className="w-3 h-3"/> Warn</span>}
                          </div>
                          <p className="text-[0.75rem] text-gray-500 font-medium">{item.genericName || 'Manual Entry'} • {item.doseWeight}</p>
                          <div className="flex flex-wrap gap-2 mt-3">
-                            <span className="text-[0.7rem] bg-gray-100 px-2.5 py-1 rounded-md text-gray-600 font-bold border border-gray-200">Qty: {item.remainingQty} / {item.totalQty}</span>
+                            <span className="text-[0.7rem] bg-gray-100 px-2.5 py-1 rounded-md text-gray-600 font-bold border border-gray-200 dark:border-gray-700">Qty: {item.remainingQty} / {item.totalQty}</span>
                             {item.remainingMRP > 0 && <span className="text-[0.7rem] bg-blue-50 px-2.5 py-1 rounded-md text-blue-700 font-bold border border-blue-100">₹{item.remainingMRP} Logged</span>}
                          </div>
                       </div>
