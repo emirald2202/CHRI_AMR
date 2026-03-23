@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 
 const DashboardLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-50/50 font-sans flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 font-sans flex flex-col">
       <Navbar />
       
       {/* 

@@ -20,7 +20,7 @@ const PasswordInput = ({ name, value, onChange, placeholder, required = true }) 
         onChange={onChange}
         required={required}
         placeholder={placeholder}
-        className="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm"
+        className="w-full pl-10 pr-10 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm"
       />
       <button
         type="button"
@@ -84,7 +84,7 @@ const ForgotPasswordModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center px-4" style={{background:'rgba(0,0,0,0.55)'}}>
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 relative" style={{animation:'amrFadeIn 0.18s ease both'}}>
+      <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-sm p-8 relative" style={{animation:'amrFadeIn 0.18s ease both'}}>
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
           <X className="w-5 h-5" />
         </button>
@@ -96,7 +96,7 @@ const ForgotPasswordModal = ({ onClose }) => {
         {/* Step: Email */}
         {step === 'email' && (
           <>
-            <h3 className="text-xl font-extrabold text-gray-900 text-center mb-1">Forgot Password?</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-200 text-center mb-1">Forgot Password?</h3>
             <p className="text-sm text-gray-500 text-center mb-6">Enter your registered email to receive a reset OTP.</p>
             <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">Email Address</label>
             <div className="relative mb-4">
@@ -104,7 +104,7 @@ const ForgotPasswordModal = ({ onClose }) => {
               <input
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 focus:border-green-400 outline-none rounded-xl text-sm font-semibold transition-colors"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 dark:border-gray-700 focus:border-green-400 outline-none rounded-xl text-sm font-semibold transition-colors"
               />
             </div>
             {error && <p className="text-xs text-red-600 font-semibold mb-3">{error}</p>}
@@ -118,18 +118,18 @@ const ForgotPasswordModal = ({ onClose }) => {
         {/* Step: OTP */}
         {step === 'otp' && (
           <>
-            <h3 className="text-xl font-extrabold text-gray-900 text-center mb-1">Check Your Email</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-200 text-center mb-1">Check Your Email</h3>
             <p className="text-sm text-gray-500 text-center mb-1">We sent a 6-digit OTP to</p>
             <p className="text-sm font-bold text-green-600 text-center mb-6">{email}</p>
             <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">Enter OTP</label>
             <input
               type="text" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
               placeholder="• • • • • •"
-              className="w-full border-2 border-gray-200 focus:border-green-400 outline-none rounded-xl px-4 py-3 text-sm font-mono text-center tracking-[0.5em] font-bold mb-4 transition-colors"
+              className="w-full border-2 border-gray-200 dark:border-gray-700 focus:border-green-400 outline-none rounded-xl px-4 py-3 text-sm font-mono text-center tracking-[0.5em] font-bold mb-4 transition-colors"
             />
             {error && <p className="text-xs text-red-600 font-semibold mb-3">{error}</p>}
             <div className="flex gap-3">
-              <button onClick={() => setStep('email')} className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-600 font-bold text-sm hover:bg-gray-50">Back</button>
+              <button onClick={() => setStep('email')} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 font-bold text-sm hover:bg-gray-50 dark:bg-slate-900">Back</button>
               <button onClick={handleVerifyOtp} disabled={otp.length < 6}
                 className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 disabled:opacity-40 transition-all">
                 <ArrowRight className="w-4 h-4" /> Verify
@@ -141,7 +141,7 @@ const ForgotPasswordModal = ({ onClose }) => {
         {/* Step: New Password */}
         {step === 'reset' && (
           <>
-            <h3 className="text-xl font-extrabold text-gray-900 text-center mb-1">Set New Password</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-200 text-center mb-1">Set New Password</h3>
             <p className="text-sm text-gray-500 text-center mb-6">Choose a strong new password.</p>
             <div className="space-y-3 mb-4">
               <div>
@@ -165,7 +165,7 @@ const ForgotPasswordModal = ({ onClose }) => {
         {step === 'done' && (
           <div className="text-center">
             <CheckCircle2 className="w-14 h-14 text-green-500 mx-auto mb-4" />
-            <h3 className="text-xl font-extrabold text-gray-900 mb-2">Password Reset!</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-200 mb-2">Password Reset!</h3>
             <p className="text-sm text-gray-500 mb-6">You can now log in with your new password.</p>
             <button onClick={onClose} className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-xl transition-all">
               Back to Login
@@ -282,9 +282,9 @@ const AuthPage = () => {
     <AuthLayout>
       {showForgot && <ForgotPasswordModal onClose={() => setShowForgot(false)} />}
 
-      <div className="bg-white w-full max-w-[420px] p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100">
+      <div className="bg-white dark:bg-slate-800 w-full max-w-[420px] p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 dark:border-slate-700">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-extrabold text-gray-800 mb-2">
+          <h2 className="text-3xl font-extrabold text-gray-800 dark:text-slate-200 mb-2">
             {mode === 'login' ? t('auth.login.heading', { defaultValue: 'Welcome Back' }) : t('auth.signup.heading', { defaultValue: 'Create Account' })}
           </h2>
           <p className="text-gray-500 text-sm mb-8 font-medium">
@@ -306,7 +306,7 @@ const AuthPage = () => {
             <div className="flex gap-3">
               {['user', 'pharmacy'].map(r => (
                 <button key={r} type="button" onClick={() => { setRole(r); setOtpStep(false); }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${role === r ? 'border-green-500 bg-green-50 text-green-700 shadow-sm' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-semibold transition-colors ${role === r ? 'border-green-500 bg-green-50 dark:bg-emerald-900/30 text-green-700 shadow-sm' : 'border-gray-200 dark:border-gray-700 text-gray-600 hover:bg-gray-50 dark:bg-slate-900'}`}
                 >
                   {r === 'user' ? <User className="w-[14px] h-[14px]" /> : <Store className="w-[14px] h-[14px]" />}
                   {r === 'user' ? t('auth.login.userTab') : t('auth.login.pharmacyTab')}
@@ -320,8 +320,8 @@ const AuthPage = () => {
             {['login', 'signup'].map(m => (
               <button key={m} type="button" onClick={() => handleModeSwitch(m)}
                 className={`flex-1 py-1.5 text-[0.85rem] font-semibold rounded-md transition-all ${mode === m
-                  ? m === 'login' ? 'bg-white text-gray-800 shadow-sm border border-gray-200/60' : 'bg-[#eefcf2] text-green-700 shadow-sm border border-green-100'
-                  : 'text-gray-500 hover:text-gray-700'}`}
+                  ? m === 'login' ? 'bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-200 shadow-sm border border-gray-200 dark:border-gray-700/60' : 'bg-[#eefcf2] text-green-700 shadow-sm border border-green-100'
+                  : 'text-gray-500 hover:text-gray-700 dark:text-gray-300'}`}
               >
                 {m === 'login' ? t('auth.signup.login') : t('auth.login.signUp')}
               </button>
@@ -332,11 +332,11 @@ const AuthPage = () => {
           {mode === 'login' && (
             <div className="flex gap-2">
               <button type="button" onClick={() => { setMethod('password'); setOtpStep(false); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'password' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}>
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'password' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:bg-slate-900'}`}>
                 <Lock className="w-[14px] h-[14px]" /> {t('auth.login.password')}
               </button>
               <button type="button" onClick={() => { setMethod('otp'); setOtpStep(false); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'otp' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-green-100 bg-green-50/50 text-green-700 hover:bg-green-50'}`}>
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'otp' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-green-100 bg-green-50 dark:bg-emerald-900/30/50 text-green-700 hover:bg-green-50 dark:bg-emerald-900/30'}`}>
                 <Smartphone className="w-[14px] h-[14px]" /> {t('auth.login.otpLogin', { defaultValue: 'OTP' })}
               </button>
             </div>
@@ -349,28 +349,28 @@ const AuthPage = () => {
             {mode === 'signup' && !otpStep && (
               <>
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.name')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">{t('auth.signup.name')}</label>
                   <div className="relative">
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input type="text" name="name" value={formData.name} onChange={handleInputChange} required
                       placeholder={t('auth.signup.enterName', { defaultValue: 'Enter your name' })}
-                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                      className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.phone')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">{t('auth.signup.phone')}</label>
                   <div className="relative">
                     <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required
                       placeholder={t('auth.signup.enterPhone', { defaultValue: 'Enter your phone number' })}
-                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                      className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
 
                 {/* City (user only) */}
                 {role === 'user' && (
                   <div className="animate-in slide-in-from-top-2 duration-300 relative">
-                    <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">City</label>
+                    <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">City</label>
                     <div className="relative">
                       <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 flex items-center justify-center">📍</div>
                       <input type="text" name="city" value={formData.city}
@@ -378,13 +378,13 @@ const AuthPage = () => {
                         onFocus={() => setShowCityDropdown(true)}
                         onBlur={() => setTimeout(() => setShowCityDropdown(false), 200)}
                         required placeholder="e.g. Mumbai, Delhi"
-                        className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                        className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                       {isSearchingCity && <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />}
                     </div>
                     {showCityDropdown && citySuggestions.length > 0 && (
-                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                      <div className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-lg max-h-48 overflow-y-auto">
                         {citySuggestions.map((sugg, i) => (
-                          <div key={i} className="px-4 py-3 hover:bg-green-50 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700"
+                          <div key={i} className="px-4 py-3 hover:bg-green-50 dark:bg-emerald-900/30 cursor-pointer border-b border-gray-50 last:border-0 text-sm text-gray-700 dark:text-gray-300"
                             onMouseDown={e => { e.preventDefault(); setFormData({ ...formData, city: sugg.name }); setShowCityDropdown(false); }}>
                             <span className="font-semibold">{sugg.name}</span>
                             <div className="text-[0.7rem] text-gray-500 mt-0.5 truncate">{sugg.display_name}</div>
@@ -400,12 +400,12 @@ const AuthPage = () => {
             {/* Email */}
             {(!otpStep || mode === 'login') && (
               <div>
-                <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.login.email')}</label>
+                <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">{t('auth.login.email')}</label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <input type="email" name="email" value={formData.email} onChange={handleInputChange} required
                     placeholder={t('auth.login.enterEmail', { defaultValue: 'Enter your email' })}
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                 </div>
               </div>
             )}
@@ -414,7 +414,7 @@ const AuthPage = () => {
             {((method === 'password' && mode === 'login') || (mode === 'signup' && !otpStep)) && (
               <div>
                 <div className="flex justify-between items-center mb-1.5 ml-1 mr-1">
-                  <label className="text-[0.75rem] font-semibold text-gray-700">{t('auth.login.password')}</label>
+                  <label className="text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300">{t('auth.login.password')}</label>
                   {mode === 'login' && (
                     <button type="button" onClick={() => setShowForgot(true)}
                       className="text-[0.7rem] font-semibold text-green-600 hover:text-green-700 transition-colors">
@@ -434,7 +434,7 @@ const AuthPage = () => {
             {/* OTP Input */}
             {otpStep && (
               <div>
-                <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">
+                <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
                   {mode === 'signup' ? 'Email Verification OTP' : t('auth.login.otpLogin', { defaultValue: 'OTP' })}
                 </label>
                 {mode === 'signup' && (
@@ -443,7 +443,7 @@ const AuthPage = () => {
                 <input type="text" name="otp" value={formData.otp}
                   onChange={e => setFormData({ ...formData, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
                   required placeholder="• • • • • •"
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm tracking-[0.5em] font-mono text-center" />
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm tracking-[0.5em] font-mono text-center" />
               </div>
             )}
 
@@ -451,25 +451,25 @@ const AuthPage = () => {
             {mode === 'signup' && role === 'pharmacy' && !otpStep && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div>
-                  <label className="block text-[0.75rem] font-semibold text-gray-700 mb-1.5 ml-1">{t('auth.signup.pharmacyName')}</label>
+                  <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">{t('auth.signup.pharmacyName')}</label>
                   <div className="relative">
                     <Store className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input type="text" name="pharmacyName" value={formData.pharmacyName} onChange={handleInputChange} required
                       placeholder={t('auth.signup.enterPharmacy', { defaultValue: 'Enter pharmacy name' })}
-                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                      className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
                   </div>
                 </div>
-                <div className="bg-green-50/50 p-4 rounded-xl border border-green-100 flex flex-col gap-3 shadow-inner">
-                  <h4 className="text-[0.8rem] font-bold text-gray-700 flex items-center gap-1.5 mb-1"><span className="text-xl">🏢</span> Complete Pharmacy Address</h4>
-                  <input type="text" name="flatNo" value={formData.flatNo} onChange={handleInputChange} required placeholder="Shop No. / Building Name / Complex" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
-                  <input type="text" name="street" value={formData.street} onChange={handleInputChange} required placeholder="Street / Road / Sector" className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                <div className="bg-green-50 dark:bg-emerald-900/30/50 p-4 rounded-xl border border-green-100 flex flex-col gap-3 shadow-inner">
+                  <h4 className="text-[0.8rem] font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5 mb-1"><span className="text-xl">🏢</span> Complete Pharmacy Address</h4>
+                  <input type="text" name="flatNo" value={formData.flatNo} onChange={handleInputChange} required placeholder="Shop No. / Building Name / Complex" className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300" />
+                  <input type="text" name="street" value={formData.street} onChange={handleInputChange} required placeholder="Street / Road / Sector" className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300" />
                   <div className="flex gap-3">
-                    <input type="text" name="landmark" value={formData.landmark} onChange={handleInputChange} placeholder="Landmark (Optional)" className="flex-1 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
-                    <input type="text" name="pincode" value={formData.pincode} onChange={handleInputChange} required placeholder="Pincode" maxLength="6" className="w-[100px] px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 text-center tracking-widest" />
+                    <input type="text" name="landmark" value={formData.landmark} onChange={handleInputChange} placeholder="Landmark (Optional)" className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300" />
+                    <input type="text" name="pincode" value={formData.pincode} onChange={handleInputChange} required placeholder="Pincode" maxLength="6" className="w-[100px] px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300 text-center tracking-widest" />
                   </div>
                   <div className="flex gap-3">
-                    <input type="text" name="city" value={formData.city} onChange={handleInputChange} required placeholder="City / District" className="flex-1 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
-                    <input type="text" name="state" value={formData.state} onChange={handleInputChange} required placeholder="State" className="flex-1 px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700" />
+                    <input type="text" name="city" value={formData.city} onChange={handleInputChange} required placeholder="City / District" className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300" />
+                    <input type="text" name="state" value={formData.state} onChange={handleInputChange} required placeholder="State" className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-[0.85rem] focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-medium text-gray-700 dark:text-gray-300" />
                   </div>
                 </div>
               </div>

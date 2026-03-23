@@ -13,13 +13,13 @@ import axios from '../api/axios';
 const InfoRow = ({ icon: Icon, label, value }) => {
   if (!value) return null;
   return (
-    <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+    <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700">
       <div className="bg-green-100 p-2.5 rounded-xl shrink-0">
         <Icon className="w-5 h-5 text-green-600" />
       </div>
       <div>
         <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{label}</p>
-        <p className="font-semibold text-gray-800">{value}</p>
+        <p className="font-semibold text-gray-800 dark:text-slate-200">{value}</p>
       </div>
     </div>
   );
@@ -27,7 +27,7 @@ const InfoRow = ({ icon: Icon, label, value }) => {
 
 /* ── Editable field row (user) ── */
 const EditableRow = ({ icon: Icon, label, value, onChange, type = 'text', readOnly = false }) => (
-  <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 group">
+  <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 group">
     <div className="bg-green-100 p-2.5 rounded-xl shrink-0">
       <Icon className="w-5 h-5 text-green-600" />
     </div>
@@ -40,7 +40,7 @@ const EditableRow = ({ icon: Icon, label, value, onChange, type = 'text', readOn
           type={type}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full bg-transparent font-semibold text-gray-800 text-sm outline-none border-b-2 border-transparent focus:border-green-400 transition-colors placeholder-gray-300"
+          className="w-full bg-transparent font-semibold text-gray-800 dark:text-slate-200 text-sm outline-none border-b-2 border-transparent focus:border-green-400 transition-colors placeholder-gray-300"
         />
       )}
     </div>
@@ -109,11 +109,11 @@ const SettingsPage = () => {
   return (
     <DashboardLayout>
       <div className="lg:col-span-12 flex flex-col gap-6">
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
 
           {/* ── Header ── */}
           <div className="bg-[#059669] p-8 sm:p-10 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white dark:bg-slate-800/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
             <Settings className="w-14 h-14 text-white mx-auto mb-4 opacity-90 drop-shadow-md" />
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
               {t('settings.heading')}
@@ -198,14 +198,14 @@ const SettingsPage = () => {
       {/* ── Confirmation Modal ── */}
       {showConfirm && (
         <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative animate-in zoom-in-95 duration-200">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-md p-8 relative animate-in zoom-in-95 duration-200">
             <button onClick={() => setShowConfirm(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
               <X className="w-5 h-5" />
             </button>
             <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Trash2 className="w-7 h-7 text-red-600" />
             </div>
-            <h3 className="text-xl font-extrabold text-gray-900 text-center mb-1">Delete Account</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-200 text-center mb-1">Delete Account</h3>
             <p className="text-sm text-gray-500 text-center mb-6">
               This will permanently delete your account,{' '}
               {isPharmacy ? 'all collection records' : 'all disposal history and points'}.{' '}
@@ -219,7 +219,7 @@ const SettingsPage = () => {
               value={confirmText}
               onChange={e => setConfirmText(e.target.value)}
               placeholder="DELETE"
-              className="w-full border-2 border-gray-200 focus:border-red-400 outline-none rounded-xl px-4 py-3 text-sm font-semibold mb-4 transition-colors"
+              className="w-full border-2 border-gray-200 dark:border-gray-700 focus:border-red-400 outline-none rounded-xl px-4 py-3 text-sm font-semibold mb-4 transition-colors"
             />
             {deleteErr && (
               <p className="text-xs text-red-600 font-semibold mb-3 flex items-center gap-1">
@@ -227,7 +227,7 @@ const SettingsPage = () => {
               </p>
             )}
             <div className="flex gap-3">
-              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-600 font-bold text-sm hover:bg-gray-50 transition-colors">
+              <button onClick={() => setShowConfirm(false)} className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 font-bold text-sm hover:bg-gray-50 dark:bg-slate-900 transition-colors">
                 Cancel
               </button>
               <button

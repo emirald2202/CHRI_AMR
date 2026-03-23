@@ -43,10 +43,10 @@ const Leaderboard = () => {
   return (
     <DashboardLayout>
       <div className="lg:col-span-12 flex flex-col gap-6">
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
           
           <div className="bg-[#059669] p-10 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white dark:bg-slate-800/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
             
             <Trophy className="w-16 h-16 text-white mx-auto mb-4 opacity-90 drop-shadow-md" />
@@ -59,13 +59,13 @@ const Leaderboard = () => {
               <div className="flex bg-gray-100 p-1.5 rounded-xl w-full max-w-md">
                 <button 
                   onClick={() => setTab('users')}
-                  className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'users' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'users' ? 'bg-white dark:bg-slate-800 text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-300'}`}
                 >
                   <User className="w-4 h-4" /> {t('leaderboard.topUsers')}
                 </button>
                 <button 
                   onClick={() => setTab('pharmacies')}
-                  className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'pharmacies' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'pharmacies' ? 'bg-white dark:bg-slate-800 text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-300'}`}
                 >
                   <Store className="w-4 h-4" /> {t('leaderboard.topPharmacies')}
                 </button>
@@ -73,10 +73,10 @@ const Leaderboard = () => {
             </div>
 
             {tab === 'users' ? (
-              <div className="overflow-x-auto rounded-xl border border-gray-100 shadow-sm shadow-gray-100/50">
+              <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm shadow-gray-100/50">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
+                    <tr className="bg-gray-50 dark:bg-slate-900/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
                       <th className="p-4 font-bold text-center w-24">{t('leaderboard.rank', {defaultValue: 'Rank'})}</th>
                       <th className="p-4 font-bold">{t('leaderboard.heroName', {defaultValue: 'Hero Name'})}</th>
                       <th className="p-4 font-bold text-center">{t('history.safeDisposals', {defaultValue: 'Safe Disposals'})}</th>
@@ -85,10 +85,10 @@ const Leaderboard = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     {mockUsers.map((u, i) => (
-                      <tr key={u.id} className={`transition-colors hover:bg-gray-50/50 ${user?.name === u.name ? 'bg-green-50/50 hover:bg-green-50/80' : ''}`}>
+                      <tr key={u.id} className={`transition-colors hover:bg-gray-50 dark:bg-slate-900 ${user?.name === u.name ? 'bg-green-50 dark:bg-emerald-900/30/50 hover:bg-green-50 dark:bg-emerald-900/30/80' : ''}`}>
                         <td className="p-4 text-center align-middle">{getMedal(i)}</td>
-                        <td className="p-4 font-bold text-gray-800 flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 text-xs font-bold">
+                        <td className="p-4 font-bold text-gray-800 dark:text-slate-200 flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 text-xs font-bold">
                             {u.name.charAt(0)}
                           </div>
                           {u.name} {user?.name === u.name && <span className="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full ml-2 shadow-sm">{t('leaderboard.you', {defaultValue: 'You'})}</span>}
@@ -101,10 +101,10 @@ const Leaderboard = () => {
                 </table>
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-xl border border-gray-100 shadow-sm shadow-gray-100/50">
+              <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm shadow-gray-100/50">
                  <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
+                    <tr className="bg-gray-50 dark:bg-slate-900/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
                       <th className="p-4 font-bold text-center w-24">{t('leaderboard.rank', {defaultValue: 'Rank'})}</th>
                       <th className="p-4 font-bold">{t('leaderboard.pharmacyNameLb', {defaultValue: 'Pharmacy'})}</th>
                       <th className="p-4 font-bold text-center">{t('leaderboard.medsCollected', {defaultValue: 'Collected'})}</th>
@@ -114,9 +114,9 @@ const Leaderboard = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     {mockPharmacies.map((p, i) => (
-                       <tr key={p.id} className="transition-colors hover:bg-gray-50/50">
+                       <tr key={p.id} className="transition-colors hover:bg-gray-50 dark:bg-slate-900">
                         <td className="p-4 text-center align-middle">{getMedal(i)}</td>
-                        <td className="p-4 font-bold text-gray-800 flex items-center gap-3">
+                        <td className="p-4 font-bold text-gray-800 dark:text-slate-200 flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center text-green-600 shadow-sm">
                             <Store className="w-4 h-4" />
                           </div>

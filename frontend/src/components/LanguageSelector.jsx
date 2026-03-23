@@ -40,8 +40,8 @@ const LanguageSelector = ({ variant = 'light' }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center text-[0.85rem] font-bold transition-colors cursor-pointer rounded-lg px-2.5 py-1.5 ${
           variant === 'dark' 
-            ? 'text-white hover:bg-white/10' 
-            : 'text-gray-600 hover:text-green-700 hover:bg-green-50'
+            ? 'text-white hover:bg-white dark:bg-slate-800/10' 
+            : 'text-gray-600 hover:text-green-700 hover:bg-green-50 dark:bg-emerald-900/30'
         }`}
       >
         <Globe className="w-4 h-4 mr-1.5" />
@@ -50,7 +50,7 @@ const LanguageSelector = ({ variant = 'light' }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden z-[1000] animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 dark:border-slate-700 overflow-hidden z-[1000] animate-in slide-in-from-top-2 duration-200">
           <div className="py-1">
             {languages.map((lng) => (
               <button
@@ -59,7 +59,7 @@ const LanguageSelector = ({ variant = 'light' }) => {
                 className={`w-full text-left px-5 py-2.5 text-sm font-semibold transition-colors ${
                   i18n.language === lng.code 
                     ? 'bg-green-600 text-white shadow-inner' 
-                    : 'text-gray-700 hover:bg-gray-50'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:bg-slate-900'
                 }`}
               >
                 {lng.label}

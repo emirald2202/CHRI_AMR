@@ -10,13 +10,13 @@ const Impact = () => {
       <div className="lg:col-span-12 flex flex-col gap-6 animate-in slide-in-from-bottom-4 duration-500 fade-in">
         
         {/* Hero Header */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center justify-between relative overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center justify-between relative overflow-hidden">
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-red-500/5 rounded-full blur-3xl"></div>
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 font-extrabold text-[0.65rem] uppercase tracking-widest px-3 py-1.5 rounded-lg border border-red-100 mb-5">
                 <AlertTriangle className="w-4 h-4" /> {t('impact.priorityWarning')}
               </div>
-              <h2 className="text-[2rem] font-black text-gray-800 mb-3 tracking-tight leading-tight md:max-w-3xl">
+              <h2 className="text-[2rem] font-black text-gray-800 dark:text-slate-200 mb-3 tracking-tight leading-tight md:max-w-3xl">
                 {t('impact.headingMain')} <span className="text-red-600">{t('impact.maha')}</span>
               </h2>
               <p className="text-[1.05rem] font-medium text-gray-500 leading-relaxed md:max-w-3xl">
@@ -29,10 +29,10 @@ const Impact = () => {
         </div>
 
         {/* The Crisis */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10">
-           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-8 md:p-10">
+           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
               <MapPin className="w-6 h-6 text-[#f15700]" />
-              <h3 className="text-xl font-bold text-gray-800">{t('impact.crisisHeading')}</h3>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-slate-200">{t('impact.crisisHeading')}</h3>
            </div>
            
            <div className="bg-[#f15700]/5 border border-[#f15700]/20 rounded-2xl p-6 mb-6">
@@ -58,31 +58,31 @@ const Impact = () => {
         </div>
         
         {/* Hospital Data */}
-        <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10">
-           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-8 md:p-10">
+           <div className="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
               <Database className="w-6 h-6 text-blue-600" />
-              <h3 className="text-xl font-bold text-gray-800">{t('impact.dataHeading')}</h3>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-slate-200">{t('impact.dataHeading')}</h3>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 p-6 rounded-2xl">
                  <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.klebTitle')}</div>
-                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.klebDesc')}</p>
+                 <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-3">{t('impact.klebDesc')}</p>
                  <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceIcmr2021')}</span>
               </div>
-              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 p-6 rounded-2xl">
                  <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.ecoliTitle')}</div>
-                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.ecoliDesc')}</p>
+                 <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-3">{t('impact.ecoliDesc')}</p>
                  <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceIcmr2021')}</span>
               </div>
-              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 p-6 rounded-2xl">
                  <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.vectorTitle')}</div>
-                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.vectorDesc')}</p>
+                 <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-3">{t('impact.vectorDesc')}</p>
                  <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceLancet')}</span>
               </div>
-              <div className="bg-gray-50 border border-gray-100 p-6 rounded-2xl">
+              <div className="bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 p-6 rounded-2xl">
                  <div className="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest">{t('impact.advRes')}</div>
-                 <p className="text-sm text-gray-700 font-medium mb-3">{t('impact.advResDesc')}</p>
+                 <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-3">{t('impact.advResDesc')}</p>
                  <span className="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest block">{t('impact.sourceBioSpectrum')}</span>
               </div>
            </div>
@@ -91,10 +91,10 @@ const Impact = () => {
         {/* Vulnerability factors */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            {/* Vulnerability */}
-           <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col">
-              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+           <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-8 md:p-10 flex flex-col">
+              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
                  <AlertCircle className="w-6 h-6 text-amber-500" />
-                 <h3 className="text-xl font-bold text-gray-800">{t('impact.whyVul')}</h3>
+                 <h3 className="text-xl font-bold text-gray-800 dark:text-slate-200">{t('impact.whyVul')}</h3>
               </div>
               <ul className="space-y-5 text-[0.95rem] text-gray-600 font-medium flex-1">
                  <li className="flex gap-4">
@@ -119,12 +119,12 @@ const Impact = () => {
            </div>
            
            {/* Disposal */}
-           <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-8 md:p-10 flex flex-col">
-              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+           <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-slate-700 p-8 md:p-10 flex flex-col">
+              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
                  <Leaf className="w-6 h-6 text-green-600" />
-                 <h3 className="text-xl font-bold text-gray-800">{t('impact.dispProb')}</h3>
+                 <h3 className="text-xl font-bold text-gray-800 dark:text-slate-200">{t('impact.dispProb')}</h3>
               </div>
-              <div className="bg-green-50/50 rounded-2xl p-5 mb-5 border border-green-100">
+              <div className="bg-green-50 dark:bg-emerald-900/30/50 rounded-2xl p-5 mb-5 border border-green-100">
                  <p className="text-sm text-green-800 font-semibold leading-relaxed">
                     {t('impact.dispDesc')}
                  </p>
@@ -154,7 +154,7 @@ const Impact = () => {
            <p className="text-green-100 text-lg md:text-xl font-medium max-w-2xl leading-relaxed mb-6">
               {t('impact.means1')}
            </p>
-           <div className="bg-white/10 border border-white/20 p-6 rounded-2xl max-w-3xl">
+           <div className="bg-white dark:bg-slate-800/10 border border-white/20 p-6 rounded-2xl max-w-3xl">
               <p className="font-bold text-sm md:text-base leading-relaxed">
                  {t('impact.means2')}
               </p>
@@ -163,38 +163,38 @@ const Impact = () => {
 
         {/* References */}
         <div className="mt-8 mb-4 px-4 md:px-8">
-           <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2 mb-4"><LinkIcon className="w-4 h-4"/> Certified Sources & Indices</h4>
+           <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2 mb-4"><LinkIcon className="w-4 h-4"/> Certified Sources & Indices</h4>
            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-500 font-medium">
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">NCDC India</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">NCDC India</strong>
                  NARS-Net Annual Report 2022
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">ICMR AMRSN</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">ICMR AMRSN</strong>
                  Surveillance Network Registry
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">ICMR Annual Report</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">ICMR Annual Report</strong>
                  AMR Annual Report 2021
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">The Lancet Regional Health</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">The Lancet Regional Health</strong>
                  Southeast Asia (May 2024)
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">Oxford Academic</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">Oxford Academic</strong>
                  Journal of Antimicrobial Chemotherapy
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">PMC</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">PMC</strong>
                  Clinical Infectious Diseases (2019)
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">Frontiers in Antibiotics</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">Frontiers in Antibiotics</strong>
                  January 2026 Publication
               </div>
-              <div className="bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
-                 <strong className="text-gray-800 block mb-0.5">BioSpectrum India</strong>
+              <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-3 rounded-lg shadow-sm">
+                 <strong className="text-gray-800 dark:text-slate-200 block mb-0.5">BioSpectrum India</strong>
                  ICMR SBI-CREP-01 Study Focus
               </div>
            </div>
