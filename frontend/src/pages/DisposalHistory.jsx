@@ -53,7 +53,7 @@ const DisposalHistory = () => {
               </div>
             ) : (
               requests.map(req => (
-                <div key={req._id} className="border border-green-100 bg-green-50 dark:bg-emerald-900/30/30 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
+                 <div key={req._id} className="border border-green-100 dark:border-slate-600 bg-green-50/50 dark:bg-slate-700/30 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
                   <div className="flex-1 w-full relative">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                        <h4 className="font-bold text-gray-800 dark:text-slate-200 text-[1.05rem] md:text-[1.1rem]">{t('history.verifiedPkg', { defaultValue: 'Verified Safe Package' })}</h4>
@@ -98,7 +98,7 @@ const DisposalHistory = () => {
                                 <div key={idx} className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/80 p-3.5 rounded-xl border border-gray-100 dark:border-slate-700">
                                    <div>
                                      <p className="text-[0.9rem] font-bold text-gray-800 dark:text-slate-200">{med.medicineName || 'Unknown Medicine'}</p>
-                                     <p className="text-[0.7rem] text-gray-500 font-semibold mt-0.5">{med.genericName || 'Manual Entry'} • {med.doseWeight || med.medicineType}</p>
+                                      <p className="text-[0.7rem] text-gray-500 dark:text-slate-400 font-semibold mt-0.5">{med.genericName || 'Manual Entry'} • {med.doseWeight || med.medicineType}</p>
                                    </div>
                                    <div className="text-right">
                                      <span className="text-[0.7rem] font-bold text-gray-600 bg-white dark:bg-slate-800 px-2.5 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">{t('history.scannedQty', { defaultValue: 'Scanned Qty' })}: {med.remainingQty}/{med.totalQty}</span>
@@ -113,7 +113,7 @@ const DisposalHistory = () => {
 
                   {/* Status Badge */}
                   <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-gray-200 dark:border-gray-700">
-                    <span className="px-5 py-2 text-[0.75rem] font-black rounded-xl uppercase tracking-wider bg-green-50 dark:bg-emerald-900/300 text-white shadow-[0_4px_14px_0_rgba(34,197,94,0.39)]">
+                     <span className="px-5 py-2 text-[0.75rem] font-black rounded-xl uppercase tracking-wider bg-green-500 dark:bg-green-600 text-white shadow-[0_4px_14px_0_rgba(34,197,94,0.39)]">
                       {t('history.destroyedBadge', { defaultValue: 'Destroyed' })}
                     </span>
                     {req.pointsAwarded && (
