@@ -16,7 +16,7 @@ const AuthLayout = ({ children }) => {
 
       {/* ── Left Info Panel ── */}
       <div
-        className="hidden lg:flex lg:w-1/2 bg-[#f0fdf4] p-12 flex-col justify-between border-r border-green-100 relative overflow-hidden"
+        className="hidden lg:flex lg:w-1/2 bg-[#f0fdf4] dark:bg-slate-800 p-12 flex-col justify-between border-r border-green-100 dark:border-slate-700 relative overflow-hidden"
         style={{ backgroundImage: 'radial-gradient(#dcfce7 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }}
       >
         {/* Glow */}
@@ -37,17 +37,17 @@ const AuthLayout = ({ children }) => {
           </div>
 
           {/* Hero headline */}
-          <h1 className="text-[2.6rem] font-extrabold text-[#065f46] mb-3 leading-tight">
+          <h1 className="text-[2.6rem] font-extrabold text-[#065f46] dark:text-emerald-300 mb-3 leading-tight">
             {t('authTitle1')}<br />{t('authTitle2')}
           </h1>
 
           {/* Subtext */}
-          <p className="text-gray-600 text-sm mb-2 leading-relaxed pr-6">
+          <p className="text-gray-600 dark:text-slate-300 text-sm mb-2 leading-relaxed pr-6">
             {t('authDesc')}
           </p>
 
           {/* Value prop */}
-          <p className="text-[0.78rem] text-gray-500 mb-8 leading-relaxed pr-6 italic">
+          <p className="text-[0.78rem] text-gray-500 dark:text-slate-400 mb-8 leading-relaxed pr-6 italic">
             Safely dispose at verified pharmacies near you — earn points, unlock discounts, and contribute to a healthier future.
           </p>
 
@@ -61,7 +61,7 @@ const AuthLayout = ({ children }) => {
               </div>
               <div>
                 <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm mb-2">{t('whySafe')}</h3>
-                <ul className="text-[0.78rem] text-gray-600 space-y-1.5">
+                <ul className="text-[0.78rem] text-gray-600 dark:text-slate-300 space-y-1.5">
                   <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe1')}</li>
                   <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe2')}</li>
                   <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe3')}</li>

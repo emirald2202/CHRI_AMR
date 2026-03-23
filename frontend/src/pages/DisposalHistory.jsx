@@ -36,7 +36,7 @@ const DisposalHistory = () => {
               <h2 className="text-[1.6rem] font-extrabold text-gray-800 dark:text-slate-200 mb-1.5 flex items-center gap-3">
                 <History className="w-8 h-8 text-green-600" /> {t('history.ledger', { defaultValue: 'Disposal History Ledger' })}
               </h2>
-              <p className="text-[0.85rem] font-medium text-gray-500">{t('history.ledgerSub', { defaultValue: 'A permanent archive of all your successfully processed medicine packages.' })}</p>
+              <p className="text-[0.85rem] font-medium text-gray-500 dark:text-slate-400">{t('history.ledgerSub', { defaultValue: 'A permanent archive of all your successfully processed medicine packages.' })}</p>
             </div>
             <div className="bg-green-50 dark:bg-emerald-900/30 text-green-700 font-black px-6 py-3.5 rounded-xl text-lg whitespace-nowrap shadow-sm border border-green-100 flex items-center gap-3">
               <ShieldCheck className="w-6 h-6" /> {requests.length} {t('history.safeDisposals', { defaultValue: 'Safe Disposals' })}
@@ -63,7 +63,7 @@ const DisposalHistory = () => {
                        </button>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-[0.85rem] text-gray-600 font-medium">
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-[0.85rem] text-gray-600 dark:text-slate-300 font-medium">
                       <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-green-600" /> {t('history.finishedVia', { defaultValue: 'Finished via' })} {req.disposalType === 'pickup' ? t('disposal.homePickup') : t('disposal.dropOff')}</span>
                       
                       <span className="flex items-center gap-1.5">
@@ -92,7 +92,7 @@ const DisposalHistory = () => {
                     {/* Expandable Package Details */}
                     {expandedReqId === req._id && (
                        <div className="mt-5 bg-white dark:bg-slate-800 border border-green-200 rounded-2xl p-5 shadow-sm animate-in fade-in zoom-in-95 duration-200 w-full">
-                          <h5 className="font-bold text-green-800 text-xs uppercase mb-4 border-b border-green-100 pb-3 flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> {t('history.destructionManifest', { defaultValue: 'Certified destruction manifest' })}</h5>
+                          <h5 className="font-bold text-green-800 dark:text-emerald-300 text-xs uppercase mb-4 border-b border-green-100 dark:border-slate-600 pb-3 flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> {t('history.destructionManifest', { defaultValue: 'Certified destruction manifest' })}</h5>
                           <div className="space-y-3">
                              {(req.verifiedMedicines && req.verifiedMedicines.length > 0 ? req.verifiedMedicines : req.userMedicines || []).map((med, idx) => (
                                 <div key={idx} className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/80 p-3.5 rounded-xl border border-gray-100 dark:border-slate-700">

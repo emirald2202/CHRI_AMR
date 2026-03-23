@@ -287,13 +287,13 @@ const AuthPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-800 dark:text-slate-200 mb-2">
             {mode === 'login' ? t('auth.login.heading', { defaultValue: 'Welcome Back' }) : t('auth.signup.heading', { defaultValue: 'Create Account' })}
           </h2>
-          <p className="text-gray-500 text-sm mb-8 font-medium">
+          <p className="text-gray-500 dark:text-slate-400 text-sm mb-8 font-medium">
             {mode === 'login' ? t('auth.login.tagline', { defaultValue: 'Sign in to continue your mission' }) : t('auth.login.tagline', { defaultValue: 'Join the movement against AMR' })}
           </p>
         </div>
 
         {errorMsg && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-[0.8rem] text-center font-semibold">
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-600 dark:text-red-400 rounded-lg text-[0.8rem] text-center font-semibold">
             {errorMsg}
           </div>
         )}
@@ -316,7 +316,7 @@ const AuthPage = () => {
           </div>
 
           {/* Mode Toggle */}
-          <div className="flex p-1 bg-gray-100/80 rounded-lg">
+          <div className="flex p-1 bg-gray-100/80 dark:bg-slate-700 rounded-lg">
             {['login', 'signup'].map(m => (
               <button key={m} type="button" onClick={() => handleModeSwitch(m)}
                 className={`flex-1 py-1.5 text-[0.85rem] font-semibold rounded-md transition-all ${mode === m
