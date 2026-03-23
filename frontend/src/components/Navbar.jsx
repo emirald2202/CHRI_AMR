@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShieldCheck, ChevronDown, LogOut, Settings, Clock, Award, Globe, Search, Menu, X, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -35,10 +36,24 @@ const Navbar = () => {
 
           {/* Center Links */}
           <div className="hidden md:flex items-center space-x-2">
-            <Link to="/dashboard" className="text-green-600 font-semibold border-b-2 border-green-600 px-4 py-5 transition-colors">
+            <Link 
+              to="/dashboard" 
+              className={`px-4 py-5 font-semibold transition-colors border-b-2 ${
+                location.pathname === '/dashboard' 
+                  ? 'text-green-600 border-green-600' 
+                  : 'text-gray-500 border-transparent hover:text-green-600'
+              }`}
+            >
               {t('nav.dashboard')}
             </Link>
-            <Link to="/leaderboard" className="text-gray-500 hover:text-green-600 hover:bg-green-50 dark:bg-emerald-900/30 px-4 py-2 rounded-lg font-medium transition-all">
+            <Link 
+              to="/leaderboard" 
+              className={`px-4 py-5 font-semibold transition-colors border-b-2 ${
+                location.pathname === '/leaderboard' 
+                  ? 'text-green-600 border-green-600' 
+                  : 'text-gray-500 border-transparent hover:text-green-600'
+              }`}
+            >
               {t('nav.leaderboard')}
             </Link>
             <button 
@@ -171,10 +186,10 @@ const Navbar = () => {
               </button>
             </div>
             <div className="px-2 py-3 space-y-1 flex-1 overflow-y-auto">
-              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:bg-emerald-900/30 hover:text-green-700 font-bold transition-colors">
+              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className={`block px-4 py-3 rounded-xl text-[0.95rem] font-bold transition-colors ${location.pathname === '/dashboard' ? 'bg-green-50 dark:bg-emerald-900/30 text-green-700' : 'text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-slate-700'}`}>
                 {t('nav.dashboard')}
               </Link>
-              <Link to="/leaderboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:bg-emerald-900/30 hover:text-green-700 font-bold transition-colors">
+              <Link to="/leaderboard" onClick={() => setMobileMenuOpen(false)} className={`block px-4 py-3 rounded-xl text-[0.95rem] font-bold transition-colors ${location.pathname === '/leaderboard' ? 'bg-green-50 dark:bg-emerald-900/30 text-green-700' : 'text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-slate-700'}`}>
                 {t('nav.leaderboard')}
               </Link>
               <button 
