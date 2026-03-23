@@ -80,20 +80,21 @@ exports.login = async (req, res) => {
 exports.sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
+
+    if (!process.env.BREVO_API_KEY || !process.env.BREVO_SENDER_EMAIL) {
+      return res.status(500).json({ message: 'Email not configured: Missing BREVO_API_KEY or BREVO_SENDER_EMAIL in Render.' });
+    }
+
     const otp = generateOTP();
-    
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await sendEmail(
-      email,
-      'Your OTP Code - AMRit',
-      `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`
-    );
+    await sendEmail(email, 'Your OTP Code - AMRit', `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`);
 
     res.json({ message: 'OTP sent to email' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('sendOtp error:', error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
