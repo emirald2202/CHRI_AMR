@@ -4,6 +4,8 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import Leaderboard from './pages/Leaderboard';
 import Impact from './pages/Impact';
+import DisposalHistory from './pages/DisposalHistory';
+import SettingsPage from './pages/SettingsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
         <Route path="/impact" element={<ProtectedRoute><Impact /></ProtectedRoute>} />
+        <Route path="/history" element={<ProtectedRoute><DisposalHistory /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

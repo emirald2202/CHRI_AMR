@@ -11,13 +11,9 @@ const LanguageSelector = ({ variant = 'light' }) => {
     { code: 'en', label: 'English', short: 'EN' },
     { code: 'hi', label: 'हिंदी', short: 'HI' },
     { code: 'mr', label: 'मराठी', short: 'MR' },
-    { code: 'bn', label: 'বাংলা', short: 'BN' },        // Bengali
-    { code: 'ta', label: 'தமிழ்', short: 'TA' },       // Tamil
-    { code: 'te', label: 'తెలుగు', short: 'TE' },      // Telugu
-    { code: 'ml', label: 'മലയാളം', short: 'ML' },     // Malayalam
-    { code: 'gu', label: 'ગુજરાતી', short: 'GU' },       // Gujarati
-    { code: 'pa', label: 'ਪੰਜਾਬੀ', short: 'PA' },      // Punjabi
-    { code: 'kn', label: 'ಕನ್ನಡ', short: 'KN' }        // Kannada
+    { code: 'te', label: 'తెలుగు', short: 'TE' },
+    { code: 'kn', label: 'ಕನ್ನಡ', short: 'KN' },
+    { code: 'gu', label: 'ગુજરાતી', short: 'GU' }
   ];
 
   const currentLang = languages.find(l => l.code === i18n.language) || languages[0];
@@ -34,7 +30,7 @@ const LanguageSelector = ({ variant = 'light' }) => {
 
   const changeLanguage = (code) => {
     i18n.changeLanguage(code);
-    localStorage.setItem('appLanguage', code);
+    localStorage.setItem('language', code);
     setIsOpen(false);
   };
 

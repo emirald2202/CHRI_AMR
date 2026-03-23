@@ -4,19 +4,29 @@ import { Award, Medal, Trophy, User, Store } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
 import { useTranslation } from 'react-i18next';
 
-const mockUsers = [
-  { id: '1', name: 'Rahul Sharma', points: 450, disposals: 15 },
-  { id: '2', name: 'Priya Patel', points: 380, disposals: 12 },
-  { id: 'curr', name: 'Demo User', points: 150, disposals: 5 },
-  { id: '4', name: 'Amit Kumar', points: 120, disposals: 4 },
-  { id: '5', name: 'Neha Singh', points: 90, disposals: 3 },
-];
+const generatedUsers = Array.from({ length: 50 }).map((_, i) => {
+  const points = Math.floor(Math.random() * 350) + 10;
+  return {
+    id: `demo-${i + 1}`,
+    name: `Demo User ${i + 1}`,
+    points: points,
+    disposals: Math.floor(points / 25) + 1
+  };
+});
 
-const mockPharmacies = [
-  { id: 'p1', name: 'GreenMed Pharmacy', collections: 120, rating: 4.8, score: 95 },
-  { id: 'p2', name: 'CityHealth Pharmacy', collections: 85, rating: 4.5, score: 88 },
-  { id: 'p3', name: 'EcoCare Pharmacy', collections: 60, rating: 4.2, score: 75 },
-];
+const mockUsers = [...generatedUsers].sort((a, b) => b.points - a.points);
+
+const generatedPharmacies = Array.from({ length: 50 }).map((_, i) => {
+  return {
+    id: `pharma-${i + 1}`,
+    name: `Demo Pharmacy ${i + 1}`,
+    collections: Math.floor(Math.random() * 300) + 10,
+    rating: (Math.random() * (5.0 - 3.5) + 3.5).toFixed(1),
+    score: Math.floor(Math.random() * 50) + 50
+  };
+});
+
+const mockPharmacies = [...generatedPharmacies].sort((a, b) => b.collections - a.collections);
 
 const getMedal = (index) => {
   if (index === 0) return <Award className="w-6 h-6 text-yellow-500 fill-yellow-100 mx-auto" />;
@@ -40,8 +50,8 @@ const Leaderboard = () => {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
             
             <Trophy className="w-16 h-16 text-white mx-auto mb-4 opacity-90 drop-shadow-md" />
-            <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">{t('lbTitle')}</h2>
-            <p className="text-green-100 max-w-2xl mx-auto text-sm font-medium">{t('lbDesc')}</p>
+            <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">{t('leaderboard.heading', {defaultValue: 'Top Contributors'})}</h2>
+            <p className="text-green-100 max-w-2xl mx-auto text-sm font-medium">{t('leaderboard.description', {defaultValue: 'See who is making the biggest impact'})}</p>
           </div>
 
           <div className="p-8">
@@ -51,13 +61,13 @@ const Leaderboard = () => {
                   onClick={() => setTab('users')}
                   className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'users' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  <User className="w-4 h-4" /> {t('topUsers')}
+                  <User className="w-4 h-4" /> {t('leaderboard.topUsers')}
                 </button>
                 <button 
                   onClick={() => setTab('pharmacies')}
                   className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-bold transition-all flex items-center justify-center gap-2 ${tab === 'pharmacies' ? 'bg-white text-green-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  <Store className="w-4 h-4" /> {t('topPharmacies')}
+                  <Store className="w-4 h-4" /> {t('leaderboard.topPharmacies')}
                 </button>
               </div>
             </div>
@@ -67,10 +77,10 @@ const Leaderboard = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
-                      <th className="p-4 font-bold text-center w-24">{t('rank')}</th>
-                      <th className="p-4 font-bold">{t('heroName')}</th>
-                      <th className="p-4 font-bold text-center">{t('safeDisposals')}</th>
-                      <th className="p-4 font-bold text-right">{t('totalPoints')}</th>
+                      <th className="p-4 font-bold text-center w-24">{t('leaderboard.rank', {defaultValue: 'Rank'})}</th>
+                      <th className="p-4 font-bold">{t('leaderboard.heroName', {defaultValue: 'Hero Name'})}</th>
+                      <th className="p-4 font-bold text-center">{t('history.safeDisposals', {defaultValue: 'Safe Disposals'})}</th>
+                      <th className="p-4 font-bold text-right">{t('leaderboard.totalPoints', {defaultValue: 'Total Points'})}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -81,10 +91,10 @@ const Leaderboard = () => {
                           <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 text-xs font-bold">
                             {u.name.charAt(0)}
                           </div>
-                          {u.name} {user?.name === u.name && <span className="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full ml-2 shadow-sm">{t('you')}</span>}
+                          {u.name} {user?.name === u.name && <span className="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full ml-2 shadow-sm">{t('leaderboard.you', {defaultValue: 'You'})}</span>}
                         </td>
                         <td className="p-4 text-center font-semibold text-gray-600">{u.disposals}</td>
-                        <td className="p-4 text-right font-black text-green-600 text-lg">{u.points} <span className="text-xs text-gray-400 font-semibold tracking-wide uppercase">{t('pts')}</span></td>
+                        <td className="p-4 text-right font-black text-green-600 text-lg">{u.points} <span className="text-xs text-gray-400 font-semibold tracking-wide uppercase">{t('common.pts')}</span></td>
                       </tr>
                     ))}
                   </tbody>
@@ -95,11 +105,11 @@ const Leaderboard = () => {
                  <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gray-50/80 text-gray-500 text-[0.65rem] uppercase tracking-wider">
-                      <th className="p-4 font-bold text-center w-24">{t('rank')}</th>
-                      <th className="p-4 font-bold">{t('pharmacyNameLb')}</th>
-                      <th className="p-4 font-bold text-center">{t('medsCollected')}</th>
-                      <th className="p-4 font-bold text-center">{t('rating')}</th>
-                      <th className="p-4 font-bold text-right">{t('partScore')}</th>
+                      <th className="p-4 font-bold text-center w-24">{t('leaderboard.rank', {defaultValue: 'Rank'})}</th>
+                      <th className="p-4 font-bold">{t('leaderboard.pharmacyNameLb', {defaultValue: 'Pharmacy'})}</th>
+                      <th className="p-4 font-bold text-center">{t('leaderboard.medsCollected', {defaultValue: 'Collected'})}</th>
+                      <th className="p-4 font-bold text-center">{t('leaderboard.rating', {defaultValue: 'Rating'})}</th>
+                      <th className="p-4 font-bold text-right">{t('leaderboard.partScore', {defaultValue: 'Participation'})}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">

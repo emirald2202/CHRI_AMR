@@ -12,7 +12,14 @@ const userSchema = new mongoose.Schema({
   
   // Pharmacy specific fields
   pharmacyName: { type: String },
-  address: { type: String },
+  address: { 
+    flatNo: { type: String },
+    street: { type: String },
+    landmark: { type: String },
+    city: { type: String },
+    state: { type: String },
+    pincode: { type: String }
+  },
   coordinates: {
     lat: { type: Number },
     lng: { type: Number }
