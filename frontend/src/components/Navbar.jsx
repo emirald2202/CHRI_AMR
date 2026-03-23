@@ -6,6 +6,12 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 
+const getBadge = (points) => {
+  if (points >= 100) return { label: 'AMR Hero', bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-700 dark:text-purple-300', emoji: '🦸' };
+  if (points >= 50)  return { label: 'Safe Disposal Champion', bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-700 dark:text-amber-300', emoji: '🛡️' };
+  return null;
+};
+
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -101,6 +107,11 @@ const Navbar = () => {
                       <Award className="w-3 h-3 text-green-600" />
                       <span className="text-xs font-black text-green-600">{user?.points || 0} pts</span>
                     </div>
+                    {(() => { const b = getBadge(user?.points || 0); return b ? (
+                      <span className={`inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full text-[0.65rem] font-black ${b.bg} ${b.text}`}>
+                        {b.emoji} {b.label}
+                      </span>
+                    ) : null; })()}
                   </div>
                   <div className="py-1">
                     <Link to="/settings" onClick={() => setDropdownOpen(false)} className="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:bg-emerald-900/30 hover:text-green-700 font-medium transition-colors">
@@ -188,6 +199,11 @@ const Navbar = () => {
                     <Award className="w-3 h-3 text-green-600" />
                     <span className="text-xs font-black text-green-600">{user?.points || 0} pts</span>
                   </div>
+                  {(() => { const b = getBadge(user?.points || 0); return b ? (
+                    <span className={`inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full text-[0.65rem] font-black ${b.bg} ${b.text}`}>
+                      {b.emoji} {b.label}
+                    </span>
+                  ) : null; })()}
                 </div>
                 <button 
                   onClick={() => setMobileMenuOpen(false)} 
