@@ -2,40 +2,12 @@ const User = require('../models/User');
 const Otp = require('../models/Otp');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const { google } = require('googleapis');
-
-// Build a fresh OAuth2 transporter for each send
-// (access tokens expire after 1 hour, so we fetch a new one each time)
-const createGmailTransporter = async () => {
-  const OAuth2 = google.auth.OAuth2;
-  const oauth2Client = new OAuth2(
-    process.env.GMAIL_CLIENT_ID,
-    process.env.GMAIL_CLIENT_SECRET,
-    'https://developers.google.com/oauthplayground'
-  );
-
-  oauth2Client.setCredentials({
-    refresh_token: process.env.GMAIL_REFRESH_TOKEN
-  });
-
-  const accessToken = await oauth2Client.getAccessToken();
-
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: process.env.EMAIL_USER,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-      accessToken: accessToken.token
-    }
-  });
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
 
 exports.register = async (req, res) => {
   try {
@@ -80,15 +52,12 @@ exports.sendOtp = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    console.log(`Attempting to send OTP to ${email}...`);
-    const transporter = await createGmailTransporter();
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'AMRit <onboarding@resend.dev>',
       to: email,
       subject: 'Your OTP Code',
       text: `Your OTP is: ${otp}. It is valid for 5 minutes.`
     });
-    console.log(`OTP sent successfully to ${email}`);
 
     res.json({ message: 'OTP sent to email' });
   } catch (error) {
@@ -128,12 +97,11 @@ exports.forgotPassword = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    const transporter = await createGmailTransporter();
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'AMRit <onboarding@resend.dev>',
       to: email,
       subject: 'Password Reset OTP',
-      text: `Your OTP to reset password is: ${otp}. It is valid for 5 minutes.`
+      text: `Your OTP to reset your AMRit password is: ${otp}. It is valid for 5 minutes.`
     });
 
     res.json({ message: 'Password reset OTP sent to email' });
@@ -141,6 +109,7 @@ exports.forgotPassword = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 exports.resetPassword = async (req, res) => {
   try {
