@@ -1,16 +1,25 @@
 import React from 'react';
-import { ShieldCheck, MapPin, Award, TrendingUp, Users, Droplets, Store, Gift } from 'lucide-react';
+import { ShieldCheck, MapPin, Award, TrendingUp, Users, Droplets, Store, Gift, Moon, Sun } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../contexts/ThemeContext';
 
 const AuthLayout = ({ children }) => {
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-slate-900 font-sans relative">
 
-      {/* Language Selector */}
-      <div className="absolute top-6 right-6 z-[1001]">
+      {/* Top-right controls */}
+      <div className="absolute top-6 right-6 z-[1001] flex items-center gap-2">
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-xl bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shadow-sm"
+          aria-label="Toggle dark mode"
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </button>
         <LanguageSelector variant="light" />
       </div>
 
