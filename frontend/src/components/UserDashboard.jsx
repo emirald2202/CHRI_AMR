@@ -166,6 +166,14 @@ const UserDashboard = () => {
           </div>
         </div>
 
+         {/* Mobile Primary Call to Action */}
+        <button onClick={() => setIsModalOpen(true)} className="lg:hidden bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group w-full">
+          <div className="flex items-center gap-2 text-xl tracking-tight">
+             <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
+          </div>
+          <p className="text-green-100 text-xs font-semibold max-w-[80%] text-center opacity-90">{t('dashboard.scheduleDescription')}</p>
+        </button>
+
         {/* Dynamic Disposal Status Tracker */}
         <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 md:p-8 flex flex-col min-h-[22rem]">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 md:mb-6 gap-4">
@@ -281,7 +289,7 @@ const UserDashboard = () => {
         </div>
 
         {/* Primary Call to Action */}
-        <button onClick={() => setIsModalOpen(true)} className="bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group">
+        <button onClick={() => setIsModalOpen(true)} className="hidden lg:flex bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex-col items-center justify-center gap-2 border border-green-500/50 group">
           <div className="flex items-center gap-2 text-xl tracking-tight">
              <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
           </div>

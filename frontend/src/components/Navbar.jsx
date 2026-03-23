@@ -22,12 +22,12 @@ const Navbar = () => {
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-24 md:h-28">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/dashboard" className="flex items-center gap-2.5 text-green-700 font-extrabold text-xl cursor-pointer tracking-tight">
-              <img src="/favicon.svg" alt="AMRit Logo" className="w-7 h-7" />
-              <span className="hidden sm:inline">AMRit</span>
+          <div className="flex items-center h-full">
+            <Link to="/dashboard" className="flex items-center gap-3 md:gap-4 text-green-700 font-extrabold text-4xl md:text-5xl cursor-pointer tracking-tight">
+              <img src="/favicon.svg" alt="AMRit Logo" className="w-14 h-14 md:w-20 md:h-20 object-contain" />
+              <span className="hidden sm:block leading-none mt-1">AMRit</span>
             </Link>
           </div>
 
@@ -141,24 +141,42 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Sidebar */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white absolute w-full left-0 animate-in slide-in-from-top-2 shadow-lg z-40">
-          <div className="px-4 py-3 space-y-1">
-            <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold transition-colors">
-              {t('nav.dashboard')}
-            </Link>
-            <Link to="/leaderboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold transition-colors">
-              {t('nav.leaderboard')}
-            </Link>
-            <button 
-              onClick={() => { setShowSearch(!showSearch); setMobileMenuOpen(false); }}
-              className="w-full text-left px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold flex items-center gap-2 transition-colors"
-            >
-              <Search className="w-[18px] h-[18px] text-green-600" /> {t('nav.findPharmacies')}
-            </button>
-            <div className="block sm:hidden px-4 pt-3 pb-2 border-t border-gray-100 mt-2">
-                <LanguageSelector variant="light" />
+        <div className="md:hidden fixed inset-0 z-[9999] flex justify-end">
+          {/* Backdrop */}
+          <div 
+             className="absolute inset-0 bg-black/30 backdrop-blur-sm animate-in fade-in duration-200" 
+             onClick={() => setMobileMenuOpen(false)}
+          ></div>
+          
+          {/* Sidebar */}
+          <div className="relative w-64 bg-white h-full shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <span className="font-extrabold text-green-700 tracking-tight">Menu</span>
+              <button 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="p-1.5 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors border border-transparent hover:border-gray-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="px-2 py-3 space-y-1 flex-1 overflow-y-auto">
+              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold transition-colors">
+                {t('nav.dashboard')}
+              </Link>
+              <Link to="/leaderboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold transition-colors">
+                {t('nav.leaderboard')}
+              </Link>
+              <button 
+                onClick={() => { setShowSearch(!showSearch); setMobileMenuOpen(false); }}
+                className="w-full text-left px-4 py-3 rounded-xl text-[0.95rem] text-gray-700 hover:bg-green-50 hover:text-green-700 font-bold flex items-center gap-2 transition-colors"
+              >
+                <Search className="w-[18px] h-[18px] text-green-600" /> {t('nav.findPharmacies')}
+              </button>
+              <div className="block sm:hidden px-4 pt-3 pb-2 border-t border-gray-100 mt-2">
+                  <LanguageSelector variant="light" />
+              </div>
             </div>
           </div>
         </div>
