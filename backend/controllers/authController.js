@@ -33,9 +33,13 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    if (role && user.role !== role) {
+      return res.status(403).json({ message: `Please select the '${user.role === 'user' ? 'User' : 'Pharmacy'}' tab to login.` });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
@@ -71,7 +75,7 @@ exports.sendOtp = async (req, res) => {
 
 exports.verifyOtp = async (req, res) => {
   try {
-    const { email, otp, isLogin } = req.body;
+    const { email, otp, isLogin, role } = req.body;
     const record = await Otp.findOne({ email, otp });
     if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
     
@@ -81,6 +85,10 @@ exports.verifyOtp = async (req, res) => {
       const user = await User.findOne({ email });
       if (!user) return res.status(404).json({ message: 'User not found in system. Please sign up first.' });
       
+      if (role && user.role !== role) {
+        return res.status(403).json({ message: `Please select the '${user.role === 'user' ? 'User' : 'Pharmacy'}' tab to login.` });
+      }
+
       const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
       return res.json({ message: 'OTP verified successfully', token, user: { id: user._id, name: user.name, role: user.role, email: user.email } });
     }
