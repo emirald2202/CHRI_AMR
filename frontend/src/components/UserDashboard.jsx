@@ -313,15 +313,18 @@ const UserDashboard = () => {
               <span className="text-xl font-bold">✕</span>
             </button>
             <div className="w-14 h-14 bg-green-100 dark:bg-green-900/40 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">🏆</div>
-            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-100 mb-2">Get Rewards!</h3>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-100 mb-2">{t('guestDialog.title', { defaultValue: 'Get Rewards!' })}</h3>
             <p className="text-sm text-gray-500 dark:text-slate-400 mb-6 leading-relaxed">
-              To schedule a disposal and earn reward points, please create an account or log in.
+              {t('guestDialog.description', { defaultValue: 'To schedule a disposal and earn reward points, please create an account or log in.' })}
             </p>
             <a href="/login" className="block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-lg mb-3">
-              Login / Sign Up
+              {t('guestDialog.login', { defaultValue: 'Login / Sign Up' })}
             </a>
-            <button onClick={() => setShowGuestDialog(false)} className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-slate-700 transition-all">
-              Maybe Later
+            <button
+              onClick={() => { setShowGuestDialog(false); setIsModalOpen(true); }}
+              className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-slate-700 transition-all"
+            >
+              {t('guestDialog.maybeLater', { defaultValue: 'Dispose Anyway (No Points)' })}
             </button>
           </div>
         </div>

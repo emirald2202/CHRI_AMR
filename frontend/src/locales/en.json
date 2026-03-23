@@ -329,5 +329,11 @@
     "means1": "Every unused antibiotic strip left in a drawer, thrown in the bin, or flushed down the drain is a direct contribution to Maharashtra's growing AMR crisis.",
     "means2": "AMRit gives every citizen in Maharashtra a simple, rewarding way to break this cycle — dispose safely, earn points, and protect the next generation from untreatable infections.",
     "certSources": "Certified Sources & Indices"
+  },
+  "guestDialog": {
+    "title": "Get Rewards!",
+    "description": "To schedule a disposal and earn reward points, please create an account or log in.",
+    "login": "Login / Sign Up",
+    "maybeLater": "Dispose Anyway (No Points)"
   }
 }
