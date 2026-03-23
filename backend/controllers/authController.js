@@ -5,12 +5,19 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
+  service: 'gmail',
   auth: {
-    user: process.env.BREVO_USER, // Your Brevo login email
-    pass: process.env.BREVO_PASS  // Your Brevo SMTP Key (not your account password)
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+// Verify SMTP connection on startup — errors will show immediately in Render logs
+transporter.verify((error) => {
+  if (error) {
+    console.error('❌ Email transporter error:', error.message);
+  } else {
+    console.log('✅ Email transporter ready');
   }
 });
 
