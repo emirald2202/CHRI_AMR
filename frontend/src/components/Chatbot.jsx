@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import axios from 'axios';
 
-const SYSTEM_PROMPT = `You are the official conversational assistant for the 'Antibiotic Safe Disposal Platform'.
+const SYSTEM_PROMPT = `You are the official conversational assistant for the 'AMRiT'.
 Your primary directives:
 1. Be friendly, warm, and conversational. Always respond politely to greetings (like 'hi', 'hello', 'how are you').
 2. Answer questions accurately related to biology, general medicine, antibiotics, antimicrobial resistance (AMR), and safe disposal.
@@ -139,8 +139,8 @@ const Chatbot = () => {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div className={`whitespace-pre-wrap max-w-[85%] p-3.5 rounded-2xl text-[14px] leading-relaxed relative ${msg.role === 'user'
-                    ? 'bg-green-600 text-white rounded-br-none shadow-sm'
-                    : 'bg-white text-gray-800 border border-gray-200 shadow-sm rounded-bl-none'
+                  ? 'bg-green-600 text-white rounded-br-none shadow-sm'
+                  : 'bg-white text-gray-800 border border-gray-200 shadow-sm rounded-bl-none'
                   }`}>
                   {msg.role === 'model' && (
                     <Bot size={14} className="absolute -left-5 bottom-0 text-gray-300" />
