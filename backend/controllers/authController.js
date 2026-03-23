@@ -2,11 +2,19 @@ const User = require('../models/User');
 const Otp = require('../models/Otp');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Brevo SMTP — works with any recipient, no domain needed (300 emails/day free)
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS
+  }
+});
 
-const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
 
 exports.register = async (req, res) => {
@@ -52,11 +60,11 @@ exports.sendOtp = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await resend.emails.send({
-      from: 'AMRiT <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `AMRit <${process.env.BREVO_USER}>`,
       to: email,
-      subject: 'Your OTP Code',
-      text: `Your OTP is: ${otp}. It is valid for 5 minutes.`
+      subject: 'Your OTP Code - AMRit',
+      text: `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`
     });
 
     res.json({ message: 'OTP sent to email' });
@@ -97,11 +105,11 @@ exports.forgotPassword = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await resend.emails.send({
-      from: 'AMRit <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `AMRit <${process.env.BREVO_USER}>`,
       to: email,
-      subject: 'Password Reset OTP',
-      text: `Your OTP to reset your AMRit password is: ${otp}. It is valid for 5 minutes.`
+      subject: 'Password Reset OTP - AMRit',
+      text: `Your AMRit OTP to reset your password is: ${otp}. It is valid for 5 minutes.`
     });
 
     res.json({ message: 'Password reset OTP sent to email' });
