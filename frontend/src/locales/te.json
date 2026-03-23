@@ -167,15 +167,17 @@
         "review": "సమీక్షలో ఉంది"
     },
     "leaderboard": {
-        "heading": "లీడర్‌బోర్డ్",
-        "users": "వినియోగదారులు",
-        "pharmacies": "ఫార్మసీలు",
+        "heading": "అగ్రశ్రేణి సహకారులు",
+        "description": "అతిపెద్ద ప్రభావం చూపిస్తున్నారో చూడండి",
+        "topUsers": "అగ్రశ్రేణి వినియోగదారులు",
+        "topPharmacies": "అగ్రశ్రేణి ఫార్మసీలు",
         "rank": "ర్యాంక్",
-        "name": "పేరు",
-        "points": "పాయింట్లు",
-        "disposals": "పారవేతలు",
+        "heroName": "పేరు",
+        "pharmacyNameLb": "ఫార్మసీ",
+        "medsCollected": "సేకరణ",
         "rating": "రేటింగ్",
-        "score": "స్కోర్",
+        "partScore": "భాగస్వామ్యం",
+        "totalPoints": "మొత్తం పాయింట్లు",
         "you": "మీరు"
     },
     "history": {
@@ -186,7 +188,8 @@
         "pharmacy": "ఫార్మసీ",
         "status": "స్థితి",
         "date": "తేదీ",
-        "noHistory": "ఇంకా పారవేత చరిత్ర లేదు"
+        "noHistory": "ఇంకా పారవేత చరిత్ర లేదు",
+        "safeDisposals": "ಸುರಕ್ಷಿತ ವಿಲೇವಾರಿ"
     },
     "settings": {
         "heading": "ఖాతా సెట్టింగులు",

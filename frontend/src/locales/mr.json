@@ -167,15 +167,17 @@
     "review": "पुनरावलोकनाखाली"
   },
   "leaderboard": {
-    "heading": "लीडरबोर्ड",
-    "users": "वापरकर्ते",
-    "pharmacies": "फार्मसी",
-    "rank": "रँक",
-    "name": "नाव",
-    "points": "पॉइंट्स",
-    "disposals": "विल्हेवाट",
+    "heading": "शीर्ष योगदानकर्ते",
+    "description": "कोण सर्वात मोठा प्रभाव निर्माण करत आहे ते पहा",
+    "topUsers": "शीर्ष वापरकर्ते",
+    "topPharmacies": "शीर्ष फार्मसी",
+    "rank": "क्रमांक",
+    "heroName": "नाव",
+    "pharmacyNameLb": "फार्मसी",
+    "medsCollected": "संकलन",
     "rating": "रेटिंग",
-    "score": "स्कोर",
+    "partScore": "सहभाग",
+    "totalPoints": "एकूण गुण",
     "you": "तुम्ही"
   },
   "history": {
@@ -186,7 +188,8 @@
     "pharmacy": "फार्मसी",
     "status": "स्थिती",
     "date": "तारीख",
-    "noHistory": "अद्याप कोणताही विल्हेवाट इतिहास नाही"
+    "noHistory": "अद्याप कोणताही विल्हेवाट इतिहास नाही",
+    "safeDisposals": "सुरक्षित निपटान"
   },
   "settings": {
     "heading": "खाते सेटिंग्ज",

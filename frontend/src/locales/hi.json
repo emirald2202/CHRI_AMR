@@ -167,15 +167,17 @@
     "review": "समीक्षा के तहत"
   },
   "leaderboard": {
-    "heading": "लीडरबोर्ड",
-    "users": "उपयोगकर्ता",
-    "pharmacies": "फार्मेसियां",
+    "heading": "शीर्ष योगदानकर्ता",
+    "description": "देखें कौन सबसे बड़ा प्रभाव डाल रहा है",
+    "topUsers": "शीर्ष उपयोगकर्ता",
+    "topPharmacies": "शीर्ष फार्मेसी",
     "rank": "रैंक",
-    "name": "नाम",
-    "points": "अंक",
-    "disposals": "निपटान",
+    "heroName": "नाम",
+    "pharmacyNameLb": "फार्मेसी",
+    "medsCollected": "संग्रह",
     "rating": "रेटिंग",
-    "score": "स्कोर",
+    "partScore": "भागीदारी",
+    "totalPoints": "कुल अंक",
     "you": "आप"
   },
   "history": {
@@ -186,7 +188,8 @@
     "pharmacy": "फार्मेसी",
     "status": "स्थिति",
     "date": "तारीख़",
-    "noHistory": "अभी तक कोई निपटान इतिहास नहीं"
+    "noHistory": "अभी तक कोई निपटान इतिहास नहीं",
+    "safeDisposals": "सुरक्षित विल्हेवाट"
   },
   "settings": {
     "heading": "खाता सेटिंग्स",

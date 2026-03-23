@@ -19,25 +19,25 @@ const seedDB = async () => {
 
     // Create 50 Demo Users
     for (let i = 1; i <= 50; i++) {
-        // Unique email for each user
-        const email = `demouser${i}@pune.demo.com`;
-        // Unique password (e.g. securePune1, securePune2)
-        const rawPassword = `securePune${i}`;
-        const hashedPassword = await bcrypt.hash(rawPassword, salt);
+      // Unique email for each user
+      const email = `demouser${i}@pune.demo.com`;
+      // Unique password (e.g. securePune1, securePune2)
+      const rawPassword = `securePune${i}`;
+      const hashedPassword = await bcrypt.hash(rawPassword, salt);
 
-        // Random stats to optionally match leaderboard
-        const points = Math.floor(Math.random() * 350) + 10;
-        
-        usersToInsert.push({
-            name: `Demo User ${i}`,
-            email: email,
-            phone: `98765${String(i).padStart(5, '0')}`,
-            password: hashedPassword,
-            role: 'user',
-            location: 'Pune', // Locked to Pune
-            points: points,
-            badges: points > 50 ? ['AMR Defender'] : []
-        });
+      // Random stats to optionally match leaderboard
+      const points = Math.floor(Math.random() * 350) + 10;
+
+      usersToInsert.push({
+        name: `Demo User ${i}`,
+        email: email,
+        phone: `98765${String(i).padStart(5, '0')}`,
+        password: hashedPassword,
+        role: 'user',
+        location: 'Pune', // Locked to Pune
+        points: points,
+        badges: points > 50 ? ['AMR Defender'] : []
+      });
     }
 
     // Create 20 Geographically Diverse Pune Pharmacies
@@ -65,32 +65,32 @@ const seedDB = async () => {
     ];
 
     for (let i = 0; i < 20; i++) {
-        const area = puneLocalities[i];
-        const email = `pharmacy.${area.name.toLowerCase().replace(' ', '')}@pune.demo.com`;
-        const rawPassword = `securePune${i+1}`;
-        const hashedPassword = await bcrypt.hash(rawPassword, salt);
-        
-        usersToInsert.push({
-            name: `${area.name} Central Pharmacy`,
-            email: email,
-            phone: `88888${String(i+1).padStart(5, '0')}`,
-            password: hashedPassword,
-            role: 'pharmacy',
-            pharmacyName: `MedPlus Collector ${area.name}`,
-            location: 'Pune',
-            address: {
-               street: `Shop ${Math.floor(Math.random()*100)+1}, Main Road, ${area.name}`,
-               city: 'Pune',
-               state: 'Maharashtra',
-               pincode: `4110${String(i+1).padStart(2, '0')}`
-            },
-            coordinates: {
-               lat: area.lat,
-               lng: area.lng
-            },
-            availabilityStatus: 'accepting',
-            totalCollections: Math.floor(Math.random() * 200) + 10
-        });
+      const area = puneLocalities[i];
+      const email = `pharmacy.${area.name.toLowerCase().replace(' ', '')}@pune.demo.com`;
+      const rawPassword = `securePune${i + 1}`;
+      const hashedPassword = await bcrypt.hash(rawPassword, salt);
+
+      usersToInsert.push({
+        name: `${area.name} Central Pharmacy`,
+        email: email,
+        phone: `88888${String(i + 1).padStart(5, '0')}`,
+        password: hashedPassword,
+        role: 'pharmacy',
+        pharmacyName: `MedPlus Collector ${area.name}`,
+        location: 'Pune',
+        address: {
+          street: `Shop ${Math.floor(Math.random() * 100) + 1}, Main Road, ${area.name}`,
+          city: 'Pune',
+          state: 'Maharashtra',
+          pincode: `4110${String(i + 1).padStart(2, '0')}`
+        },
+        coordinates: {
+          lat: area.lat,
+          lng: area.lng
+        },
+        availabilityStatus: 'accepting',
+        totalCollections: Math.floor(Math.random() * 200) + 10
+      });
     }
 
     await User.insertMany(usersToInsert);

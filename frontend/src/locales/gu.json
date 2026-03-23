@@ -167,15 +167,17 @@
     "review": "સમીક્ષા હેઠળ"
   },
   "leaderboard": {
-    "heading": "લીડરબોર્ડ",
-    "users": "વપરાશકર્તાઓ",
-    "pharmacies": "ફાર્મસીઓ",
+    "heading": "ટોચના યોગદાનકર્તાઓ",
+    "description": "જુઓ કોણ સૌથી મોટો પ્રભાવ પાડી રહ્યો છે",
+    "topUsers": "ટોચના વપરાશકર્તાઓ",
+    "topPharmacies": "ટોચની ફાર્મસી",
     "rank": "ક્રમ",
-    "name": "નામ",
-    "points": "પોઇન્ટ્સ",
-    "disposals": "નિકાલ",
+    "heroName": "નામ",
+    "pharmacyNameLb": "ફાર્મસી",
+    "medsCollected": "સંગ્રહ",
     "rating": "રેટિંગ",
-    "score": "સ્કોર",
+    "partScore": "ભાગીદારી",
+    "totalPoints": "કુલ પોઈન્ટ",
     "you": "તમે"
   },
   "history": {
@@ -186,7 +188,8 @@
     "pharmacy": "ફાર્મસી",
     "status": "સ્થ સ્થિતિ",
     "date": "તારીખ",
-    "noHistory": "હજુ સુધી કોઈ નિકાલનો ઇતિહાસ નથી"
+    "noHistory": "હજુ સુધી કોઈ નિકાલનો ઇતિહાસ નથી",
+    "safeDisposals": "સુરક્ષિત નિકાલ"
   },
   "settings": {
     "heading": "એકાઉન્ટ સેટિંગ્સ",

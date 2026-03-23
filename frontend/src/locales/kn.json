@@ -167,15 +167,17 @@
     "review": "ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ"
   },
   "leaderboard": {
-    "heading": "ಲೀಡರ್‌ಬೋರ್ಡ್",
-    "users": "ಬಳಕೆದಾರರು",
-    "pharmacies": "ಫಾರ್ಮಸಿಗಳು",
+    "heading": "ಅಗ್ರ ಕೊಡುಗೆದಾರರು",
+    "description": "ಯಾರು ಅತಿದೊಡ್ಡ ಪ್ರಭಾವ ಬೀರುತ್ತಿದ್ದಾರೆ ಎಂದು ನೋಡಿ",
+    "topUsers": "ಅಗ್ರ ಬಳಕೆದಾರರು",
+    "topPharmacies": "ಅಗ್ರ ಔಷಧಾಲಯಗಳು",
     "rank": "ಶ್ರೇಣಿ",
-    "name": "ಹೆಸರು",
-    "points": "ಅಂಕಗಳು",
-    "disposals": "ವಿಲೇವಾರಿಗಳು",
+    "heroName": "ಹೆಸರು",
+    "pharmacyNameLb": "ಔಷಧಾಲಯ",
+    "medsCollected": "ಸಂಗ್ರಹ",
     "rating": "ರೇಟಿಂಗ್",
-    "score": "ಸ್ಕೋರ್",
+    "partScore": "ಭಾಗವಹಿಸುವಿಕೆ",
+    "totalPoints": "ಒಟ್ಟು ಅಂಕಗಳು",
     "you": "ನೀವು"
   },
   "history": {
@@ -186,7 +188,8 @@
     "pharmacy": "ಫಾರ್ಮಸಿ",
     "status": "ಸ್ಥಿತಿ",
     "date": "ದಿನಾಂಕ",
-    "noHistory": "ಇನ್ನೂ ಯಾವುದೇ ವಿಲೇವಾರಿ ಇತಿಹಾಸವಿಲ್ಲ"
+    "noHistory": "ಇನ್ನೂ ಯಾವುದೇ ವಿಲೇವಾರಿ ಇತಿಹಾಸವಿಲ್ಲ",
+    "safeDisposals": "ಸುರಕ್ಷಿತ ವಿಲೇವಾರಿ"
   },
   "settings": {
     "heading": "ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
