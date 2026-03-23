@@ -4,22 +4,36 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const { google } = require('googleapis');
 
-// Verify SMTP connection on startup — errors will show immediately in Render logs
-transporter.verify((error) => {
-  if (error) {
-    console.error('❌ Email transporter error:', error.message);
-  } else {
-    console.log('✅ Email transporter ready');
-  }
-});
+// Build a fresh OAuth2 transporter for each send
+// (access tokens expire after 1 hour, so we fetch a new one each time)
+const createGmailTransporter = async () => {
+  const OAuth2 = google.auth.OAuth2;
+  const oauth2Client = new OAuth2(
+    process.env.GMAIL_CLIENT_ID,
+    process.env.GMAIL_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.GMAIL_REFRESH_TOKEN
+  });
+
+  const accessToken = await oauth2Client.getAccessToken();
+
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: process.env.EMAIL_USER,
+      clientId: process.env.GMAIL_CLIENT_ID,
+      clientSecret: process.env.GMAIL_CLIENT_SECRET,
+      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+      accessToken: accessToken.token
+    }
+  });
+};
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -63,10 +77,11 @@ exports.sendOtp = async (req, res) => {
     const { email } = req.body;
     const otp = generateOTP();
     
-    await Otp.findOneAndDelete({ email }); // Clear older OTPs
+    await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
     console.log(`Attempting to send OTP to ${email}...`);
+    const transporter = await createGmailTransporter();
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -113,6 +128,7 @@ exports.forgotPassword = async (req, res) => {
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
+    const transporter = await createGmailTransporter();
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
