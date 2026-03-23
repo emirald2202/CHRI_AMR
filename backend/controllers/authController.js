@@ -5,10 +5,15 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use STARTTLS on port 587
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false // Accept self-signed certs on Render
   }
 });
 
@@ -57,12 +62,14 @@ exports.sendOtp = async (req, res) => {
     await Otp.findOneAndDelete({ email }); // Clear older OTPs
     await new Otp({ email, otp }).save();
 
+    console.log(`Attempting to send OTP to ${email}...`);
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Your OTP Code',
       text: `Your OTP is: ${otp}. It is valid for 5 minutes.`
     });
+    console.log(`OTP sent successfully to ${email}`);
 
     res.json({ message: 'OTP sent to email' });
   } catch (error) {
