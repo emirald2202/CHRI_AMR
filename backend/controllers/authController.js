@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
 
 exports.register = async (req, res) => {
