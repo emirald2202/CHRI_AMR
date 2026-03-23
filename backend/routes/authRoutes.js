@@ -3,6 +3,15 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const rateLimit = require('express-rate-limit');
 
+// Max 5 registrations per hour per IP (A07)
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { message: 'Too many accounts created from this IP. Try again after an hour.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 // Max 10 login attempts per 15 min per IP
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -21,7 +30,7 @@ const otpLimiter = rateLimit({
   legacyHeaders: false
 });
 
-router.post('/register', authController.register);
+router.post('/register', registerLimiter, authController.register);
 router.post('/login', loginLimiter, authController.login);
 router.post('/send-otp', otpLimiter, authController.sendOtp);
 router.post('/verify-otp', authController.verifyOtp);
