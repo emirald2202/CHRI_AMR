@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -32,8 +31,16 @@ app.use(cors({
 // ── A05: Body size limit (prevent DoS via large payloads) ─────────────────
 app.use(express.json({ limit: '10kb' }));
 
-// ── A03: NoSQL Injection Prevention ──────────────────────────────────────
-app.use(mongoSanitize());
+// ── A03: NoSQL Injection Prevention (Express 5 compatible) ────────────────
+const sanitizeBody = (obj) => {
+  if (obj && typeof obj === 'object') {
+    for (const key of Object.keys(obj)) {
+      if (key.startsWith('$')) delete obj[key];
+      else if (typeof obj[key] === 'object') sanitizeBody(obj[key]);
+    }
+  }
+};
+app.use((req, _res, next) => { sanitizeBody(req.body); next(); });
 
 // Routes
 app.use('/api/auth', authRoutes);
