@@ -42,8 +42,12 @@ export const AuthProvider = ({ children }) => {
         setUser(null)
     }
 
+    const enterGuest = () => {
+        setUser({ role: 'guest', name: 'Guest', points: 0 });
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, syncUser, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, login, logout, syncUser, enterGuest, isAuthenticated: !!user }}>
             {children}
         </AuthContext.Provider>
     )

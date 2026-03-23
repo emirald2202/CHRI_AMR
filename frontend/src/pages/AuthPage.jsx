@@ -231,7 +231,7 @@ const AuthPage = () => {
   }, [localCitySuggestions, apiCitySuggestions]);
 
   const navigate = useNavigate();
-  const { login: loginUser } = useAuth();
+  const { login: loginUser, enterGuest } = useAuth();
 
   const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -485,6 +485,24 @@ const AuthPage = () => {
             )}
           </button>
         </form>
+
+        {/* Guest Mode */}
+        <div className="mt-4 text-center">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex-1 h-px bg-gray-200 dark:bg-slate-600" />
+            <span className="text-xs text-gray-400 font-semibold">or</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-slate-600" />
+          </div>
+          <button
+            type="button"
+            onClick={() => { enterGuest(); navigate('/dashboard'); }}
+            className="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 hover:border-green-400 hover:text-green-600 dark:hover:text-green-400 font-semibold text-sm transition-all"
+          >
+            👀 Continue as Guest
+          </button>
+          <p className="text-[0.7rem] text-gray-400 mt-1.5">Explore the app — login to earn rewards</p>
+        </div>
+
       </div>
     </AuthLayout>
   );

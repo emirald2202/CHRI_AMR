@@ -15,6 +15,12 @@ const UserDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedReqId, setExpandedReqId] = useState(null);
+  const [showGuestDialog, setShowGuestDialog] = useState(false);
+
+  const handleScheduleClick = () => {
+    if (user?.role === 'guest') { setShowGuestDialog(true); return; }
+    setIsModalOpen(true);
+  };
   
   const [pharmacies, setPharmacies] = useState([]);
   const [selectedMapPharmacy, setSelectedMapPharmacy] = useState(null);
@@ -167,7 +173,7 @@ const UserDashboard = () => {
         </div>
 
          {/* Mobile Primary Call to Action */}
-        <button onClick={() => setIsModalOpen(true)} className="lg:hidden bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group w-full">
+        <button onClick={handleScheduleClick} className="lg:hidden bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group w-full">
           <div className="flex items-center gap-2 text-xl tracking-tight">
              <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
           </div>
@@ -289,7 +295,7 @@ const UserDashboard = () => {
         </div>
 
         {/* Primary Call to Action */}
-        <button onClick={() => setIsModalOpen(true)} className="hidden lg:flex bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex-col items-center justify-center gap-2 border border-green-500/50 group">
+        <button onClick={handleScheduleClick} className="hidden lg:flex bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex-col items-center justify-center gap-2 border border-green-500/50 group">
           <div className="flex items-center gap-2 text-xl tracking-tight">
              <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
           </div>
@@ -298,6 +304,29 @@ const UserDashboard = () => {
 
       </div>
       <Chatbot />
+
+      {/* Guest Login Prompt Dialog */}
+      {showGuestDialog && (
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center px-4" style={{background:'rgba(0,0,0,0.55)'}}>
+          <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-sm p-8 relative text-center" style={{animation:'fadeIn 0.18s ease both'}}>
+            <button onClick={() => setShowGuestDialog(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+              <span className="text-xl font-bold">✕</span>
+            </button>
+            <div className="w-14 h-14 bg-green-100 dark:bg-green-900/40 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">🏆</div>
+            <h3 className="text-xl font-extrabold text-gray-900 dark:text-slate-100 mb-2">Get Rewards!</h3>
+            <p className="text-sm text-gray-500 dark:text-slate-400 mb-6 leading-relaxed">
+              To schedule a disposal and earn reward points, please create an account or log in.
+            </p>
+            <a href="/login" className="block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-lg mb-3">
+              Login / Sign Up
+            </a>
+            <button onClick={() => setShowGuestDialog(false)} className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 text-gray-500 dark:text-slate-400 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-slate-700 transition-all">
+              Maybe Later
+            </button>
+          </div>
+        </div>
+      )}
+
     </DashboardLayout>
   );
 };
