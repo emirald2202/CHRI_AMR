@@ -53,7 +53,7 @@ exports.sendOtp = async (req, res) => {
     await new Otp({ email, otp }).save();
 
     await resend.emails.send({
-      from: 'AMRit <onboarding@resend.dev>',
+      from: 'AMRiT <onboarding@resend.dev>',
       to: email,
       subject: 'Your OTP Code',
       text: `Your OTP is: ${otp}. It is valid for 5 minutes.`

@@ -26,8 +26,8 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center gap-2.5 text-green-700 font-extrabold text-xl cursor-pointer tracking-tight">
-              <img src="/favicon.svg" alt="AMRit Logo" className="w-7 h-7" />
-              <span className="hidden sm:inline">AMRit</span>
+              <img src="/favicon.svg" alt="AMRiT Logo" className="w-7 h-7" />
+              <span className="hidden sm:inline">AMRiT</span>
             </Link>
           </div>
 

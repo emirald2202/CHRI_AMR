@@ -26,8 +26,8 @@ const AuthLayout = ({ children }) => {
 
           {/* Brand */}
           <div className="flex items-center gap-2 text-green-700 font-black text-2xl mb-5 tracking-tight">
-            <img src="/favicon.svg" alt="AMRit Logo" className="w-8 h-8 drop-shadow-sm" />
-            AMRit
+            <img src="/favicon.svg" alt="AMRiT Logo" className="w-8 h-8 drop-shadow-sm" />
+            AMRiT
           </div>
 
           {/* Badge */}
