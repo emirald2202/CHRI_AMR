@@ -2,42 +2,9 @@ const User = require('../models/User');
 const Otp = require('../models/Otp');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const https = require('https');
+const { Resend } = require('resend');
 
-// Brevo REST API over HTTPS (port 443) — bypasses ALL SMTP blocks on cloud servers
-const sendEmail = (to, subject, text) => {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      sender: { name: 'AMRit', email: process.env.BREVO_SENDER_EMAIL },
-      to: [{ email: to }],
-      subject,
-      textContent: text
-    });
-
-    const req = https.request({
-      hostname: 'api.brevo.com',
-      path: '/v3/smtp/email',
-      method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) resolve(data);
-        else reject(new Error(`Brevo error ${res.statusCode}: ${data}`));
-      });
-    });
-
-    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Email timed out')); });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -80,23 +47,24 @@ exports.login = async (req, res) => {
 exports.sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
-
-    if (!process.env.BREVO_API_KEY || !process.env.BREVO_SENDER_EMAIL) {
-      return res.status(500).json({ message: 'Email not configured: Missing BREVO_API_KEY or BREVO_SENDER_EMAIL in Render.' });
-    }
-
     const otp = generateOTP();
+    
     await Otp.findOneAndDelete({ email });
     await new Otp({ email, otp }).save();
 
-    await sendEmail(email, 'Your OTP Code - AMRit', `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`);
+    await resend.emails.send({
+      from: 'AMRit <onboarding@resend.dev>',
+      to: email,
+      subject: 'Your OTP Code - AMRit',
+      text: `Your AMRit OTP is: ${otp}. It is valid for 5 minutes.`
+    });
 
     res.json({ message: 'OTP sent to email' });
   } catch (error) {
-    console.error('sendOtp error:', error.message);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.verifyOtp = async (req, res) => {
   try {
