@@ -12,6 +12,9 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 exports.register = async (req, res) => {
   try {
     const { name, email, phone, password, role, location, pharmacyName, address, coordinates, openingHours } = req.body;
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
@@ -114,6 +117,9 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body;
+    if (!newPassword || newPassword.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
     const record = await Otp.findOne({ email, otp });
     if (!record) return res.status(400).json({ message: 'Invalid or expired OTP' });
 

@@ -72,6 +72,7 @@ const ForgotPasswordModal = ({ onClose }) => {
 
   const handleReset = async () => {
     if (!newPass) return setError('Enter a new password.');
+    if (newPass.length < 6) return setError('Password must be at least 6 characters long.');
     if (newPass !== confirmPass) return setError('Passwords do not match.');
     setLoading(true); setError('');
     try {
@@ -258,6 +259,10 @@ const AuthPage = () => {
         }
       } else {
         // Direct signup — no OTP required
+        if (formData.password.length < 6) {
+          setErrorMsg('Password must be at least 6 characters long');
+          return;
+        }
         const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
         await axios.post('/auth/register', {
           name: formData.name, email: formData.email, phone: formData.phone,
