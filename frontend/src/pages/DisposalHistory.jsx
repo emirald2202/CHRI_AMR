@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { useAuth } from '../contexts/Authcontext';
 import axios from '../api/axios';
-import { Package, Clock, ShieldCheck, History } from 'lucide-react';
+import { Package, Clock, ShieldCheck, History, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const DisposalHistory = () => {
@@ -64,6 +64,15 @@ const DisposalHistory = () => {
 
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-[0.85rem] text-gray-600 font-medium">
                       <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-green-600" /> {t('history.finishedVia', { defaultValue: 'Finished via' })} {req.disposalType === 'pickup' ? t('disposal.homePickup') : t('disposal.dropOff')}</span>
+                      
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4 text-green-600" /> 
+                        {req.updatedAt || req.createdAt ? new Date(req.updatedAt || req.createdAt).toLocaleString('en-IN', {
+                          day: 'numeric', month: 'short', year: 'numeric',
+                          hour: '2-digit', minute: '2-digit'
+                        }) : t('history.dateNotAvailable', { defaultValue: 'Date not available' })}
+                      </span>
+
                       {req.pharmacyId && (
                         <span className="font-bold text-gray-800 flex items-center gap-2">
                           <ShieldCheck className="w-4 h-4 text-green-500" /> {t('history.processedBy', { defaultValue: 'Processed by' })}: {req.pharmacyId.pharmacyName || req.pharmacyId.name}
