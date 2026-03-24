@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const rateLimit = require('express-rate-limit');
+const verifySupabaseToken = require('../middleware/supabaseAuth');
 
 // Max 5 registrations per hour per IP (A07)
 const registerLimiter = rateLimit({
@@ -30,11 +31,6 @@ const otpLimiter = rateLimit({
   legacyHeaders: false
 });
 
-router.post('/register', registerLimiter, authController.register);
-router.post('/login', loginLimiter, authController.login);
-router.post('/send-otp', otpLimiter, authController.sendOtp);
-router.post('/verify-otp', authController.verifyOtp);
-router.post('/forgot-password', otpLimiter, authController.forgotPassword);
-router.post('/reset-password', authController.resetPassword);
+router.post('/supabase-login', verifySupabaseToken, authController.supabaseLogin);
 
 module.exports = router;

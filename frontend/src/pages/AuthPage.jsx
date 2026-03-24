@@ -191,15 +191,24 @@ const AuthPage = () => {
     name: '', email: '', phone: '', password: '', city: '', pharmacyName: '', otp: '',
     flatNo: '', street: '', landmark: '', pincode: '', state: ''
   });
+  const [loginType, setLoginType] = useState('phone'); // 'email' or 'phone'
   const [otpStep, setOtpStep] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showForgot, setShowForgot] = useState(false);
 
-  // City autocomplete
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [apiCitySuggestions, setApiCitySuggestions] = useState([]);
   const [isSearchingCity, setIsSearchingCity] = useState(false);
+
+  const navigate = useNavigate();
+  const { user, sendOtp, verifyOtp, loginWithToken, enterGuest } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const localCitySuggestions = React.useMemo(() => {
     if (!formData.city || formData.city.length < 1 || !showCityDropdown) return [];
@@ -230,8 +239,6 @@ const AuthPage = () => {
     return unique.slice(0, 8);
   }, [localCitySuggestions, apiCitySuggestions]);
 
-  const navigate = useNavigate();
-  const { login, signup, loginWithToken, enterGuest } = useAuth();
 
   const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -242,28 +249,40 @@ const AuthPage = () => {
     setErrorMsg('');
     setLoading(true);
     try {
-      if (mode === 'login') {
-        if (method === 'password') {
-          await login(formData.email, formData.password);
-          navigate('/dashboard');
-        } else {
-          // Email OTP Login (Using backend logic)
-          if (!otpStep) {
-            await axios.post('/auth/send-otp', { email: formData.email });
-            setOtpStep(true);
-          } else {
-            const res = await axios.post('/auth/verify-otp', { 
-                email: formData.email, 
-                otp: formData.otp, 
-                isLogin: true 
-            });
-            const { token, user } = res.data;
-            loginWithToken(token, user);
-            navigate('/dashboard');
-          }
+      if (!otpStep) {
+        // Step 1: Send OTP
+        let phone = formData.phone.trim();
+        if (loginType === 'phone' && !phone.startsWith('+')) {
+            // Prepend +91 if it's a 10-digit Indian number
+            if (phone.length === 10) phone = `+91${phone}`;
+            else throw new Error("Please enter a full phone number including country code (e.g. +91...)");
         }
+        
+        const payload = loginType === 'email' ? { email: formData.email } : { phone };
+        
+        // Save form data to localStorage so it survives the Magic Link page reload
+        localStorage.setItem("pending_signup_data", JSON.stringify({
+            name: formData.name,
+            phone: phone,
+            location: formData.city,
+            role,
+            ...(role === 'pharmacy' && { 
+                pharmacyName: formData.pharmacyName, 
+                address: {
+                    flatNo: formData.flatNo,
+                    street: formData.street,
+                    landmark: formData.landmark,
+                    pincode: formData.pincode,
+                    city: formData.city,
+                    state: formData.state
+                }
+            })
+        }));
+
+        await sendOtp(payload);
+        setOtpStep(true);
       } else {
-        // Signup Flow
+        // Step 2: Verify OTP
         const structuredAddress = { 
             flatNo: formData.flatNo, 
             street: formData.street, 
@@ -273,18 +292,27 @@ const AuthPage = () => {
             state: formData.state 
         };
 
+        let phone = formData.phone.trim();
+        if (loginType === 'phone' && !phone.startsWith('+')) {
+            if (phone.length === 10) phone = `+91${phone}`;
+        }
+
         const extraData = {
           name: formData.name,
-          phone: formData.phone.startsWith('+') ? formData.phone : `+91${formData.phone}`,
+          phone: phone,
+          email: formData.email,
           role,
           location: formData.city,
           ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
         };
 
-        // If user is on Phone OTP mode during signup (not currently implemented in UI but supported by context)
-        // We'll stick to Email/Password for the main "Sign Up" button for now, 
-        // as Phone Auth usually works via a "Send OTP" flow.
-        await signup(extraData);
+        const verifyPayload = {
+            token: formData.otp,
+            extraData,
+            ...(loginType === 'email' ? { email: formData.email } : { phone })
+        };
+
+        await verifyOtp(verifyPayload);
         navigate('/dashboard');
       }
     } catch (err) {
@@ -347,15 +375,30 @@ const AuthPage = () => {
 
           {/* Login Method Toggle */}
           {mode === 'login' && (
-            <div className="flex gap-2">
-              <button type="button" onClick={() => { setMethod('password'); setOtpStep(false); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'password' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:bg-slate-900'}`}>
-                <Lock className="w-[14px] h-[14px]" /> {t('auth.login.password')}
-              </button>
-              <button type="button" onClick={() => { setMethod('otp'); setOtpStep(false); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'otp' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-green-100 bg-green-50 dark:bg-emerald-900/30/50 text-green-700 hover:bg-green-50 dark:bg-emerald-900/30'}`}>
-                <Smartphone className="w-[14px] h-[14px]" /> {t('auth.login.otpLogin', { defaultValue: 'OTP' })}
-              </button>
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <button type="button" onClick={() => { setMethod('password'); setOtpStep(false); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'password' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:bg-slate-900'}`}>
+                  <Lock className="w-[14px] h-[14px]" /> {t('auth.login.password')}
+                </button>
+                <button type="button" onClick={() => { setMethod('otp'); setOtpStep(false); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg border text-[0.85rem] font-semibold transition-colors ${method === 'otp' ? 'bg-green-600 border-green-600 text-white shadow-md shadow-green-600/20' : 'border-green-100 bg-green-50 dark:bg-emerald-900/30/50 text-green-700 hover:bg-green-50 dark:bg-emerald-900/30'}`}>
+                  <Smartphone className="w-[14px] h-[14px]" /> {t('auth.login.otpLogin', { defaultValue: 'OTP Login' })}
+                </button>
+              </div>
+
+              {method === 'otp' && !otpStep && (
+                <div className="flex p-0.5 bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-gray-700 rounded-lg">
+                   <button type="button" onClick={() => setLoginType('phone')}
+                    className={`flex-1 py-1.5 text-[0.75rem] font-bold rounded-md transition-all ${loginType === 'phone' ? 'bg-white dark:bg-slate-800 text-green-600 shadow-sm' : 'text-gray-400'}`}>
+                    Phone
+                  </button>
+                  <button type="button" onClick={() => setLoginType('email')}
+                    className={`flex-1 py-1.5 text-[0.75rem] font-bold rounded-md transition-all ${loginType === 'email' ? 'bg-white dark:bg-slate-800 text-green-600 shadow-sm' : 'text-gray-400'}`}>
+                    Email
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -448,22 +491,35 @@ const AuthPage = () => {
               </div>
             )}
 
-            {/* Email OTP Input */}
+            {/* OTP Input Section */}
             {method === 'otp' && (
               <div>
                 <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
-                  {t('auth.login.email')}
+                  {loginType === 'email' ? t('auth.login.email') : 'Phone Number'}
                 </label>
                 {!otpStep ? (
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required
-                      placeholder={t('auth.login.enterEmail', { defaultValue: 'Enter your email' })}
-                      className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                    {loginType === 'email' ? (
+                      <>
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required
+                          placeholder={t('auth.login.enterEmail', { defaultValue: 'Enter your email' })}
+                          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                      </>
+                    ) : (
+                      <>
+                        <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required
+                          placeholder="e.g. +91 98765 43210"
+                          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                      </>
+                    )}
                   </div>
                 ) : (
                   <>
-                    <p className="text-xs text-gray-400 mb-2 ml-1">OTP sent to <span className="font-semibold text-gray-600">{formData.email}</span></p>
+                    <p className="text-xs text-gray-400 mb-2 ml-1">
+                      OTP sent to <span className="font-semibold text-gray-600">{loginType === 'email' ? formData.email : formData.phone}</span>
+                    </p>
                     <input type="text" name="otp" value={formData.otp}
                       onChange={e => setFormData({ ...formData, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
                       required placeholder="• • • • • •"

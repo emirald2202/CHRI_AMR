@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phone: { type: String, required: true },
-  password: { type: String, required: true },
+  email: { type: String, unique: true, sparse: true }, // Optional for phone users
+  phone: { type: String, unique: true, sparse: true }, // Unique for phone login
+  password: { type: String, required: false }, // Optional for Supabase users
+  supabaseId: { type: String, unique: true, sparse: true }, // For Supabase linking
   role: { type: String, enum: ["user", "pharmacy"], default: "user" },
   location: { type: String }, // city name
   points: { type: Number, default: 0 },

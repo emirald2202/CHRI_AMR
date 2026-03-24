@@ -1,6 +1,6 @@
-
 import { createContext, useContext, useState, useEffect, useCallback } from "react"
 import axios from "../api/axios"
+import { supabase } from "../config/supabaseClient"
 
 const AuthContext = createContext()
 
@@ -28,32 +28,88 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
+        // Listen for Supabase auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log("Supabase Auth Event:", event);
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                if (session) {
+                    try {
+                        const pendingDataStr = localStorage.getItem("pending_signup_data");
+                        const extraData = pendingDataStr ? JSON.parse(pendingDataStr) : {};
+
+                        const res = await axios.post('/auth/supabase-login', extraData, {
+                            headers: { Authorization: `Bearer ${session.access_token}` }
+                        });
+                        const { token: backendToken, user: backendUser } = res.data;
+                        
+                        // Clear pending data after successful sync
+                        localStorage.removeItem("pending_signup_data");
+                        
+                        localStorage.setItem("token", backendToken);
+                        localStorage.setItem("user", JSON.stringify(backendUser));
+                        setUser(backendUser);
+                    } catch (err) {
+                        console.error("Auto-sync failed", err);
+                    }
+                }
+            } else if (event === 'SIGNED_OUT') {
+                setUser(null);
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+            }
+        });
+
         const token = localStorage.getItem("token");
         if (token && !user) {
             syncUser();
         }
+
+        return () => subscription.unsubscribe();
     }, [user, syncUser]);
 
-    const signup = async (userData) => {
+    const sendOtp = async ({ email, phone }) => {
         try {
-            const res = await axios.post('/auth/register', userData);
-            return { success: true, data: res.data };
+            const options = {
+                ...(email && { email }),
+                ...(phone && { phone }),
+                options: { shouldCreateUser: true }
+            };
+            const { error } = await supabase.auth.signInWithOtp(options);
+            if (error) throw error;
+            return { success: true };
         } catch (error) {
-            console.error("Signup error:", error);
+            console.error("Send OTP error:", error);
             throw error;
         }
     };
 
-    const login = async (email, password) => {
+    const verifyOtp = async ({ email, phone, token, extraData = {} }) => {
         try {
-            const res = await axios.post('/auth/login', { email, password });
-            const { token, user: backendUser } = res.data;
-            localStorage.setItem("token", token);
+            const options = {
+                ...(email && { email }),
+                ...(phone && { phone }),
+                token,
+                type: email ? 'email' : 'sms'
+            };
+            const { data, error } = await supabase.auth.verifyOtp(options);
+            if (error) throw error;
+
+            const { session } = data;
+            const accessToken = session.access_token;
+
+            // Sync with backend using the Supabase JWT
+            const res = await axios.post('/auth/supabase-login', extraData, {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+
+            const { token: backendToken, user: backendUser } = res.data;
+            localStorage.setItem("token", backendToken);
             localStorage.setItem("user", JSON.stringify(backendUser));
             setUser(backendUser);
+
             return { success: true };
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Verify OTP error:", error);
             throw error;
         }
     };
@@ -66,7 +122,8 @@ export const AuthProvider = ({ children }) => {
 
     // login alias removed to fix redeclaration error
 
-    const logout = () => {
+    const logout = async () => {
+        await supabase.auth.signOut();
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         setUser(null);
@@ -79,9 +136,9 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{ 
             user, 
-            login, 
             logout, 
-            signup, 
+            sendOtp, 
+            verifyOtp,
             loginWithToken,
             enterGuest, 
             isAuthenticated: !!user 
