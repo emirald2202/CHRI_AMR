@@ -231,7 +231,7 @@ const AuthPage = () => {
   }, [localCitySuggestions, apiCitySuggestions]);
 
   const navigate = useNavigate();
-  const { login: loginUser, enterGuest } = useAuth();
+  const { login, signup, loginWithToken, enterGuest } = useAuth();
 
   const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -244,37 +244,54 @@ const AuthPage = () => {
     try {
       if (mode === 'login') {
         if (method === 'password') {
-          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
-          loginUser(res.data.user, res.data.token);
+          await login(formData.email, formData.password);
           navigate('/dashboard');
         } else {
+          // Email OTP Login (Using backend logic)
           if (!otpStep) {
             await axios.post('/auth/send-otp', { email: formData.email });
             setOtpStep(true);
           } else {
-            const res = await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp, isLogin: true });
-            loginUser(res.data.user, res.data.token);
+            const res = await axios.post('/auth/verify-otp', { 
+                email: formData.email, 
+                otp: formData.otp, 
+                isLogin: true 
+            });
+            const { token, user } = res.data;
+            loginWithToken(token, user);
             navigate('/dashboard');
           }
         }
       } else {
-        // Direct signup — no OTP required
-        if (formData.password.length < 6) {
-          setErrorMsg('Password must be at least 6 characters long');
-          return;
-        }
-        const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
-        await axios.post('/auth/register', {
-          name: formData.name, email: formData.email, phone: formData.phone,
-          password: formData.password, role, location: formData.city,
+        // Signup Flow
+        const structuredAddress = { 
+            flatNo: formData.flatNo, 
+            street: formData.street, 
+            landmark: formData.landmark, 
+            pincode: formData.pincode, 
+            city: formData.city, 
+            state: formData.state 
+        };
+
+        const extraData = {
+          name: formData.name,
+          phone: formData.phone.startsWith('+') ? formData.phone : `+91${formData.phone}`,
+          role,
+          location: formData.city,
           ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
-        });
-        const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
-        loginUser(res.data.user, res.data.token);
+        };
+
+        // If user is on Phone OTP mode during signup (not currently implemented in UI but supported by context)
+        // We'll stick to Email/Password for the main "Sign Up" button for now, 
+        // as Phone Auth usually works via a "Send OTP" flow.
+        await signup(extraData);
         navigate('/dashboard');
       }
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || err.message || 'An error occurred');
+      console.error("Auth error:", err);
+      let msg = err.response?.data?.message || err.message || 'An error occurred';
+      if (err.code === 'auth/invalid-phone-number') msg = "Invalid phone number format (e.g. +91 99999 88888)";
+      setErrorMsg(msg);
     } finally { setLoading(false); }
   };
 
@@ -397,8 +414,8 @@ const AuthPage = () => {
               </>
             )}
 
-            {/* Email */}
-            {(!otpStep || mode === 'login') && (
+            {/* Email (only for password method) */}
+            {method === 'password' && (
               <div>
                 <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">{t('auth.login.email')}</label>
                 <div className="relative">
@@ -431,19 +448,28 @@ const AuthPage = () => {
               </div>
             )}
 
-            {/* OTP Input */}
-            {otpStep && (
+            {/* Email OTP Input */}
+            {method === 'otp' && (
               <div>
                 <label className="block text-[0.75rem] font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1">
-                  {mode === 'signup' ? 'Email Verification OTP' : t('auth.login.otpLogin', { defaultValue: 'OTP' })}
+                  {t('auth.login.email')}
                 </label>
-                {mode === 'signup' && (
-                  <p className="text-xs text-gray-400 mb-2 ml-1">Check your inbox — a 6-digit code was sent to <span className="font-semibold text-gray-600">{formData.email}</span></p>
+                {!otpStep ? (
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required
+                      placeholder={t('auth.login.enterEmail', { defaultValue: 'Enter your email' })}
+                      className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm" />
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-xs text-gray-400 mb-2 ml-1">OTP sent to <span className="font-semibold text-gray-600">{formData.email}</span></p>
+                    <input type="text" name="otp" value={formData.otp}
+                      onChange={e => setFormData({ ...formData, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
+                      required placeholder="• • • • • •"
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm tracking-[0.5em] font-mono text-center" />
+                  </>
                 )}
-                <input type="text" name="otp" value={formData.otp}
-                  onChange={e => setFormData({ ...formData, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
-                  required placeholder="• • • • • •"
-                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm tracking-[0.5em] font-mono text-center" />
               </div>
             )}
 
@@ -476,14 +502,13 @@ const AuthPage = () => {
             )}
           </div>
 
-          <button type="submit" disabled={loading}
-            className="w-full flex justify-center items-center bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] disabled:opacity-70 disabled:cursor-not-allowed">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
-              otpStep ? t('auth.signup.verify') :
-              mode === 'login' ? (method === 'otp' ? t('auth.forgotPassword.sendOTP') : t('auth.login.loginButton')) :
-              t('auth.signup.createAccount')
-            )}
-          </button>
+            <button type="submit" disabled={loading}
+              className="w-full flex justify-center items-center bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] disabled:opacity-70 disabled:cursor-not-allowed">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
+                mode === 'login' ? (method === 'otp' ? (otpStep ? 'Verify OTP' : 'Send OTP') : t('auth.login.loginButton')) :
+                t('auth.signup.createAccount')
+              )}
+            </button>
         </form>
 
         {/* Guest Mode */}

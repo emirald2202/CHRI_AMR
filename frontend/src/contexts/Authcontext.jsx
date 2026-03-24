@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, useCallback } from "react"
 import axios from "../api/axios"
 
@@ -27,27 +28,64 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        syncUser();
-    }, [syncUser]);
+        const token = localStorage.getItem("token");
+        if (token && !user) {
+            syncUser();
+        }
+    }, [user, syncUser]);
 
-    const login = (userData, token) => {
-        localStorage.setItem("token", token)
-        localStorage.setItem("user", JSON.stringify(userData))
-        setUser(userData)
-    }
+    const signup = async (userData) => {
+        try {
+            const res = await axios.post('/auth/register', userData);
+            return { success: true, data: res.data };
+        } catch (error) {
+            console.error("Signup error:", error);
+            throw error;
+        }
+    };
+
+    const login = async (email, password) => {
+        try {
+            const res = await axios.post('/auth/login', { email, password });
+            const { token, user: backendUser } = res.data;
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(backendUser));
+            setUser(backendUser);
+            return { success: true };
+        } catch (error) {
+            console.error("Login error:", error);
+            throw error;
+        }
+    };
+
+    const loginWithToken = (token, userData) => {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+        setUser(userData);
+    };
+
+    // login alias removed to fix redeclaration error
 
     const logout = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
-        setUser(null)
-    }
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser(null);
+    };
 
     const enterGuest = () => {
         setUser({ role: 'guest', name: 'Guest', points: 0 });
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, syncUser, enterGuest, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            login, 
+            logout, 
+            signup, 
+            loginWithToken,
+            enterGuest, 
+            isAuthenticated: !!user 
+        }}>
             {children}
         </AuthContext.Provider>
     )
