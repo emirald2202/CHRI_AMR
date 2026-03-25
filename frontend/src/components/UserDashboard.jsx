@@ -36,7 +36,7 @@ const UserDashboard = () => {
   const handleScheduleClick = () => {
     if (user?.role === 'guest') { setShowGuestDialog(true); return; }
     setIsModalOpen(true);
-    if (onboardingStep === 0) setOnboardingStep(1);
+    if (onboardingStep === 0) completeTutorial();
   };
   
   const [pharmacies, setPharmacies] = useState([]);
@@ -283,8 +283,6 @@ const UserDashboard = () => {
           onClose={() => { setIsModalOpen(false); setSelectedMapPharmacy(null); }}
           onSuccess={() => { fetchRequests(); setIsModalOpen(false); setSelectedMapPharmacy(null); }}
           preselectedPharmacy={selectedMapPharmacy}
-          onboardingStep={onboardingStep}
-          setOnboardingStep={setOnboardingStep}
         />
 
       </div>
@@ -357,31 +355,10 @@ const UserDashboard = () => {
               target: window.innerWidth < 1024 ? '#schedule-disposal-btn' : '#schedule-disposal-btn-lg',
               title: t('onboarding.step1Title'),
               description: t('onboarding.step1Desc'),
-              manualNext: false // Only clicks on the button should advance
-            },
-            {
-              target: '#med-name-input',
-              title: t('onboarding.step2Title'),
-              description: t('onboarding.step2Desc'),
-              manualNext: true
-            },
-            {
-              target: '#review-pkg-btn',
-              title: t('onboarding.step3Title'),
-              description: t('onboarding.step3Desc'),
-              manualNext: false // Clicks on review should advance
-            },
-            {
-                target: '#finalize-disposal-btn',
-                title: t('onboarding.step4Title'),
-                description: t('onboarding.step4Desc'),
-                manualNext: true
+              manualNext: true 
             }
           ]}
-          onNext={() => {
-            if (onboardingStep === 1) setOnboardingStep(2);
-            else if (onboardingStep === 3) completeTutorial();
-          }}
+          onNext={completeTutorial}
           onComplete={completeTutorial}
         />
       )}
