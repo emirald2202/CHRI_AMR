@@ -283,7 +283,14 @@ const AuthPage = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || err.message || 'An error occurred');
+      if (err.response?.status === 404 && mode === 'login') {
+        setMode('signup');
+        setOtpStep(false);
+        setErrorMsg('User not found. Please create an account.');
+        setShowLanguageModal(true);
+      } else {
+        setErrorMsg(err.response?.data?.message || err.message || 'An error occurred');
+      }
     } finally { setLoading(false); }
   };
 
