@@ -7,7 +7,7 @@ import { Calendar, Package, Clock, CheckCircle2, Navigation } from 'lucide-react
 import ScheduleModal from './ScheduleModal';
 import Chatbot from './Chatbot';
 import PharmacyMap from './PharmacyMap';
-import OnboardingTutorial from './OnboardingTutorial';
+import PharmacyMap from './PharmacyMap';
 
 const UserDashboard = () => {
   const { t } = useTranslation();
@@ -17,25 +17,10 @@ const UserDashboard = () => {
   const [expandedReqId, setExpandedReqId] = useState(null);
   const [showGuestDialog, setShowGuestDialog] = useState(false);
 
-  // Onboarding Tutorial State
-  const [onboardingStep, setOnboardingStep] = useState(-1); // -1: inactive, 0+: step index
-  
-  useEffect(() => {
-    const isNewUser = localStorage.getItem('onboarding_required') === 'true';
-    if (isNewUser) {
-      setOnboardingStep(0);
-    }
-  }, []);
-
-  const completeTutorial = () => {
-    setOnboardingStep(-1);
-    localStorage.removeItem('onboarding_required');
-  };
 
   const handleScheduleClick = () => {
     if (user?.role === 'guest') { setShowGuestDialog(true); return; }
     setIsModalOpen(true);
-    if (onboardingStep === 0) completeTutorial();
   };
   
   const [pharmacies, setPharmacies] = useState([]);
@@ -108,7 +93,7 @@ const UserDashboard = () => {
 
   return (
     <DashboardLayout>
-      {/* Full Width Tutorial Box */}
+
 
 
       {/* Left Column (70%) */}
@@ -324,21 +309,7 @@ const UserDashboard = () => {
         </div>
       )}
 
-      {onboardingStep !== -1 && (
-        <OnboardingTutorial 
-          currentStep={onboardingStep}
-          steps={[
-            {
-              target: window.innerWidth < 1024 ? '#schedule-disposal-btn' : '#schedule-disposal-btn-lg',
-              title: t('onboarding.step1Title'),
-              description: t('onboarding.step1Desc'),
-              manualNext: true 
-            }
-          ]}
-          onNext={completeTutorial}
-          onComplete={completeTutorial}
-        />
-      )}
+
 
     </DashboardLayout>
   );
