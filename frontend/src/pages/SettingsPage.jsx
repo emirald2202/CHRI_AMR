@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import {
   Settings, User, Mail, MapPin, ShieldCheck, Phone,
-  Building2, Clock, Trash2, AlertTriangle, X, Check, Edit3
+  Building2, Clock, Trash2, AlertTriangle, X, Check, Edit3, Globe
 } from 'lucide-react';
 import { useAuth } from '../contexts/Authcontext';
 import { useTranslation } from 'react-i18next';
@@ -50,9 +50,43 @@ const EditableRow = ({ icon: Icon, label, value, onChange, type = 'text', readOn
   </div>
 );
 
+const LanguageRow = ({ value, onChange }) => {
+  const languages = [
+    { code: 'en', name: 'English', native: 'English' },
+    { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+    { code: 'mr', name: 'Marathi', native: 'मराठी' },
+    { code: 'te', name: 'Telugu', native: 'తెలుగు' },
+    { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
+    { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
+  ];
+
+  return (
+    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 group">
+      <div className="bg-green-100 p-2.5 rounded-xl shrink-0">
+        <Globe className="w-5 h-5 text-green-600" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Language</p>
+        <select
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="w-full bg-transparent font-semibold text-gray-800 dark:text-slate-200 text-sm outline-none border-b-2 border-transparent focus:border-green-400 transition-colors appearance-none cursor-pointer"
+        >
+          {languages.map(lang => (
+            <option key={lang.code} value={lang.code} className="dark:bg-slate-800">
+              {lang.native} ({lang.name})
+            </option>
+          ))}
+        </select>
+      </div>
+      <Edit3 className="w-3.5 h-3.5 text-gray-300 group-focus-within:text-green-500 transition-colors shrink-0" />
+    </div>
+  );
+};
+
 const SettingsPage = () => {
   const { user, logout } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const isPharmacy = user?.role === 'pharmacy';
@@ -134,6 +168,13 @@ const SettingsPage = () => {
                   <EditableRow icon={MapPin} label={t('settings.city')} value={form.location} onChange={v => setForm(f => ({ ...f, location: v }))} />
                   {/* Non-editable */}
                   <EditableRow icon={Mail}       label={t('settings.email')} value={user?.email}  readOnly />
+                  <LanguageRow 
+                    value={i18n.language} 
+                    onChange={v => {
+                      i18n.changeLanguage(v);
+                      localStorage.setItem('language', v);
+                    }} 
+                  />
                   <EditableRow icon={ShieldCheck} label="Account Type"       value="User"          readOnly />
 
                   {/* Save button */}

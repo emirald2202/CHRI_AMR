@@ -6,6 +6,7 @@ import AuthLayout from '../components/AuthLayout';
 import axios from '../api/axios';
 import { useTranslation } from 'react-i18next';
 import indianCities from '../data/indianCities.json';
+import LanguageModal from '../components/LanguageModal';
 
 /* ─── Reusable Password Input ─── */
 const PasswordInput = ({ name, value, onChange, placeholder, required = true }) => {
@@ -195,6 +196,7 @@ const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showForgot, setShowForgot] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   // City autocomplete
   const [showCityDropdown, setShowCityDropdown] = useState(false);
@@ -235,7 +237,14 @@ const AuthPage = () => {
 
   const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleModeSwitch = newMode => { setMode(newMode); setOtpStep(false); setErrorMsg(''); };
+  const handleModeSwitch = (newMode) => {
+    setMode(newMode);
+    setOtpStep(false);
+    setErrorMsg('');
+    if (newMode === 'signup') {
+      setShowLanguageModal(true);
+    }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -281,6 +290,7 @@ const AuthPage = () => {
   return (
     <AuthLayout>
       {showForgot && <ForgotPasswordModal onClose={() => setShowForgot(false)} />}
+      <LanguageModal isOpen={showLanguageModal} onClose={() => setShowLanguageModal(false)} />
 
       <div className="bg-white dark:bg-slate-800 w-full max-w-[420px] p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 dark:border-slate-700">
         <div className="text-center mb-6">
