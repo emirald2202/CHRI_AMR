@@ -7,7 +7,6 @@ import { Calendar, Package, Clock, CheckCircle2, Navigation } from 'lucide-react
 import ScheduleModal from './ScheduleModal';
 import Chatbot from './Chatbot';
 import PharmacyMap from './PharmacyMap';
-import PharmacyMap from './PharmacyMap';
 
 const UserDashboard = () => {
   const { t } = useTranslation();

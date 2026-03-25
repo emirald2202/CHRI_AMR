@@ -60,63 +60,6 @@ const AuthLayout = ({ children }) => {
             Safely dispose at verified pharmacies near you — earn points, unlock discounts, and contribute to a healthier future.
           </p>
 
-          {/* How it works — numbered steps */}
-          <div className="space-y-3 mb-6">
-
-            {/* Impact bullets */}
-            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-green-50 flex gap-4 items-start">
-              <div className="text-green-500 mt-0.5 shrink-0">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm mb-2">{t('whySafe')}</h3>
-                <ul className="text-[0.78rem] text-gray-600 dark:text-slate-300 space-y-1.5">
-                  <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe1')}</li>
-                  <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe2')}</li>
-                  <li className="flex gap-2 items-start"><span className="text-red-400 font-bold mt-0.5">•</span> {t('whySafe3')}</li>
-                  <li className="flex gap-2 items-start"><span className="text-green-500 font-bold mt-0.5">•</span> Earn rewards for doing the right thing</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Step 1 */}
-            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
-              <div className="bg-green-50 dark:bg-emerald-900/30 p-2.5 rounded-full text-green-500 shrink-0">
-                <MapPin className="w-4 h-4" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('findPharmaciesLoc')}</h3>
-                <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('findPharmLocations')}</p>
-              </div>
-            </div>
-
-            {/* Step 2 — Rewards with badge */}
-            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center relative overflow-hidden">
-              <div className="bg-amber-50 p-2.5 rounded-full text-amber-500 shrink-0">
-                <Award className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('earnRewards')}</h3>
-                <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('earnDesc')}</p>
-              </div>
-              {/* Badge */}
-              <div className="shrink-0 bg-amber-400 text-white text-[0.65rem] font-black px-2 py-1 rounded-lg shadow-sm leading-tight text-center">
-                Up to<br />20% OFF
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-white dark:bg-slate-800/80 p-4 rounded-xl border border-green-50 flex gap-4 items-center">
-              <div className="bg-green-50 dark:bg-emerald-900/30 p-2.5 rounded-full text-green-500 shrink-0">
-                <Gift className="w-4 h-4" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-800 dark:text-slate-200 text-sm">{t('trackImpact')}</h3>
-                <p className="text-[0.73rem] text-gray-500 mt-0.5">{t('trackDesc')}</p>
-              </div>
-            </div>
-
-          </div>
 
           {/* Reward hook */}
           <div className="bg-green-600 text-white rounded-2xl p-4 flex gap-3 items-start">
