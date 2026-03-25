@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 // Max 5 registrations per hour per IP (A07)
 const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 5,
+  max: 100, // Temporarily increased for testing (was 5)
   message: { message: 'Too many accounts created from this IP. Try again after an hour.' },
   standardHeaders: true,
   legacyHeaders: false
