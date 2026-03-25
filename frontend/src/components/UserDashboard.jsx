@@ -12,7 +12,6 @@ import OnboardingTutorial from './OnboardingTutorial';
 const UserDashboard = () => {
   const { t } = useTranslation();
   const { user, syncUser } = useAuth();
-  const [showTutorial, setShowTutorial] = useState(true);
   const [requests, setRequests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedReqId, setExpandedReqId] = useState(null);
@@ -105,34 +104,12 @@ const UserDashboard = () => {
     fetchPharmacies();
   }, [user]);
 
-  const dismissTutorial = () => {
-    setShowTutorial(false);
-  };
+
 
   return (
     <DashboardLayout>
       {/* Full Width Tutorial Box */}
-      {showTutorial && (
-        <div className="lg:col-span-12 mb-2 animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 dark:border-slate-700 p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
-            <div>
-              <h3 className="text-lg font-semibold text-green-600 mb-2 flex items-center gap-2">
-                {t('landing.pharmacyTutorial.title')}
-              </h3>
-              <p className="text-gray-600 text-[0.85rem] leading-relaxed max-w-4xl font-medium">
-                 {t('landing.pharmacyTutorial.description')}<br /><br />
-                 {t('landing.pharmacyTutorial.tutorialClick', {defaultValue: 'Click the'})} <span className="text-green-600 font-bold">{t('landing.pharmacyTutorial.tutorialButton', {defaultValue: 'Find Pharmacies'})}</span> {t('landing.pharmacyTutorial.hint')}
-              </p>
-            </div>
-            <button
-              onClick={dismissTutorial}
-              className="shrink-0 text-green-600 font-bold border border-green-200 bg-green-50 dark:bg-emerald-900/30 rounded-lg px-5 py-2 hover:bg-green-100 transition-colors shadow-sm"
-            >
-              {t('landing.pharmacyTutorial.gotIt')}
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* Left Column (70%) */}
       <div className="lg:col-span-8 flex flex-col gap-6">

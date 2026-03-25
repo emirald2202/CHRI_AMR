@@ -42,12 +42,7 @@
       "users": "Active Users",
       "contamination": "Litres of Contamination Prevented"
     },
-    "pharmacyTutorial": {
-      "title": "Did you know?",
-      "description": "We show pharmacies registered on our platform below. But if you can't find one near you, don't worry!",
-      "hint": "Click the Find Pharmacies button in the menu to discover ANY pharmacy within 10km of your location using live search.",
-      "gotIt": "Got it ✓"
-    },
+
     "cta": {
       "heading": "Ready to Make a Difference?",
       "subheading": "Join the movement against antimicrobial resistance",
