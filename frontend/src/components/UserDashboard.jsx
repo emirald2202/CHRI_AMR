@@ -7,6 +7,7 @@ import { Calendar, Package, Clock, CheckCircle2, Navigation } from 'lucide-react
 import ScheduleModal from './ScheduleModal';
 import Chatbot from './Chatbot';
 import PharmacyMap from './PharmacyMap';
+import OnboardingTutorial from './OnboardingTutorial';
 
 const UserDashboard = () => {
   const { t } = useTranslation();
@@ -17,9 +18,25 @@ const UserDashboard = () => {
   const [expandedReqId, setExpandedReqId] = useState(null);
   const [showGuestDialog, setShowGuestDialog] = useState(false);
 
+  // Onboarding Tutorial State
+  const [onboardingStep, setOnboardingStep] = useState(-1); // -1: inactive, 0+: step index
+  
+  useEffect(() => {
+    const isNewUser = localStorage.getItem('onboarding_required') === 'true';
+    if (isNewUser) {
+      setOnboardingStep(0);
+    }
+  }, []);
+
+  const completeTutorial = () => {
+    setOnboardingStep(-1);
+    localStorage.removeItem('onboarding_required');
+  };
+
   const handleScheduleClick = () => {
     if (user?.role === 'guest') { setShowGuestDialog(true); return; }
     setIsModalOpen(true);
+    if (onboardingStep === 0) setOnboardingStep(1);
   };
   
   const [pharmacies, setPharmacies] = useState([]);
@@ -173,7 +190,7 @@ const UserDashboard = () => {
         </div>
 
          {/* Mobile Primary Call to Action */}
-        <button onClick={handleScheduleClick} className="lg:hidden bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group w-full">
+        <button id="schedule-disposal-btn" onClick={handleScheduleClick} className="lg:hidden bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex flex-col items-center justify-center gap-2 border border-green-500/50 group w-full">
           <div className="flex items-center gap-2 text-xl tracking-tight">
              <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
           </div>
@@ -266,6 +283,8 @@ const UserDashboard = () => {
           onClose={() => { setIsModalOpen(false); setSelectedMapPharmacy(null); }}
           onSuccess={() => { fetchRequests(); setIsModalOpen(false); setSelectedMapPharmacy(null); }}
           preselectedPharmacy={selectedMapPharmacy}
+          onboardingStep={onboardingStep}
+          setOnboardingStep={setOnboardingStep}
         />
 
       </div>
@@ -295,7 +314,7 @@ const UserDashboard = () => {
         </div>
 
         {/* Primary Call to Action */}
-        <button onClick={handleScheduleClick} className="hidden lg:flex bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex-col items-center justify-center gap-2 border border-green-500/50 group">
+        <button id="schedule-disposal-btn-lg" onClick={handleScheduleClick} className="hidden lg:flex bg-green-600 hover:bg-green-700 text-white font-bold py-5 rounded-3xl shadow-[0_8px_30px_rgb(5,150,105,0.3)] hover:shadow-[0_8px_30px_rgb(5,150,105,0.5)] transition-all flex-col items-center justify-center gap-2 border border-green-500/50 group">
           <div className="flex items-center gap-2 text-xl tracking-tight">
              <Package className="w-6 h-6 group-hover:scale-110 transition-transform" /> {t('dashboard.scheduleDisposal')}
           </div>
@@ -328,6 +347,43 @@ const UserDashboard = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {onboardingStep !== -1 && (
+        <OnboardingTutorial 
+          currentStep={onboardingStep}
+          steps={[
+            {
+              target: window.innerWidth < 1024 ? '#schedule-disposal-btn' : '#schedule-disposal-btn-lg',
+              title: t('onboarding.step1Title'),
+              description: t('onboarding.step1Desc'),
+              manualNext: false // Only clicks on the button should advance
+            },
+            {
+              target: '#med-name-input',
+              title: t('onboarding.step2Title'),
+              description: t('onboarding.step2Desc'),
+              manualNext: true
+            },
+            {
+              target: '#review-pkg-btn',
+              title: t('onboarding.step3Title'),
+              description: t('onboarding.step3Desc'),
+              manualNext: false // Clicks on review should advance
+            },
+            {
+                target: '#finalize-disposal-btn',
+                title: t('onboarding.step4Title'),
+                description: t('onboarding.step4Desc'),
+                manualNext: true
+            }
+          ]}
+          onNext={() => {
+            if (onboardingStep === 1) setOnboardingStep(2);
+            else if (onboardingStep === 3) completeTutorial();
+          }}
+          onComplete={completeTutorial}
+        />
       )}
 
     </DashboardLayout>

@@ -3,7 +3,7 @@ import { X, Pill, ShieldAlert, AlertCircle, MapPin, Building, Map, Navigation, A
 import axios from '../api/axios';
 import { searchMedicineAPI } from '../api/medicineAPI';
 
-const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
+const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy, onboardingStep, setOnboardingStep }) => {
   const [pharmacies, setPharmacies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
@@ -172,6 +172,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
       return;
     }
     setStep(2);
+    if (onboardingStep === 2) setOnboardingStep(3);
   };
 
   const submitForm = async (e) => {
@@ -340,6 +341,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                   <div className="relative">
                     <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${isSearching ? 'text-green-500 animate-pulse' : 'text-gray-400'}`} />
                     <input 
+                      id="med-name-input"
                       type="text" 
                       placeholder="Search medicine name..." 
                       value={medicineData.medicineName} 
@@ -466,7 +468,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                 <button type="button" onClick={handleAddToCart} className="w-1/2 flex items-center justify-center gap-2 bg-green-50 dark:bg-emerald-900/30 text-green-700 border border-green-200 font-bold py-4 rounded-xl hover:bg-green-100 transition-all">
                   <PackagePlus className="w-5 h-5"/> Add Ext. Item
                 </button>
-                <button type="button" onClick={handleReviewProceed} className="w-1/2 flex items-center justify-center bg-[#059669] text-white font-bold py-4 rounded-xl hover:bg-[#047857] transition-all shadow-md">
+                <button id="review-pkg-btn" type="button" onClick={handleReviewProceed} className="w-1/2 flex items-center justify-center bg-[#059669] text-white font-bold py-4 rounded-xl hover:bg-[#047857] transition-all shadow-md">
                   {cart.length > 0 || medicineData.medicineName ? `Review Package →` : 'Submit Package →'}
                 </button>
               </div>
@@ -516,7 +518,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
                <div className="pt-6">
                  {cart.length > 0 && (
-                   <button onClick={() => {
+                   <button id="finalize-disposal-btn" onClick={() => {
                       if (requestData.disposalType === 'pickup') setStep(3);
                       else submitForm();
                    }} disabled={loading} className="w-full bg-[#059669] text-white font-bold py-4 rounded-xl hover:bg-[#047857] transition-all shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] disabled:opacity-70 flex justify-center items-center gap-2">

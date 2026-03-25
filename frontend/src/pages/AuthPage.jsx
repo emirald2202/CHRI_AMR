@@ -278,6 +278,7 @@ const AuthPage = () => {
           password: formData.password, role, location: formData.city,
           ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
         });
+        localStorage.setItem('onboarding_required', 'true');
         const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
         loginUser(res.data.user, res.data.token);
         navigate('/dashboard');

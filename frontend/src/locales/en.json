@@ -335,5 +335,17 @@
     "description": "To schedule a disposal and earn reward points, please create an account or log in.",
     "login": "Login / Sign Up",
     "maybeLater": "Dispose Anyway (No Points)"
+  },
+  "onboarding": {
+    "step1Title": "Start Your First Disposal",
+    "step1Desc": "Click the 'Schedule Safe Disposal' button to begin the process of responsibly clearing out your unused medicines.",
+    "step2Title": "Add Your Medicines",
+    "step2Desc": "Search for the medicine name and fill in the details. This helps us ensure they are disposed of correctly.",
+    "step3Title": "Almost Done!",
+    "step3Desc": "Review your disposal package and click 'Review Package' to finalize your request.",
+    "step4Title": "Finish Your First Disposal",
+    "step4Desc": "Now that you've reviewed your package, you can finish your first disposal. This will clear the onboarding process.",
+    "ok": "Got it!",
+    "done": "Finish Tutorial"
   }
 }
