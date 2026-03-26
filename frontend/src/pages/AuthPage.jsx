@@ -273,10 +273,6 @@ const AuthPage = () => {
             setErrorMsg('Password must be at least 6 characters long');
             return;
           }
-          if (formData.password !== formData.confirmPassword) {
-            setErrorMsg('Passwords do not match');
-            return;
-          }
           
           await axios.post('/auth/send-otp', { email: formData.email });
           setOtpStep(true);
