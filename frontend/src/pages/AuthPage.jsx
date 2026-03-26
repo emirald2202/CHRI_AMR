@@ -267,21 +267,44 @@ const AuthPage = () => {
           }
         }
       } else {
-        // Direct signup — no OTP required
-        if (formData.password.length < 6) {
-          setErrorMsg('Password must be at least 6 characters long');
+        // Direct signup flow with mandatory OTP verification
+        if (!otpStep) {
+          if (formData.password.length < 6) {
+            setErrorMsg('Password must be at least 6 characters long');
+            return;
+          }
+          if (formData.password !== formData.confirmPassword) {
+            setErrorMsg('Passwords do not match');
+            return;
+          }
+          
+          await axios.post('/auth/send-otp', { email: formData.email });
+          setOtpStep(true);
           return;
-        }
-        const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
-        await axios.post('/auth/register', {
-          name: formData.name, email: formData.email, phone: formData.phone,
-          password: formData.password, role, location: formData.city,
-          ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
-        });
+        } else {
+          // Verify OTP first
+          await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp });
+          
+          const structuredAddress = { 
+            flatNo: formData.flatNo, 
+            street: formData.street, 
+            landmark: formData.landmark, 
+            pincode: formData.pincode, 
+            city: formData.city, 
+            state: formData.state 
+          };
+          
+          await axios.post('/auth/register', {
+            name: formData.name, email: formData.email, phone: formData.phone,
+            password: formData.password, role, location: formData.city,
+            ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
+          });
 
-        const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
-        loginUser(res.data.user, res.data.token);
-        navigate('/dashboard');
+          // After registration, log them in
+          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
+          loginUser(res.data.user, res.data.token);
+          navigate('/dashboard');
+        }
       }
     } catch (err) {
       if (err.response?.status === 404 && mode === 'login') {
