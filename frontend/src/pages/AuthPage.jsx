@@ -257,21 +257,23 @@ const AuthPage = () => {
           }
         }
       } else {
-        if (!otpStep) {
-          await axios.post('/auth/send-otp', { email: formData.email });
-          setOtpStep(true);
-        } else {
-          await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp });
-          const structuredAddress = { flatNo: formData.flatNo, street: formData.street, landmark: formData.landmark, pincode: formData.pincode, city: formData.city, state: formData.state };
-          await axios.post('/auth/register', {
-            name: formData.name, email: formData.email, phone: formData.phone,
-            password: formData.password, role, location: formData.city,
-            ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
-          });
-          const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
-          loginUser(res.data.user, res.data.token);
-          navigate('/dashboard');
-        }
+        // Direct registration for demo (OTP disabled)
+        const structuredAddress = { 
+          flatNo: formData.flatNo, 
+          street: formData.street, 
+          landmark: formData.landmark, 
+          pincode: formData.pincode, 
+          city: formData.city, 
+          state: formData.state 
+        };
+        await axios.post('/auth/register', {
+          name: formData.name, email: formData.email, phone: formData.phone,
+          password: formData.password, role, location: formData.city,
+          ...(role === 'pharmacy' && { pharmacyName: formData.pharmacyName, address: structuredAddress })
+        });
+        const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
+        loginUser(res.data.user, res.data.token);
+        navigate('/dashboard');
       }
     } catch (err) {
       setErrorMsg(err.response?.data?.message || err.message || 'An error occurred');
@@ -484,6 +486,12 @@ const AuthPage = () => {
               t('auth.signup.createAccount')
             )}
           </button>
+
+          {mode === 'signup' && (
+            <p className="text-center text-xs font-medium text-gray-400 mt-4 bg-gray-50/50 py-2 rounded-lg border border-dashed border-gray-200">
+              ⚡ OTP disabled for prototype
+            </p>
+          )}
         </form>
       </div>
     </AuthLayout>
