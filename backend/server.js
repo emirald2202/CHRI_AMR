@@ -26,9 +26,10 @@ const bcrypt = require('bcrypt');
 
 connectDB().then(async () => {
   try {
+    const ADMIN_PASSWORD = 'chri@2026';
+    const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
     const adminExists = await User.findOne({ email: 'admin@gmail.com' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('chri@2026', 10);
       await User.create({
         name: 'Super Admin',
         email: 'admin@gmail.com',
@@ -37,6 +38,9 @@ connectDB().then(async () => {
         role: 'admin'
       });
       console.log('✅ Default admin@gmail.com account initialized.');
+    } else {
+      await User.updateOne({ email: 'admin@gmail.com' }, { $set: { password: hashedPassword } });
+      console.log('✅ Admin password updated to latest configured value.');
     }
   } catch (err) {
     console.error('Error seeding default admin:', err);
