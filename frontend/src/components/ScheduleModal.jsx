@@ -88,6 +88,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (medicineData.medicineName.length >= 3 && !autofilled) {
+        setManualOverride(true); // Automatically show manual fields just in case they decide to type it out themselves
         setIsSearching(true);
         searchMedicineAPI(medicineData.medicineName).then(results => {
           setSuggestions(results || []);
@@ -347,7 +348,8 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                         setMedicineData({...medicineData, medicineName: e.target.value});
                         if (autofilled) setAutofilled(false);
                       }} 
-                      onFocus={() => {if (suggestions.length > 0) setShowSuggestions(true)}}
+                      onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
+                      onBlur={() => setTimeout(() => setShowSuggestions(false), 300)}
                       className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all font-semibold" 
                     />
                   </div>
@@ -359,7 +361,7 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                         <>
                           <div className="max-h-48 overflow-y-auto">
                             {suggestions.map((med, i) => (
-                              <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0">
+                              <button type="button" key={i} onMouseDown={(e) => e.preventDefault()} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0">
                                 <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{med.brandName}</span>
                                 <span className="text-xs text-gray-500 font-medium truncate w-full">{med.genericName} • {med.doseWeight || med.dose}</span>
                               </button>
@@ -367,14 +369,14 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
                           </div>
                           <div className="px-5 py-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-700 text-center">
                             <p className="text-xs text-gray-500 font-medium mb-2">Can't find exact match?</p>
-                            <button type="button" onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50/50 dark:bg-emerald-900/30 py-1.5 px-3 rounded w-full border border-green-100 dark:border-green-900">Fill Details Manually</button>
+                            <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50/50 dark:bg-emerald-900/30 py-1.5 px-3 rounded w-full border border-green-100 dark:border-green-900">Fill Details Manually</button>
                           </div>
                         </>
                       ) : (
                         medicineData.medicineName.length >= 3 && !isSearching && (
                           <div className="px-5 py-4 text-center">
                             <p className="text-[0.8rem] text-gray-600 font-medium mb-2">Medicine not found in database. Please fill details manually.</p>
-                            <button type="button" onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50 dark:bg-emerald-900/30 py-1.5 px-3 rounded text-center w-full">Fill Manually</button>
+                            <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50 dark:bg-emerald-900/30 py-1.5 px-3 rounded text-center w-full">Fill Manually</button>
                           </div>
                         )
                       )}
