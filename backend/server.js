@@ -28,7 +28,7 @@ connectDB().then(async () => {
   try {
     const adminExists = await User.findOne({ email: 'admin@gmail.com' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('admin', 10);
+      const hashedPassword = await bcrypt.hash('chri@2026', 10);
       await User.create({
         name: 'Super Admin',
         email: 'admin@gmail.com',
