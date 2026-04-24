@@ -9,6 +9,8 @@ router.use(auth);
 router.use(adminCheck);
 
 router.get('/users', adminController.getUsers);
+router.get('/admins', adminController.getAdmins);
+router.post('/admins', adminController.createAdmin);
 router.get('/pharmacies', adminController.getPharmacies);
 router.put('/pharmacies/:id/suspend', adminController.toggleSuspension);
 router.delete('/pharmacies/:id', adminController.deleteUser);

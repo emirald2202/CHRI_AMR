@@ -21,7 +21,27 @@ app.use('/api/users', userRoutes);
 app.use('/api/disposals', disposalRoutes);
 app.use('/api/admin', adminRoutes);
 
-connectDB();
+const User = require('./models/User');
+const bcrypt = require('bcrypt');
+
+connectDB().then(async () => {
+  try {
+    const adminExists = await User.findOne({ email: 'admin@gmail.com' });
+    if (!adminExists) {
+      const hashedPassword = await bcrypt.hash('admin', 10);
+      await User.create({
+        name: 'Super Admin',
+        email: 'admin@gmail.com',
+        phone: '0000000000',
+        password: hashedPassword,
+        role: 'admin'
+      });
+      console.log('✅ Default admin@gmail.com account initialized.');
+    }
+  } catch (err) {
+    console.error('Error seeding default admin:', err);
+  }
+});
 
 app.get('/', (req, res) => {
   res.json({ status: 'AMRit API running' });
