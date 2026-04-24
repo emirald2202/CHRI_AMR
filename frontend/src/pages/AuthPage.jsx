@@ -255,7 +255,7 @@ const AuthPage = () => {
         if (method === 'password') {
           const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
           loginUser(res.data.user, res.data.token);
-          navigate('/dashboard');
+          navigate(res.data.user.role === 'admin' ? '/admin' : '/dashboard');
         } else {
           if (!otpStep) {
             await axios.post('/auth/send-otp', { email: formData.email });
@@ -263,7 +263,7 @@ const AuthPage = () => {
           } else {
             const res = await axios.post('/auth/verify-otp', { email: formData.email, otp: formData.otp, isLogin: true });
             loginUser(res.data.user, res.data.token);
-            navigate('/dashboard');
+            navigate(res.data.user.role === 'admin' ? '/admin' : '/dashboard');
           }
         }
       } else {
@@ -283,7 +283,7 @@ const AuthPage = () => {
         });
         const res = await axios.post('/auth/login', { email: formData.email, password: formData.password });
         loginUser(res.data.user, res.data.token);
-        navigate('/dashboard');
+        navigate(res.data.user.role === 'admin' ? '/admin' : '/dashboard');
       }
     } catch (err) {
       if (err.response?.status === 404 && mode === 'login') {

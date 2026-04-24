@@ -354,13 +354,23 @@ const ScheduleModal = ({ isOpen, onClose, onSuccess, preselectedPharmacy }) => {
 
                   {/* Autocomplete Dropdown */}
                   {showSuggestions && !autofilled && (
-                    <div className="absolute w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
-                      {suggestions.length > 0 ? suggestions.map((med, i) => (
-                        <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0">
-                          <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{med.brandName}</span>
-                          <span className="text-xs text-gray-500 font-medium truncate w-full">{med.genericName} • {med.doseWeight || med.dose}</span>
-                        </button>
-                      )) : (
+                    <div className="absolute w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden z-20">
+                      {suggestions.length > 0 ? (
+                        <>
+                          <div className="max-h-48 overflow-y-auto">
+                            {suggestions.map((med, i) => (
+                              <button type="button" key={i} onClick={() => selectMedicine(med)} className="w-full text-left px-5 py-3 hover:bg-green-50 dark:bg-emerald-900/30 border-b border-gray-50 transition-colors flex flex-col last:border-0">
+                                <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">{med.brandName}</span>
+                                <span className="text-xs text-gray-500 font-medium truncate w-full">{med.genericName} • {med.doseWeight || med.dose}</span>
+                              </button>
+                            ))}
+                          </div>
+                          <div className="px-5 py-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-700 text-center">
+                            <p className="text-xs text-gray-500 font-medium mb-2">Can't find exact match?</p>
+                            <button type="button" onClick={() => {setAutofilled(false); setManualOverride(true); setShowSuggestions(false);}} className="text-xs font-bold text-green-600 bg-green-50/50 dark:bg-emerald-900/30 py-1.5 px-3 rounded w-full border border-green-100 dark:border-green-900">Fill Details Manually</button>
+                          </div>
+                        </>
+                      ) : (
                         medicineData.medicineName.length >= 3 && !isSearching && (
                           <div className="px-5 py-4 text-center">
                             <p className="text-[0.8rem] text-gray-600 font-medium mb-2">Medicine not found in database. Please fill details manually.</p>
