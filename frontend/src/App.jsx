@@ -7,6 +7,8 @@ import Impact from './pages/Impact';
 import DisposalHistory from './pages/DisposalHistory';
 import SettingsPage from './pages/SettingsPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
         <Route path="/impact" element={<ProtectedRoute><Impact /></ProtectedRoute>} />
         <Route path="/history" element={<ProtectedRoute><DisposalHistory /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
       </Routes>
     </BrowserRouter>
   );

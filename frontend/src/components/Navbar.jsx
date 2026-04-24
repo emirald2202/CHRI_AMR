@@ -114,6 +114,11 @@ const Navbar = () => {
                     ) : null; })()}
                   </div>
                   <div className="py-1">
+                    {user?.role === 'admin' && (
+                      <Link to="/admin" onClick={() => setDropdownOpen(false)} className="flex items-center px-4 py-2.5 text-sm text-indigo-700 dark:text-indigo-400 hover:bg-indigo-50 dark:bg-indigo-900/30 font-bold transition-colors">
+                        <ShieldCheck className="w-4 h-4 mr-3 text-indigo-500" /> Admin Portal
+                      </Link>
+                    )}
                     <Link to="/settings" onClick={() => setDropdownOpen(false)} className="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:bg-emerald-900/30 hover:text-green-700 font-medium transition-colors">
                       <Settings className="w-4 h-4 mr-3 text-gray-400" /> {t('nav.settings')}
                     </Link>

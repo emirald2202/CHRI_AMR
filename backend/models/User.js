@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["user", "pharmacy"], default: "user" },
+  role: { type: String, enum: ["user", "pharmacy", "admin"], default: "user" },
+  accountStatus: { type: String, enum: ["active", "suspended"], default: "active" },
   location: { type: String }, // city name
   points: { type: Number, default: 0 },
   badges: [{ type: String }],
