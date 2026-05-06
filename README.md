@@ -133,7 +133,7 @@ npm run dev
 ---
 
 ## 🎥 Demo Video
-[![AMRit Demo Pitch](https://img.youtube.com/vi/YOUR_VIDEO_ID_HERE/maxresdefault.jpg)](https://youtube.com/your-video-link-here)
+[![AMRit Demo Pitch](https://www.youtube.com/watch?v=pYHwtRYgv_M)
 
 ---
 
